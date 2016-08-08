@@ -1,12 +1,18 @@
 goog.provide("Sample");
 
 goog.require("Application");
+
+goog.require("AppController");
+goog.require("AppModel");
 /**
  * @export
  */
 Sample.start = function()
 {
-	var app = new Application();
+	var model = new AppModel();
+	var app = new Application(model);
 	app.run();
+	
+	var controller = new AppController(model);
 };
 

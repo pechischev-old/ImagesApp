@@ -1,23 +1,32 @@
 goog.provide("model.Image");
 
-
-goog.require("goog.math.Rect");
+goog.require("model.IImage");
+//goog.require("goog.math.Rect");
 
 goog.scope(function(){
-    /** @constructor */
+
+    /**
+      * @constructor
+      * @implements {model.IImage}
+      * @override
+      */
     model.Image = goog.defineClass(null, {
-        /** @param {goog.math.Rect} frame */
+        /**
+         * @param {!goog.math.Rect} frame
+         */
         constructor: function(frame) {
             /** @private {boolean} */
             this._isSelected = false;
 
-            /** @private {goog.math.Size} */
+            /** @private {!goog.math.Size} */
             this._size = frame.getSize();
-            /** @private {goog.math.Coordinate} */
+            /** @private {!goog.math.Coordinate} */
             this._pos = frame.getTopLeft();
         },
 
-        /** @return {goog.math.Rect} */
+        /**
+          * @return {!goog.math.Rect}
+          */
         getFrame: function() {
             return new goog.math.Rect(this._pos.x, this._pos.y, this._size.width, this._size.height);
         },
@@ -32,7 +41,9 @@ goog.scope(function(){
             this._isSelected = flag;
         },
 
-        /** @param {goog.math.Coordinate} posMouse */
+        /** @param {!goog.math.Coordinate} posMouse
+         * @override
+         */
         resize: function(posMouse) {
             var w = (posMouse.x - this._pos.x) || 50;
             var h = (posMouse.y - this._pos.y) || 50;
@@ -40,7 +51,9 @@ goog.scope(function(){
             this._size = new goog.math.Size(w, h);
         },
 
-        /** @param {!goog.math.Coordinate} posMouse */
+        /** @param {!goog.math.Coordinate} posMouse
+         * @override
+         */
         move: function(posMouse) {
             /** @type {!goog.math.Coordinate} */
             var shift = goog.math.Coordinate.difference(posMouse, this._pos);
@@ -48,13 +61,11 @@ goog.scope(function(){
             this._pos = goog.math.Coordinate.difference(posMouse, shift);
         },
 
-        outputLog: function() {
-            console.log("pos: " + this._pos.x + ", " + this._pos.y);
-            console.log("size: " + this._size.width + ", " + this._size.height);
-            if (this.isSelected())
-            {
-                console.log("selected: true");
-            }
+        outLog: function() {
+            console.log(this._pos.x + " " + this._pos.y);
+            console.log(this._size.width + " " + this._size.height);
+            console.log("selected: " + this.isSelected());
+            
         }
     });
 });
