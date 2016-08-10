@@ -3,6 +3,9 @@ goog.provide("AppController");
 goog.require("AppModel");
 goog.require("AppView");
 
+goog.require("goog.events");
+goog.require("goog.events.EventType");
+
 goog.scope(function() {
     
     /** @param {AppModel} model
@@ -18,14 +21,15 @@ goog.scope(function() {
         },
         
         eventLoop: function() {
-            
+            goog.events.listen(document.body, goog.events.EventType.CLICK, goog.bind(this._addImage, this));
         },
         
         /** @private */
         _addImage: function() {
             /** @type {!goog.math.Rect} */
             var frame = this._model.addImage();
-            this._view.createImage(frame);
+            var path = this._view.getPath();
+            this._view.loadImage(frame, path);
         }
     });
 });

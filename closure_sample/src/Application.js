@@ -37,10 +37,6 @@ goog.scope(function() {
              */
             this._btn = goog.dom.createElement(goog.dom.TagName.BUTTON);
             this._btn.id = "loading";
-            this._btn.style.width = "70px";
-            this._btn.style.height = "50px";
-            this._btn.style.left = "20px";
-            this._btn.style.top = "30px";
             document.body.appendChild( this._btn);
             
             goog.events.listen(this._btn, goog.events.EventType.CLICK, goog.bind(this._appModel.addImage, this._appModel));

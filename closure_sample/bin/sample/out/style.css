@@ -4,3 +4,29 @@ body {
   overflow: hidden;
   cursor: default;
   -webkit-tap-highlight-color: transparent; }
+
+#loading {
+  margin: 10px;
+  cursor: pointer;
+  width: 70px;
+  height: 30px;
+  left: 20px;
+  top: 20px;
+  float: left; }
+
+canvas {
+  margin: 1%;
+  border: 4px outset black;
+  left: 5%;
+  top: 20%; }
+
+input {
+  margin: 10px;
+  width: 50%;
+  height: 30px;
+  float: left; }
+
+.capture {
+  margin: 10px;
+  position: relative;
+  display: block; }

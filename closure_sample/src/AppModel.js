@@ -18,7 +18,7 @@ goog.scope(function() {
         addImage: function() {
             this._isChange = true;
             /** @type {model.Image} */
-            var image = new model.Image(new goog.math.Rect(90, 90, 250, 250));
+            var image = new model.Image(new goog.math.Rect(200, 200, 250, 250));
             this._images.push(image);
             return image.getFrame();
         },
