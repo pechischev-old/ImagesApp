@@ -29,8 +29,10 @@ goog.scope(function() {
         createStructDOM: function() {
             //var fragment = document.createDocumentFragment();
             var image = document.createElement(goog.dom.TagName.IMG);
-            image.setAttribute("class", "capture");
             image.setAttribute("src", this._path);
+            image.setAttribute("class", "capture");
+            image.setAttribute("alt", "текст");
+
             goog.style.setStyle(image, "width", this._frame.width + "px");
             goog.style.setStyle(image, "height", this._frame.height  + "px");
             goog.style.setStyle(image, "top", this._frame.top + "px");

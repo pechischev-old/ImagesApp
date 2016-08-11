@@ -3,15 +3,14 @@ goog.provide("AppView");
 
 goog.require("goog.dom");
 goog.require("view.ImageView");
+goog.require("view.Button");
 
 goog.scope(function() {
-    /** @const {goog.math.Size} */
-    const CANVAS_SIZE = new goog.math.Size(1000, 800);
     /** @const {string} */
-    const CANVAS_NAME = "testCanvas";
+    const CANVAS_NAME = "canvas";
     /** @type {view.ImageView} */
     var imageView = view.ImageView;
-
+    var button = view.Button;
 
     /** @constructor */
     AppView = goog.defineClass(null, {
@@ -36,10 +35,9 @@ goog.scope(function() {
         /** @param {!goog.math.Rect} frame
           * @param {string} path */
         loadImage: function(frame, path) {
-            var canvas = document.getElementById(CANVAS_NAME);
             /** @type {view.ImageView} */
             var image = new imageView(frame, path);
-            canvas.appendChild(image.createStructDOM());
+            this._canvas.appendChild(image.createStructDOM());
             this._images.push(image);
         },
 
@@ -56,23 +54,16 @@ goog.scope(function() {
         /** @private 
           * @return {!Element}*/
         _createButton: function() {
-            // create class Button for simple Toolbar
-            /**
-             * @type {!Element}
-             * @private
-             */
-            var btn = goog.dom.createElement(goog.dom.TagName.BUTTON);
-            btn.id = "loading";
-            return btn;
+            /** @private {view.Button} */
+            this._b = new view.Button("add image");
+            return this._b.getDOMElement();
         },
         /** @private 
           * @return {!Element} */
         _createCanvas: function () {
             /** @private {!Element} */
-            this._canvas = goog.dom.createElement(goog.dom.TagName.CANVAS);
+            this._canvas = goog.dom.createElement(goog.dom.TagName.DIV);
             this._canvas.id = CANVAS_NAME;
-            this._canvas.width = CANVAS_SIZE.width;
-            this._canvas.height = CANVAS_SIZE.height;
             return this._canvas;
         }
 

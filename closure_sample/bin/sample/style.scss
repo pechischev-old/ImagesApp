@@ -6,21 +6,24 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-#loading {
+.button {
   margin: 10px;
   cursor: pointer;
-  width: 70px;
-  height: 30px;
+  width: 80px;
+  height: 50px;
   left: 20px;
   top: 20px;
   float: left;
 }
 
-canvas {
+#canvas {
   margin: 1%;
   border: 4px outset black;
   left: 5%;
   top: 20%;
+  float: left;
+  height: 800px;
+  width: 1000px;
 }
 
 input {
@@ -32,6 +35,6 @@ input {
 
 .capture {
   margin: 10px;
-  position: relative;
+  position: absolute;
   display: block;
 }
