@@ -3,20 +3,19 @@ goog.provide("AppView");
 
 goog.require("goog.dom");
 goog.require("view.ImageView");
-goog.require("view.Button");
+goog.require("view.Toolbar");
 
 goog.scope(function() {
     /** @const {string} */
     const CANVAS_NAME = "canvas";
     /** @type {view.ImageView} */
     var imageView = view.ImageView;
-    var button = view.Button;
 
     /** @constructor */
     AppView = goog.defineClass(null, {
         constructor: function() {
             var fragment = document.createDocumentFragment();
-            fragment.appendChild(this._createButton());
+            fragment.appendChild(this._createToolbar());
             fragment.appendChild(this._createInputForm());
             fragment.appendChild(this._createCanvas());
             document.body.appendChild(fragment);
@@ -27,7 +26,7 @@ goog.scope(function() {
             this._images = [];
         },
 
-        /** @return {string} */
+        /** @return {string} */ // temporarily
         getPath: function() {
             return this._path;
         },
@@ -41,6 +40,11 @@ goog.scope(function() {
             this._images.push(image);
         },
 
+        /** @return {view.Toolbar} */
+        getToolbar: function() {
+            return this._toolbar;
+        },
+
         /** 
          * @return {!Element}
          * @private
@@ -51,12 +55,25 @@ goog.scope(function() {
             return inputForm;
         },
 
-        /** @private 
-          * @return {!Element}*/
-        _createButton: function() {
-            /** @private {view.Button} */
-            this._b = new view.Button("add image");
-            return this._b.getDOMElement();
+        /** @private
+         * @return {!Element} */
+        _createToolbar: function () {
+            /** @private {view.Toolbar} */
+            this._toolbar = new view.Toolbar();
+            this._toolbar.appendButton(this._createButton("Undo"));
+            this._toolbar.appendButton(this._createButton("Redo"));
+            this._toolbar.appendButton(this._createButton("Add image"));
+            return this._toolbar.getDOMElement();
+        },
+
+        /** @private
+          * @param {string} name
+          * @return {view.Button}*/
+        _createButton: function(name) {
+
+            var b = new view.Button(name);
+            b.setAction(function() { console.log(name)});
+            return b;
         },
         /** @private 
           * @return {!Element} */

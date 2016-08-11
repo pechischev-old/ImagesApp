@@ -17,7 +17,7 @@ goog.scope(function() {
             this._model = model;
             /** @private {AppView} */
             this._view = new AppView();
-
+            
         },
         
         eventLoop: function() {
@@ -30,6 +30,14 @@ goog.scope(function() {
             var frame = this._model.addImage();
             var path = this._view.getPath();
             this._view.loadImage(frame, path);
+        },
+        
+        /** @private */
+        _addAction: function() {
+            var toolbar = this._view.getToolbar();
+            
         }
+        
+       
     });
 });

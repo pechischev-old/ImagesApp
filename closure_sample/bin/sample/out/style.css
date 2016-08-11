@@ -6,22 +6,27 @@ body {
   -webkit-tap-highlight-color: transparent; }
 
 .button {
-  margin: 10px;
   cursor: pointer;
   width: 80px;
-  height: 50px;
+  height: 40px;
   left: 20px;
   top: 20px;
   float: left; }
 
+#toolbar {
+  border: 1px solid black;
+  float: left;
+  margin: 2px;
+  padding: 2px; }
+
 #canvas {
   margin: 1%;
-  border: 4px outset black;
+  border: 2px outset black;
   left: 5%;
-  top: 20%;
-  float: left;
+  top: 5%;
   height: 800px;
-  width: 1000px; }
+  width: 1000px;
+  position: absolute; }
 
 input {
   margin: 10px;
