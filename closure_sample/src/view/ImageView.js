@@ -28,16 +28,20 @@ goog.scope(function() {
          */
         createStructDOM: function() {
             //var fragment = document.createDocumentFragment();
+            var container = document.createElement(goog.dom.TagName.DIV);
+            container.setAttribute("class", "capture");
+
+
+            goog.style.setStyle(container, "top", this._frame.top + "px");
+            goog.style.setStyle(container, "left", this._frame.left + "px");
+
             var image = document.createElement(goog.dom.TagName.IMG);
             image.setAttribute("src", this._path);
-            image.setAttribute("class", "capture");
             image.setAttribute("alt", "текст");
-
             goog.style.setStyle(image, "width", this._frame.width + "px");
             goog.style.setStyle(image, "height", this._frame.height  + "px");
-            goog.style.setStyle(image, "top", this._frame.top + "px");
-            goog.style.setStyle(image, "left", this._frame.left + "px");
-            return image;
+            container.appendChild(image);
+            return container;
         }
     });
 });

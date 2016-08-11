@@ -17,18 +17,25 @@ goog.scope(function() {
             var fragment = document.createDocumentFragment();
             fragment.appendChild(this._createToolbar());
             fragment.appendChild(this._createInputForm());
+            fragment.appendChild(this._createFileReader());
             fragment.appendChild(this._createCanvas());
             document.body.appendChild(fragment);
-            /** @private {string} */
-            this._path = "http://igry-goda.ru/igry-2013/index.files/Luchshie-strelyalki-na-PK-2013-goda.jpg";
-
             /** @private {Array<view.ImageView>} */
             this._images = [];
         },
+        
+        /** @param {function(?Event)} action */
+        setActionFileReader: function(action){
+            //this._inputForm.onchange = 'action';
+        },
 
-        /** @return {string} */ // temporarily
-        getPath: function() {
-            return this._path;
+        /** @return {string} */
+        getDataInputForm: function() {
+            return this._inputForm.value;
+        },
+        
+        clickFileReader: function() {
+            return this._fileReader.click();
         },
 
         /** @param {!goog.math.Rect} frame
@@ -50,9 +57,24 @@ goog.scope(function() {
          * @private
          */
         _createInputForm: function () {
-            var inputForm = document.createElement(goog.dom.TagName.INPUT);
-            inputForm.id = "imageInput";
-            return inputForm;
+            /** @private {!Element} */
+            this._inputForm = document.createElement(goog.dom.TagName.INPUT);
+            this._inputForm.id = "imageInput";
+            this._inputForm.type = "text";
+            this._inputForm.setAttribute("value", "Введите Url или локальный адрес картинки");
+            return this._inputForm;
+        },
+
+        /**
+         * @return {!Element}
+         * @private
+         */
+        _createFileReader: function() {
+            /** @private {!Element} */
+            this._fileReader = document.createElement(goog.dom.TagName.INPUT);
+            this._fileReader.type = "file";
+            goog.style.setStyle(this._fileReader, "display", "none");
+            return this._fileReader;
         },
 
         /** @private
@@ -60,21 +82,12 @@ goog.scope(function() {
         _createToolbar: function () {
             /** @private {view.Toolbar} */
             this._toolbar = new view.Toolbar();
-            this._toolbar.appendButton(this._createButton("Undo"));
-            this._toolbar.appendButton(this._createButton("Redo"));
-            this._toolbar.appendButton(this._createButton("Add image"));
+            this._toolbar.appendButton(new view.Button("Undo"));
+            this._toolbar.appendButton(new view.Button("Redo"));
+            this._toolbar.appendButton(new view.Button("Add image"));
             return this._toolbar.getDOMElement();
         },
 
-        /** @private
-          * @param {string} name
-          * @return {view.Button}*/
-        _createButton: function(name) {
-
-            var b = new view.Button(name);
-            b.setAction(function() { console.log(name)});
-            return b;
-        },
         /** @private 
           * @return {!Element} */
         _createCanvas: function () {
