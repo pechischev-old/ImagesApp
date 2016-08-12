@@ -5,7 +5,8 @@ goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("view.IDOMElement");
 goog.require("view.Border");
-
+goog.require("goog.events");
+goog.require("goog.events.EventType");
 goog.scope(function() {
 
     /**
@@ -20,8 +21,9 @@ goog.scope(function() {
             /** @private {!goog.math.Rect} */
             this._frame = frame;
             this._create();
-            var border = new view.Border(frame);
-            this._container.appendChild(border.getDOMElement());
+            /** @private {view.Border} */
+            this._border = new view.Border(frame);
+            this._container.appendChild(this._border.getDOMElement());
         },
 
         /** @param {!goog.math.Rect} frame */

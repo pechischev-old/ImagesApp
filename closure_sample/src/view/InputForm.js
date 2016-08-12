@@ -33,7 +33,7 @@ goog.scope(function() {
             this._inputForm = document.createElement(goog.dom.TagName.INPUT);
             this._inputForm.id = "imageInput";
             this._inputForm.type = "text";
-            this._inputForm.setAttribute("value", "Введите Url или локальный адрес картинки");
+            this._inputForm.setAttribute("placeholder", "Введите Url или локальный адрес картинки");
             this._inputForm.onfocus = goog.bind(this._clearBox, this);
 
         },

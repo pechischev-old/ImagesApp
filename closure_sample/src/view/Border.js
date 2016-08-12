@@ -29,6 +29,14 @@ goog.scope(function() {
         getDOMElement: function () {
             return this._border;
         },
+
+        activeBorder: function () {
+            goog.style.setStyle(this._border, "display", "block");
+        },
+
+        deactiveBorder: function() {
+            goog.style.setStyle(this._border, "display", "none");
+        },
         
         /** @private 
          * @override */
@@ -38,7 +46,7 @@ goog.scope(function() {
             this._border.setAttribute("class", "border");
             goog.style.setStyle(this._border, "width", this._frame.width + "px");
             goog.style.setStyle(this._border, "height", this._frame.height + "px");
-            goog.style.setStyle(this._border, "display", "none");
+            this.deactiveBorder();
             var i = 0;
             for (var h = 0; h <= 2; ++h )
             {
