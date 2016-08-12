@@ -13,9 +13,7 @@ goog.scope(function() {
             this._create();
         },
 
-        clearBox: function(){
-            this._inputForm.setAttribute("value", "");
-        },
+
 
         /** @return {string} */
         getValue: function() {
@@ -36,7 +34,12 @@ goog.scope(function() {
             this._inputForm.id = "imageInput";
             this._inputForm.type = "text";
             this._inputForm.setAttribute("value", "Введите Url или локальный адрес картинки");
-            this._inputForm.onfocus = this.clearBox;
+            this._inputForm.onfocus = goog.bind(this._clearBox, this);
+
+        },
+        /** @private */
+        _clearBox: function(){
+            this._inputForm.setAttribute("value", "");
         }
     });
 });

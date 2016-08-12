@@ -20,11 +20,11 @@ goog.scope(function() {
         },
 
         /**
-         * @param {!Event} event
+
          * @private
          */
-        _openFile: function(event) { // TODO: in developing
-            var input = event.target;
+        _openFile: function() { 
+            var input = window.event.target;
             var reader = new FileReader();
             reader.onload = goog.bind(function() {
                 this._addImage(reader.result.toString());
@@ -46,7 +46,7 @@ goog.scope(function() {
             toolbar.getButtonOnIndex(0).setAction(function(){console.log("undo")});
             toolbar.getButtonOnIndex(1).setAction(function(){console.log("redo")});
             toolbar.getButtonOnIndex(2).setAction(goog.bind(this._inputProcessing, this));
-            //var fileForm = this._view.setActionFileReader(goog.bind(this._openFile, this));
+            var fileForm = this._view.setActionFileReader(goog.bind(this._openFile, this));
         },
 
         /** @private */

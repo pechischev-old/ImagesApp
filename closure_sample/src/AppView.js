@@ -25,9 +25,9 @@ goog.scope(function() {
             this._images = [];
         },
         
-        /** @param {function(?Event)} action */
+        /** @param {Function} action */
         setActionFileReader: function(action){
-            //this._inputForm.onchange = 'action';
+            this._fileReader.onchange = action;
         },
 
         /** @return {string} */
