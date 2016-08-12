@@ -6,6 +6,7 @@ goog.require("view.ImageView");
 goog.require("view.Toolbar");
 goog.require("view.InputForm");
 
+
 goog.scope(function() {
     /** @const {string} */
     const CANVAS_NAME = "canvas";
@@ -71,6 +72,7 @@ goog.scope(function() {
             /** @private {!Element} */
             this._fileReader = document.createElement(goog.dom.TagName.INPUT);
             this._fileReader.type = "file";
+            this._fileReader.setAttribute("accept", "image/*");
             goog.style.setStyle(this._fileReader, "display", "none");
             return this._fileReader;
         },

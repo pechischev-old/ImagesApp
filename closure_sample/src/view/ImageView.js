@@ -4,6 +4,7 @@ goog.provide("view.ImageView");
 goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("view.IDOMElement");
+goog.require("view.Border");
 
 goog.scope(function() {
 
@@ -19,6 +20,8 @@ goog.scope(function() {
             /** @private {!goog.math.Rect} */
             this._frame = frame;
             this._create();
+            var border = new view.Border(frame);
+            this._container.appendChild(border.getDOMElement());
         },
 
         /** @param {!goog.math.Rect} frame */

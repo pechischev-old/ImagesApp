@@ -18,7 +18,7 @@ body {
 #toolbar {
   border: 1px solid black;
   float: left;
-  margin: px;
+  margin: 5px;
   padding: 4px;
 }
 
@@ -40,7 +40,49 @@ input {
 }
 
 .capture {
-  margin: 10px;
   position: absolute;
   display: block;
+}
+
+.capture :focus {
+  cursor: move;
+}
+
+.border {
+  top: -2px;
+  left: -2px;
+  border: 2px solid red;
+  position: absolute;
+}
+
+.border div {
+  background: red;
+  position: absolute;
+}
+
+.border {
+  .se {
+    cursor: se-resize;
+  }
+  .s {
+    cursor: s-resize;
+  }
+  .sw {
+    cursor: sw-resize;
+  }
+  .e {
+    cursor: e-resize;
+  }
+  .w {
+    cursor: w-resize;
+  }
+  .ne {
+    cursor: ne-resize;
+  }
+  .n {
+    cursor: n-resize;
+  }
+  .nw {
+    cursor: nw-resize;
+  }
 }
