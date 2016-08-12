@@ -3,7 +3,7 @@ goog.provide("AppController");
 goog.require("AppModel");
 goog.require("AppView");
 
-goog.require("goog.events");
+//goog.require("goog.events");
 
 goog.scope(function() {
     
@@ -23,7 +23,7 @@ goog.scope(function() {
          * @param {!Event} event
          * @private
          */
-        _openFile: function(event) { //TODO: not work
+        _openFile: function(event) { // TODO: in developing
             var input = event.target;
             var reader = new FileReader();
             reader.onload = goog.bind(function() {
@@ -46,7 +46,7 @@ goog.scope(function() {
             toolbar.getButtonOnIndex(0).setAction(function(){console.log("undo")});
             toolbar.getButtonOnIndex(1).setAction(function(){console.log("redo")});
             toolbar.getButtonOnIndex(2).setAction(goog.bind(this._inputProcessing, this));
-            var fileForm = this._view.setActionFileReader(goog.bind(this._openFile, this));
+            //var fileForm = this._view.setActionFileReader(goog.bind(this._openFile, this));
         },
 
         /** @private */

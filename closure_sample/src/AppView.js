@@ -4,6 +4,7 @@ goog.provide("AppView");
 goog.require("goog.dom");
 goog.require("view.ImageView");
 goog.require("view.Toolbar");
+goog.require("view.InputForm");
 
 goog.scope(function() {
     /** @const {string} */
@@ -31,7 +32,7 @@ goog.scope(function() {
 
         /** @return {string} */
         getDataInputForm: function() {
-            return this._inputForm.value;
+            return this._inputForm.getValue();
         },
         
         clickFileReader: function() {
@@ -43,7 +44,7 @@ goog.scope(function() {
         loadImage: function(frame, path) {
             /** @type {view.ImageView} */
             var image = new imageView(frame, path);
-            this._canvas.appendChild(image.createStructDOM());
+            this._canvas.appendChild(image.getDOMElement());
             this._images.push(image);
         },
 
@@ -57,12 +58,9 @@ goog.scope(function() {
          * @private
          */
         _createInputForm: function () {
-            /** @private {!Element} */
-            this._inputForm = document.createElement(goog.dom.TagName.INPUT);
-            this._inputForm.id = "imageInput";
-            this._inputForm.type = "text";
-            this._inputForm.setAttribute("value", "Введите Url или локальный адрес картинки");
-            return this._inputForm;
+            /** @private {view.InputForm} */
+            this._inputForm = new view.InputForm();
+            return this._inputForm.getDOMElement();
         },
 
         /**

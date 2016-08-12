@@ -1,19 +1,14 @@
 goog.provide("model.Image");
 
-goog.require("model.IImage");
-//goog.require("goog.math.Rect");
+goog.require("goog.math.Rect");
 
 goog.scope(function(){
 
     /**
+      * @param {!goog.math.Rect} frame
       * @constructor
-      * @implements {model.IImage}
-      * @override
       */
     model.Image = goog.defineClass(null, {
-        /**
-         * @param {!goog.math.Rect} frame
-         */
         constructor: function(frame) {
             /** @private {boolean} */
             this._isSelected = false;
@@ -24,9 +19,7 @@ goog.scope(function(){
             this._pos = frame.getTopLeft();
         },
 
-        /**
-          * @return {!goog.math.Rect}
-          */
+        /** @return {!goog.math.Rect} */
         getFrame: function() {
             return new goog.math.Rect(this._pos.x, this._pos.y, this._size.width, this._size.height);
         },
@@ -41,9 +34,7 @@ goog.scope(function(){
             this._isSelected = flag;
         },
 
-        /** @param {!goog.math.Coordinate} posMouse
-         * @override
-         */
+        /** @param {!goog.math.Coordinate} posMouse */
         resize: function(posMouse) {
             var w = (posMouse.x - this._pos.x) || 50;
             var h = (posMouse.y - this._pos.y) || 50;
@@ -51,9 +42,7 @@ goog.scope(function(){
             this._size = new goog.math.Size(w, h);
         },
 
-        /** @param {!goog.math.Coordinate} posMouse
-         * @override
-         */
+        /** @param {!goog.math.Coordinate} posMouse */
         move: function(posMouse) {
             /** @type {!goog.math.Coordinate} */
             var shift = goog.math.Coordinate.difference(posMouse, this._pos);
