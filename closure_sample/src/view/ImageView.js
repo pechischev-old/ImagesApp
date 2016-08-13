@@ -5,8 +5,7 @@ goog.require("goog.dom");
 goog.require("goog.style");
 goog.require("view.IDOMElement");
 goog.require("view.Border");
-goog.require("goog.events");
-goog.require("goog.events.EventType");
+
 goog.scope(function() {
 
     /**
@@ -24,6 +23,22 @@ goog.scope(function() {
             /** @private {view.Border} */
             this._border = new view.Border(frame);
             this._container.appendChild(this._border.getDOMElement());
+        },
+        /** @return {!Element} */
+        getSelectedImage: function () {
+            // считывать событие на картинке и  ее последующая передача     
+        },
+
+        /** @param {boolean} flag */
+        isVisibleBorder: function(flag) {
+            if (flag)
+            {
+                this._border.activeBorder();
+            }
+            else
+            {
+                this._border.deactiveBorder();
+            }
         },
 
         /** @param {!goog.math.Rect} frame */

@@ -44,15 +44,12 @@ input {
   display: block;
 }
 
-.capture :focus {
-  cursor: move;
-}
-
 .border {
   top: -2px;
   left: -2px;
   border: 2px solid red;
   position: absolute;
+  cursor: move;
 }
 
 .border div {

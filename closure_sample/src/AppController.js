@@ -2,11 +2,15 @@ goog.provide("AppController");
 
 goog.require("AppModel");
 goog.require("AppView");
+goog.require("command.CommandsImage");
 
-//goog.require("goog.events");
+goog.require("goog.events");
+goog.require("goog.events.EventType");
 
 goog.scope(function() {
-    
+    var commandsImage = command.CommandsImage;
+
+
     /** @param {AppModel} model
       * @constructor
       */
@@ -17,6 +21,11 @@ goog.scope(function() {
             /** @private {AppView} */
             this._view = new AppView();
             this._addActions();
+            /** @private {Array<command.ICommand>} */
+            this._commands = [];
+            /** @private {command.ICommand}*/
+            this._command = null;
+            this._cmdImage = new commandsImage();
         },
 
         /**
@@ -31,6 +40,23 @@ goog.scope(function() {
             },  this);
             reader.readAsDataURL(input.files[0]);
         },
+        /** @private*/
+        _selectImage: function() {
+            //this._command = new command.SelectCommand(this._com)
+        },
+
+        /** @private */
+        _undo: function () {
+
+            if (this._commands.length == 0)
+            {
+                throw new Error("Command stack is empty");
+            }
+            console.log("undo");
+            this._commands.pop();
+            this._command.undo();
+
+        },
         
         /** @param {string} path
          * @private */
@@ -43,10 +69,12 @@ goog.scope(function() {
         /** @private */
         _addActions: function() {
             var toolbar = this._view.getToolbar();
-            toolbar.getButtonOnIndex(0).setAction(function(){console.log("undo")});
+            toolbar.getButtonOnIndex(0).setAction(goog.bind(this._undo, this));
             toolbar.getButtonOnIndex(1).setAction(function(){console.log("redo")});
             toolbar.getButtonOnIndex(2).setAction(goog.bind(this._inputProcessing, this));
             var fileForm = this._view.setActionFileReader(goog.bind(this._openFile, this));
+            
+            //goog.events.listen(this._view.getSelectedImage, goog.events.EventType.CLICK, goog.bind(this._selectImage, this));
         },
 
         /** @private */
