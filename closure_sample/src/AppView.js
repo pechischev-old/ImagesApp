@@ -30,11 +30,7 @@ goog.scope(function() {
         setActionFileReader: function(action){
             this._fileReader.onchange = action;
         },
-
-        clearInputBox: function() {
-            this._inputForm.clearBox();
-        },
-
+        
         /** @return {string} */
         getDataInputForm: function() {
             return this._inputForm.getValue();

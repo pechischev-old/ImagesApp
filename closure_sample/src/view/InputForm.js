@@ -34,6 +34,7 @@ goog.scope(function() {
             this._inputForm.id = "imageInput";
             this._inputForm.type = "text";
             this._inputForm.setAttribute("placeholder", "Введите Url или локальный адрес картинки");
+            this._inputForm.onfocus = goog.bind(this.clearBox, this);
         },
 
         clearBox: function(){
