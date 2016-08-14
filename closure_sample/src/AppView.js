@@ -31,6 +31,10 @@ goog.scope(function() {
             this._fileReader.onchange = action;
         },
 
+        clearInputBox: function() {
+            this._inputForm.clearBox();
+        },
+
         /** @return {string} */
         getDataInputForm: function() {
             return this._inputForm.getValue();

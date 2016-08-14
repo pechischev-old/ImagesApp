@@ -88,6 +88,7 @@ goog.scope(function() {
             if (dataInputForm)
             {
                 this._addImage(dataInputForm);
+                this._view.clearInputBox();
             }
             else
             {

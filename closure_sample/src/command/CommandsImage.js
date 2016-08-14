@@ -4,7 +4,6 @@ goog.provide("command.NotSelectCommand");
 goog.provide("command.MoveCommand");
 goog.provide("command.ResizeCommand");
 
-goog.require("view.ImageView");
 goog.require("model.Image");
 goog.require("command.ICommand");
 
