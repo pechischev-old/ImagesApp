@@ -10,24 +10,22 @@ goog.require("command.ICommand");
 
 goog.scope(function() {
 
-    /** @param {view.ImageView} imageView
+    /** 
      * @param {model.Image} model
      * @constructor
      */
     command.CommandsImage = goog.defineClass(null, {
-        constructor: function (imageView, model) {
-            /** @private {view.ImageView} */
-            this._view = imageView;
+        constructor: function (model) {
             /** @private {model.Image} */
             this._model = model;
         },
 
         select: function() {
-            this._view.isVisibleBorder(true);
+            this._model.setSelected(true)
         },
 
         notSelect: function() {
-            this._view.isVisibleBorder(false);
+            this._model.setSelected(false)
         },
 
         move: function() {

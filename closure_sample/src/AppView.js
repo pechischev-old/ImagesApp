@@ -40,11 +40,12 @@ goog.scope(function() {
             return this._fileReader.click();
         },
 
-        /** @param {!goog.math.Rect} frame
+        /** @param {model.Image} model
           * @param {string} path */
-        loadImage: function(frame, path) {
+        loadImage: function(model, path) {
             /** @type {view.ImageView} */
-            var image = new imageView(frame, path);
+            var image = new imageView(model.getFrame(), path);
+            model.registerObserver(image);
             this._canvas.appendChild(image.getDOMElement());
             this._images.push(image);
         },

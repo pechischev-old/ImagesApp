@@ -5,35 +5,41 @@ goog.require("model.Image");
 
 goog.scope(function() {
 
-    /** @constructor */
+    /**
+     
+     * @constructor
+     * */
     AppModel = goog.defineClass(null, {
         constructor: function() {
             /** @private {Array<model.Image>} */
             this._images = [];
-            /** @private {boolean}*/
-            this._isChange = false;
+          
         },
-
-        /** @return {!goog.math.Rect} */
+        
+        /** @return {model.Image} */
         addImage: function() {
-            this._isChange = true;
             /** @type {model.Image} */
             var image = new model.Image(new goog.math.Rect(200, 200, 250, 250));
             this._images.push(image);
-            return image.getFrame();
+            return image;
+        },
+
+        /** @param {!number} index
+         * @return {model.Image} */
+        getImageOfIndex: function(index) {
+            if (this._images.length <= index || index < 0)
+            {
+                throw new Error("out of range");
+            }
+            return this._images[index];
         },
 
         outputLog: function() {
-            if (this._isChange)
+            for (var i = 0; i < this._images.length; ++i)
             {
-                for (var i = 0; i < this._images.length; ++i)
-                {
-                    console.log("###  images: " + (i + 1));
-                    this._images[i].outLog();
-                }
-                this._isChange = false;
+                this._images[i].outLog(i);
             }
-
+            
         }
     });
 });

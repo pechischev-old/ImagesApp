@@ -4,8 +4,9 @@ goog.require("AppModel");
 goog.require("AppView");
 goog.require("command.CommandsImage");
 
-goog.require("goog.events");
-goog.require("goog.events.EventType");
+
+//goog.require("goog.events");
+//goog.require("goog.events.EventType");
 
 goog.scope(function() {
     var commandsImage = command.CommandsImage;
@@ -25,13 +26,11 @@ goog.scope(function() {
             this._commands = [];
             /** @private {command.ICommand}*/
             this._command = null;
+            /**@private {command.CommandsImage} */
             this._cmdImage = new commandsImage();
         },
 
-        /**
-
-         * @private
-         */
+        /** @private */
         _openFile: function() { 
             var input = window.event.target;
             var reader = new FileReader();
@@ -61,9 +60,16 @@ goog.scope(function() {
         /** @param {string} path
          * @private */
         _addImage: function(path) {
-            /** @type {!goog.math.Rect} */
-            var frame = this._model.addImage();
-            this._view.loadImage(frame, path);
+            var image = this._model.addImage();
+            this._view.loadImage(image, path);
+            /*var id = setInterval(function () {
+                var frame = image.getFrame();
+                frame.top += 25;
+                frame.left += 5;
+                image.setFrame(frame);
+                var select = !image.isSelected();
+                image.setSelected(select);
+            }, 1500);*/
         },
         
         /** @private */
@@ -74,7 +80,6 @@ goog.scope(function() {
             toolbar.getButtonOnIndex(2).setAction(goog.bind(this._inputProcessing, this));
             var fileForm = this._view.setActionFileReader(goog.bind(this._openFile, this));
             
-            //goog.events.listen(this._view.getSelectedImage, goog.events.EventType.CLICK, goog.bind(this._selectImage, this));
         },
 
         /** @private */
