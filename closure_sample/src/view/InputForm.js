@@ -12,22 +12,18 @@ goog.scope(function() {
         constructor: function() {
             this._create();
         },
-
-
-
+        
         /** @return {string} */
         getValue: function() {
             return this._inputForm.value;
         },
 
-        /** @return {!Element}
-         * @override */
+        /** @return {!Element} */
         getDOMElement: function(){
             return this._inputForm;
         },
 
-        /** @private
-         * @override */
+        /** @private */
         _create: function() {
             /** @private {!Element} */
             this._inputForm = document.createElement(goog.dom.TagName.INPUT);

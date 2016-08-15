@@ -19,56 +19,12 @@ goog.scope(function() {
             this._model = model;
         },
 
-        select: function() {
-            this._model.setSelected(true)
-        },
-
-        notSelect: function() {
-            this._model.setSelected(false)
-        },
-
         move: function() {
 
         },
 
         resize: function() {
 
-        }
-    });
-
-    /** @param {command.CommandsImage} image
-     * @implements {command.ICommand}
-     * @constructor*/
-    command.SelectCommand = goog.defineClass(null, {
-        constructor: function(image) {
-            /** @private {command.CommandsImage} */
-            this._image = image;
-        },
-
-        execute: function() {
-            this._image.select();
-        },
-
-        undo: function() {
-            this._image.notSelect();
-        }
-    });
-
-    /** @param {command.CommandsImage} image
-     * @implements {command.ICommand}
-     * @constructor*/
-    command.NotSelectCommand = goog.defineClass(null, {
-        constructor: function(image) {
-            /** @private {command.CommandsImage} */
-            this._image = image;
-        },
-
-        execute: function() {
-            this._image.notSelect();
-        },
-
-        undo: function() {
-            this._image.select();
         }
     });
 

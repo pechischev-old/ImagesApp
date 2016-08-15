@@ -7,6 +7,9 @@ goog.require("view.IDOMElement");
 goog.require("view.Border");
 goog.require("observer.IObserver");
 
+goog.require("goog.events");
+goog.require("goog.events.EventType");
+
 goog.scope(function() {
 
     /**
@@ -19,34 +22,39 @@ goog.scope(function() {
         constructor: function(frame, path) {
             /** @private {string} */
             this._path = path;
-
+            /** @private {boolean} */
+            this._isSelect = false;
             this.setFrame(frame);
 
             this._create();
+            goog.events.listen(this._container, goog.events.EventType.CLICK, goog.bind(this.isVisibleBorder, this, true));
             /** @private {view.Border} */
             this._border = new view.Border(this._frame);
             this._container.appendChild(this._border.getDOMElement());
         },
 
-        /** @param {!goog.math.Rect} frame
-         * @param {boolean} isSelected
-         * @override */
-        update: function(frame, isSelected) {
-            this.setFrame(frame);
-            this._border.setFrame(frame);
-            this.isVisibleBorder(isSelected);
-            this._reloadStyleSize();
+        /** @return {boolean} */
+        isSelected: function () {
+            return this._isSelect;
         },
 
-        /** @return {!Element} */
-        getSelectedImage: function () {
-            // считывать событие на картинке и  ее последующая передача     
+        /** @param {!goog.math.Rect} frame */
+        update: function(frame) {
+            this.setFrame(frame);
+            this._border.setFrame(frame);
+            this._reloadStyleSize();
         },
 
         /** @param {boolean} flag */
         isVisibleBorder: function(flag) {
-            if (flag)
+            this._isSelect = flag;
+            if (this.isSelected())
             {
+                var event = window.event;
+                if (event.type == goog.events.EventType.CLICK)
+                {
+                    event.stopPropagation();
+                }
                 this._border.activeBorder();
             }
             else
@@ -60,9 +68,7 @@ goog.scope(function() {
             /** @private {!goog.math.Rect} */
             this._frame = frame;
         },
-        /** @return {!Element}
-         * @override
-         */
+        /** @return {!Element} */
         getDOMElement: function(){
             return this._container;
         },
@@ -75,7 +81,6 @@ goog.scope(function() {
         },
         /**
          * @private
-         * @override
          */
         _create: function() {
             /** @private {!Element} */

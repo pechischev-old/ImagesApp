@@ -24,8 +24,7 @@ goog.scope(function() {
             this._buttons.push(btn);
             this._toolbar.appendChild(btn.getDOMElement());
         },
-        /** @return {!Element}
-         * @override */
+        /** @return {!Element} */
         getDOMElement: function() {
             return this._toolbar;
         },
@@ -35,8 +34,7 @@ goog.scope(function() {
             return this._buttons.length;
         },
         
-        /** @private
-         * @override */
+        /** @private */
         _create: function() {
             /** @private {!Element} */
             this._toolbar = document.createElement(goog.dom.TagName.DIV);

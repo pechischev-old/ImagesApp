@@ -39,10 +39,6 @@ goog.scope(function() {
             },  this);
             reader.readAsDataURL(input.files[0]);
         },
-        /** @private*/
-        _selectImage: function() {
-            //this._command = new command.SelectCommand(this._com)
-        },
 
         /** @private */
         _undo: function () {
@@ -60,16 +56,15 @@ goog.scope(function() {
         /** @param {string} path
          * @private */
         _addImage: function(path) {
-            var image = this._model.addImage();
-            this._view.loadImage(image, path);
-            /*var id = setInterval(function () {
-                var frame = image.getFrame();
+            var imageModel = this._model.addImage();
+            var imageView = this._view.loadImage(imageModel.getFrame(), path);
+            imageModel.registerObserver(imageView);
+            var id = setInterval(function () {
+                var frame = imageModel.getFrame();
                 frame.top += 25;
                 frame.left += 5;
-                image.setFrame(frame);
-                var select = !image.isSelected();
-                image.setSelected(select);
-            }, 1500);*/
+                imageModel.setFrame(frame);
+            }, 1500);
         },
         
         /** @private */

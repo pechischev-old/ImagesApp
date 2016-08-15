@@ -21,14 +21,12 @@ goog.scope(function () {
             this._btn.onclick = action;
         },
 
-        /** @return {!Element} 
-         *  @override */
+        /** @return {!Element} */
         getDOMElement: function() {
             return this._btn;
         },
 
-        /** @private
-         *  @override */
+        /** @private */
         _create: function() {
             /** @private {!Element} */
             this._btn = document.createElement(goog.dom.TagName.BUTTON);

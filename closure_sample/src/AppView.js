@@ -40,14 +40,21 @@ goog.scope(function() {
             return this._fileReader.click();
         },
 
-        /** @param {model.Image} model
+        /** @param {!goog.math.Rect} frame
           * @param {string} path */
-        loadImage: function(model, path) {
+        loadImage: function(frame, path) {
             /** @type {view.ImageView} */
-            var image = new imageView(model.getFrame(), path);
-            model.registerObserver(image);
-            this._canvas.appendChild(image.getDOMElement());
+            var image = new imageView(frame, path);
+            var img = image.getDOMElement();
+            this._canvas.appendChild(img);
+            goog.events.listen(this._canvas, goog.events.EventType.CLICK, function() {
+                if (image.isSelected())
+                {
+                    image.isVisibleBorder(false);
+                }
+            });
             this._images.push(image);
+            return image;
         },
 
         /** @return {view.Toolbar} */

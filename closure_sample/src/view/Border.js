@@ -25,8 +25,7 @@ goog.scope(function() {
             this._reloadStyleSize();
         },
         
-        /** @return {!Element} 
-         * @override */
+        /** @return {!Element} */
         getDOMElement: function () {
             return this._border;
         },
@@ -60,8 +59,7 @@ goog.scope(function() {
             }
         },
         
-        /** @private 
-         * @override */
+        /** @private */
         _create: function() {
             /** @private {!Element} */
             this._border = document.createElement(goog.dom.TagName.DIV);
