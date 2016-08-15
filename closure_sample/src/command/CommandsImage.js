@@ -18,49 +18,57 @@ goog.scope(function() {
             /** @private {model.Image} */
             this._model = model;
         },
-
-        move: function() {
-
+        /** @param {!goog.math.Coordinate} posMouse*/
+        move: function(posMouse) {
+            this._model.move(posMouse);
         },
-
-        resize: function() {
-
+        /** @param {!goog.math.Coordinate} posMouse*/
+        resize: function(posMouse) {
+            this._model.resize(posMouse);
         }
     });
 
     /** @param {command.CommandsImage} image
+     * @param {!goog.math.Coordinate} posMouse
      * @implements {command.ICommand}
      * @constructor*/
     command.MoveCommand = goog.defineClass(null, {
-        constructor: function(image) {
+        constructor: function(image, posMouse) {
             /** @private {command.CommandsImage} */
             this._image = image;
+            /** @private {!goog.math.Coordinate} */
+            this._posMouse = posMouse;
         },
 
         execute: function() {
-            this._image.move();
+            this._image.move(this._posMouse);
         },
 
         undo: function() {
-            //this._image.select();
+            var oldPos = this._image.getFrame().getTopLeft();
+            this._image.move(oldPos);
         }
     });
 
     /** @param {command.CommandsImage} image
+     * @param {!goog.math.Coordinate} posMouse
      * @implements {command.ICommand}
      * @constructor*/
     command.ResizeCommand = goog.defineClass(null, {
-        constructor: function(image) {
+        constructor: function(image, posMouse) {
             /** @private {command.CommandsImage} */
             this._image = image;
+            /** @private {!goog.math.Coordinate} */
+            this._posMouse = posMouse;
         },
 
         execute: function() {
-            this._image.resize();
+            this._image.resize(this._posMouse);
         },
 
         undo: function() {
-            //this._image.select();
+            var oldPos = this._image.getFrame().getTopLeft();
+            this._image.move(oldPos);
         }
     });
 });

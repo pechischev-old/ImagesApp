@@ -8,9 +8,11 @@ goog.require("AppModel");
 Sample.start = function()
 {
 	var model = new AppModel();
+	var controller = new AppController(model);
 	var idTimer = setInterval(function() {
 		model.outputLog();
+		controller.eventLoop();
 	}, 40);
-	var controller = new AppController(model);
+
 };
 

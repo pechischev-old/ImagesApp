@@ -25,6 +25,18 @@ goog.scope(function() {
             /** @private {Array<view.ImageView>} */
             this._images = [];
         },
+
+        /** @return {Array<number>}*/
+        getArrayIndexsSelectingImage: function () {
+            var indexs = [];
+            this._images.forEach(function(image, index) {
+                if (image.isSelected())
+                {
+                    indexs.push(index);
+                }
+            }, indexs);
+            return indexs;
+        },
         
         /** @param {Function} action */
         setActionFileReader: function(action){
