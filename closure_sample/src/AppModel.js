@@ -5,8 +5,9 @@ goog.require("model.Image");
 
 goog.scope(function() {
 
+    /** @const {!goog.math.Size} */
+    const ALLOWABLE_SIZE = new goog.math.Size(512, 256);
     /**
-     
      * @constructor
      * */
     AppModel = goog.defineClass(null, {
@@ -16,10 +17,12 @@ goog.scope(function() {
           
         },
         
-        /** @return {model.Image} */
-        addImage: function() {
+        /** @param {string} path
+         * @return {model.Image} */
+        addImage: function(path) {
+            var size = this._getCalculatingAppropriateSize(path);
             /** @type {model.Image} */
-            var image = new model.Image(new goog.math.Rect(200, 200, 250, 250));
+            var image = new model.Image(new goog.math.Rect(50, 50, size.width, size.height));
             this._images.push(image);
             return image;
         },
@@ -39,7 +42,22 @@ goog.scope(function() {
             {
                 this._images[i].outLog(i);
             }
+        },
+        /** @param {string} path
+         * @return {!goog.math.Size}
+         * @private */
+        _getCalculatingAppropriateSize: function(path) {
+            var img = new Image(0, 0);
+            img.src = path;
+            var width = img.naturalWidth;
+            var height = img.naturalHeight;
+
+            var coeff = ( width > height) ? width / ALLOWABLE_SIZE.width : height / ALLOWABLE_SIZE.height;
             
+            width = (width > ALLOWABLE_SIZE.width) ?  width / coeff: width;
+            height = (height > ALLOWABLE_SIZE.height) ? height / coeff : height;
+
+            return new goog.math.Size(width, height);
         }
     });
 });

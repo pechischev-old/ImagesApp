@@ -56,7 +56,7 @@ goog.scope(function() {
         /** @param {string} path
          * @private */
         _addImage: function(path) {
-            var imageModel = this._model.addImage();
+            var imageModel = this._model.addImage(path);
             var imageView = this._view.loadImage(imageModel.getFrame(), path);
             imageModel.registerObserver(imageView);
             var id = setInterval(function () {
