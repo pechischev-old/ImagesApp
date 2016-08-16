@@ -25,6 +25,11 @@ goog.scope(function() {
         /** @param {!goog.math.Coordinate} posMouse*/
         resize: function(posMouse) {
             this._model.resize(posMouse);
+        },
+
+        /** @return {!goog.math.Coordinate} */
+        getOldPos: function() {
+            return this._model.getFrame().getTopLeft();
         }
     });
 
@@ -45,7 +50,7 @@ goog.scope(function() {
         },
 
         undo: function() {
-            var oldPos = this._image.getFrame().getTopLeft();
+            var oldPos = this._image.getOldPos();
             this._image.move(oldPos);
         }
     });
@@ -67,7 +72,7 @@ goog.scope(function() {
         },
 
         undo: function() {
-            var oldPos = this._image.getFrame().getTopLeft();
+            var oldPos = this._image.getOldPos();
             this._image.move(oldPos);
         }
     });

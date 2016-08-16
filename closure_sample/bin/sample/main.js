@@ -12,7 +12,7 @@ Sample.start = function()
 	var idTimer = setInterval(function() {
 		model.outputLog();
 		controller.eventLoop();
-	}, 40);
+	}, 0);
 
 };
 

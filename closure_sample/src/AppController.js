@@ -32,6 +32,7 @@ goog.scope(function() {
             for (var i = 0; i < arr.length; ++i)
             {
                 var event = window.event;
+
                 if (event.type == goog.events.EventType.MOUSEMOVE) // TODO: error?
                 {
                     var pos = new goog.math.Coordinate(event.clientX, event.clientY);
