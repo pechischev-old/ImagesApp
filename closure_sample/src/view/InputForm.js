@@ -1,14 +1,14 @@
 goog.provide("view.InputForm");
 
-goog.require("view.IDOMElement");
+goog.require("view.Node");
 goog.require("goog.dom");
 
 goog.scope(function() {
 
-    /** @implements {view.IDOMElement}
+    /** @extends {view.Node}
      * @constructor
      */
-    view.InputForm = goog.defineClass(null, {
+    view.InputForm = goog.defineClass(view.Node, {
         constructor: function() {
             this._create();
         },
@@ -18,12 +18,14 @@ goog.scope(function() {
             return this._inputForm.value;
         },
 
-        /** @return {!Element} */
+        /** @return {!Element}
+         * @override */
         getDOMElement: function(){
             return this._inputForm;
         },
 
-        /** @private */
+        /** @private
+         * @override */
         _create: function() {
             /** @private {!Element} */
             this._inputForm = document.createElement(goog.dom.TagName.INPUT);

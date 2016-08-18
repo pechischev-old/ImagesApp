@@ -2,8 +2,7 @@ goog.provide("view.Border");
 
 goog.require("goog.dom");
 goog.require("goog.math.Rect");
-goog.require("view.IDOMElement");
-goog.require("goog.style");
+goog.require("view.Node");
 
 goog.scope(function() {
     /** @const {Array<string>} */
@@ -12,8 +11,8 @@ goog.scope(function() {
 
     /** @param {goog.math.Rect} frame
      * @constructor 
-     * @implements {view.IDOMElement}*/    
-    view.Border = goog.defineClass(null, {
+     * @extends {view.Node} */
+    view.Border = goog.defineClass(view.Node, {
         constructor: function(frame) {
             /** @private {goog.math.Rect} */
             this._frame = frame;
@@ -25,7 +24,8 @@ goog.scope(function() {
             this._reloadStyleSize();
         },
         
-        /** @return {!Element} */
+        /** @return {!Element}
+         * @override */
         getDOMElement: function () {
             return this._border;
         },
@@ -59,7 +59,8 @@ goog.scope(function() {
             }
         },
         
-        /** @private */
+        /** @private
+         * @override*/
         _create: function() {
             /** @private {!Element} */
             this._border = document.createElement(goog.dom.TagName.DIV);
@@ -84,21 +85,6 @@ goog.scope(function() {
                     }
                 }
             }
-        },
-
-        /** @param {!goog.math.Coordinate} pos
-         * @param {!Element} elem
-         * @private */
-        _setStyleElementPosition: function(pos, elem) {
-            goog.style.setStyle(elem, "top", pos.y + "px");
-            goog.style.setStyle(elem, "left", pos.x + "px");
-        },
-        /** @param {!goog.math.Size} size
-         * @param {!Element} elem
-         * @private */
-        _setStyleElementSize: function(size, elem) {
-            goog.style.setStyle(elem, "width", size.width + "px");
-            goog.style.setStyle(elem, "height", size.height  + "px");
         }
     });
 });

@@ -1,13 +1,13 @@
 goog.provide("view.Toolbar");
 
 goog.require("view.Button");
-goog.require("view.IDOMElement");
+goog.require("view.Node");
 
 goog.scope(function() {
 
     /** @constructor
-     * @implements {view.IDOMElement}*/
-    view.Toolbar = goog.defineClass(null, {
+     * @extends {view.Node}*/
+    view.Toolbar = goog.defineClass(view.Node, {
         constructor: function() {
             this._create();
             /** @private {Array<view.Button>} */
@@ -24,7 +24,8 @@ goog.scope(function() {
             this._buttons.push(btn);
             this._toolbar.appendChild(btn.getDOMElement());
         },
-        /** @return {!Element} */
+        /** @return {!Element}
+         * @override */
         getDOMElement: function() {
             return this._toolbar;
         },
@@ -34,7 +35,8 @@ goog.scope(function() {
             return this._buttons.length;
         },
         
-        /** @private */
+        /** @private
+         * @override */
         _create: function() {
             /** @private {!Element} */
             this._toolbar = document.createElement(goog.dom.TagName.DIV);

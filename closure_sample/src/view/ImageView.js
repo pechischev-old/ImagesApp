@@ -2,13 +2,9 @@ goog.provide("view.ImageView");
 
 
 goog.require("goog.dom");
-goog.require("goog.style");
-goog.require("view.IDOMElement");
 goog.require("view.Border");
 goog.require("observer.IObserver");
-
-goog.require("goog.events");
-goog.require("goog.events.EventType");
+goog.require("view.Node");
 
 goog.scope(function() {
 
@@ -16,18 +12,18 @@ goog.scope(function() {
      * @param {!goog.math.Rect} frame
      * @param {string} path
      * @implements {observer.IObserver}
-     * @implements {view.IDOMElement}
+     * @extends {view.Node}
      * @constructor */
-    view.ImageView = goog.defineClass(null, {
+    view.ImageView = goog.defineClass(view.Node, {
         constructor: function(frame, path) {
             /** @private {string} */
             this._path = path;
             /** @private {boolean} */
-            this._isSelect = false;
+            this._isSelected = false;
             this.setFrame(frame);
 
             this._create();
-            goog.events.listen(this._container, goog.events.EventType.CLICK, goog.bind(this.isVisibleBorder, this, true));
+            //goog.events.listen(this._container, goog.events.EventType.CLICK, goog.bind(this.isVisibleBorder, this, true));
             /** @private {view.Border} */
             this._border = new view.Border(this._frame);
             this._container.appendChild(this._border.getDOMElement());
@@ -35,7 +31,7 @@ goog.scope(function() {
 
         /** @return {boolean} */
         isSelected: function () {
-            return this._isSelect;
+            return this._isSelected;
         },
 
         /** @param {!goog.math.Rect} frame */
@@ -45,16 +41,14 @@ goog.scope(function() {
             this._reloadStyleSize();
         },
 
-        /** @param {boolean} flag */
-        isVisibleBorder: function(flag) {
-            this._isSelect = flag;
+        /** @param {boolean} isVisible
+         * @param {!Event} event */
+
+        isVisibleBorder: function(isVisible, event) {
+            this._isSelected = isVisible;
             if (this.isSelected())
             {
-                var event = window.event;
-                if (event.type == goog.events.EventType.CLICK)
-                {
-                    event.stopPropagation();
-                }
+                event.preventDefault();
                 this._border.activeBorder();
             }
             else
@@ -68,7 +62,8 @@ goog.scope(function() {
             /** @private {!goog.math.Rect} */
             this._frame = frame;
         },
-        /** @return {!Element} */
+        /** @return {!Element}
+         * @override */
         getDOMElement: function(){
             return this._container;
         },
@@ -81,6 +76,7 @@ goog.scope(function() {
         },
         /**
          * @private
+         * @override
          */
         _create: function() {
             /** @private {!Element} */
@@ -94,21 +90,7 @@ goog.scope(function() {
             image.setAttribute("alt", "текст");
             this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
             this._container.appendChild(image);
-        },
-
-        /** @param {!goog.math.Coordinate} pos
-         * @param {!Element} elem
-         * @private */
-        _setStyleElementPosition: function(pos, elem) {
-            goog.style.setStyle(elem, "top", pos.y + "px");
-            goog.style.setStyle(elem, "left", pos.x + "px");
-        },
-        /** @param {!goog.math.Size} size
-         * @param {!Element} elem
-         * @private */
-        _setStyleElementSize: function(size, elem) {
-            goog.style.setStyle(elem, "width", size.width + "px");
-            goog.style.setStyle(elem, "height", size.height  + "px");
         }
+
     });
 });

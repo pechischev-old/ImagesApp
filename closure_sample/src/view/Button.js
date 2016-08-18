@@ -1,15 +1,16 @@
 goog.provide("view.Button");
 
 goog.require("goog.dom");
-goog.require("view.IDOMElement");
+goog.require("view.Node");
 
 goog.scope(function () {
 
     /**
      * @param {string} text
      * @implements {view.IDOMElement}
+     * @extends {view.Node}
      * @constructor */
-    view.Button = goog.defineClass(null, {
+    view.Button = goog.defineClass(view.Node, {
         constructor: function(text) {
             /** @private {string} */
             this._value = text;
@@ -21,12 +22,14 @@ goog.scope(function () {
             this._btn.onclick = action;
         },
 
-        /** @return {!Element} */
+        /** @return {!Element}
+         * @override */
         getDOMElement: function() {
             return this._btn;
         },
 
-        /** @private */
+        /** @private
+         * @override */
         _create: function() {
             /** @private {!Element} */
             this._btn = document.createElement(goog.dom.TagName.BUTTON);
