@@ -6,6 +6,8 @@ goog.require("view.ImageView");
 goog.require("view.Toolbar");
 goog.require("view.InputForm");
 
+goog.require("goog.events");
+goog.require("goog.events.EventType");
 
 goog.scope(function() {
     /** @const {string} */
@@ -59,12 +61,12 @@ goog.scope(function() {
             var image = new imageView(frame, path);
             var img = image.getDOMElement();
             this._canvas.appendChild(img);
-            goog.events.listen(this._canvas, goog.events.EventType.CLICK, function() {
+            goog.events.listen(this._canvas, goog.events.EventType.CLICK, goog.bind(function() {
                 if (image.isSelected())
                 {
                     image.isVisibleBorder(false);
                 }
-            });
+             }, image));
             this._images.push(image);
             return image;
         },

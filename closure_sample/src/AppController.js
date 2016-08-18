@@ -4,9 +4,8 @@ goog.require("AppModel");
 goog.require("AppView");
 goog.require("command.CommandsImage");
 
-
-goog.require("goog.events");
-goog.require("goog.events.EventType");
+/*goog.require("goog.events");
+goog.require("goog.events.EventType");*/
 
 goog.scope(function() {
     var commandsImage = command.CommandsImage;
@@ -28,17 +27,6 @@ goog.scope(function() {
         },
 
         eventLoop: function () {
-            var arr = this._view.getArrayIndexsSelectingImage();
-            for (var i = 0; i < arr.length; ++i)
-            {
-                var event = window.event;
-
-                if (event.type == goog.events.EventType.MOUSEMOVE) // TODO: error?
-                {
-                    var pos = new goog.math.Coordinate(event.clientX, event.clientY);
-                    this._move(arr[i], pos);
-                }
-            }
 
         },
 
@@ -80,14 +68,41 @@ goog.scope(function() {
             var imageModel = this._model.addImage(path);
             var imageView = this._view.loadImage(imageModel.getFrame(), path);
             imageModel.registerObserver(imageView);
-            /*var id = setInterval(function () {
-                var frame = imageModel.getFrame();
-                frame.top += 25;
-                frame.left += 5;
-                imageModel.setFrame(frame);
-            }, 1500);*/
+            var imageElem = imageView.getDOMElement();
+           
+            imageElem.onmousedown = goog.bind(function(event) {
+                if (imageView.isSelected())
+                {
+                    imageModel.setCoordinatesOfMouseFirstClick(new goog.math.Coordinate(event.pageX, event.pageY));
+                    this._startDrag(imageModel, imageElem, event);
+                }
+            }, this);
+            
+            
         },
-        
+
+	    /**
+         * @param {model.Image} model
+         * @param {!Element} elem
+         * @param {!Event} event
+	     * @private
+         */
+        _startDrag: function(model, elem,  event) {
+            var posX = model.getFrame().left;
+            var posY = model.getFrame().top;
+
+            document.onmousemove = goog.bind(function(event) {
+                model.move(new goog.math.Coordinate(event.clientX, event.clientY));
+                model.setFrame(model.getFrame());
+            }, model);
+
+            elem.onmouseup = goog.bind(function() {
+                document.onmousemove = null;
+                elem.onmouseup = null;
+            }, this);
+
+        },
+
         /** @private */
         _addActions: function() {
             var toolbar = this._view.getToolbar();

@@ -64,13 +64,18 @@ goog.scope(function(){
             /** @private {goog.math.Size} */
             this._size = new goog.math.Size(w, h);
         },
-
-        /** @param {!goog.math.Coordinate} posMouse */
-        move: function(posMouse) {
-            /** @type {!goog.math.Coordinate} */
-            var shift = goog.math.Coordinate.difference(posMouse, this._pos);
+	    /**
+         * @param {!goog.math.Coordinate} mousePos
+         */
+        setCoordinatesOfMouseFirstClick: function(mousePos){
             /** @private {!goog.math.Coordinate} */
-            this._pos = goog.math.Coordinate.difference(posMouse, shift);
+            this._shift = goog.math.Coordinate.difference(mousePos, this._pos);
+        },
+
+        /** @param {!goog.math.Coordinate} mousePos */
+        move: function(mousePos) {
+            /** @private {!goog.math.Coordinate} */
+            this._pos = goog.math.Coordinate.difference(mousePos, this._shift);
         },
         /** @param {!number} number */
         outLog: function(number) {

@@ -23,10 +23,18 @@ goog.scope(function() {
             this.setFrame(frame);
 
             this._create();
-            //goog.events.listen(this._container, goog.events.EventType.CLICK, goog.bind(this.isVisibleBorder, this, true));
             /** @private {view.Border} */
             this._border = new view.Border(this._frame);
             this._container.appendChild(this._border.getDOMElement());
+            this._container.ondragstart = function() {
+                return false;
+            };
+
+            var thisPtr = this;
+            this._container.onclick = goog.bind(function(event) {
+                event.stopPropagation();
+                this.isVisibleBorder(true);
+            }, this);
         },
 
         /** @return {boolean} */
@@ -42,13 +50,11 @@ goog.scope(function() {
         },
 
         /** @param {boolean} isVisible
-         * @param {!Event} event */
-
-        isVisibleBorder: function(isVisible, event) {
+          */
+        isVisibleBorder: function(isVisible) {
             this._isSelected = isVisible;
             if (this.isSelected())
             {
-                event.preventDefault();
                 this._border.activeBorder();
             }
             else

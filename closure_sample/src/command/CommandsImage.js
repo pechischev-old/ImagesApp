@@ -18,9 +18,9 @@ goog.scope(function() {
             /** @private {model.Image} */
             this._model = model;
         },
-        /** @param {!goog.math.Coordinate} posMouse*/
-        move: function(posMouse) {
-            this._model.move(posMouse);
+        /** @param {!goog.math.Coordinate} mousePos*/
+        move: function(mousePos) {
+            this._model.move(mousePos);
         },
         /** @param {!goog.math.Coordinate} posMouse*/
         resize: function(posMouse) {
@@ -34,19 +34,19 @@ goog.scope(function() {
     });
 
     /** @param {command.CommandsImage} image
-     * @param {!goog.math.Coordinate} posMouse
+     * @param {!goog.math.Coordinate} mousePos
      * @implements {command.ICommand}
      * @constructor*/
     command.MoveCommand = goog.defineClass(null, {
-        constructor: function(image, posMouse) {
+        constructor: function(image, mousePos) {
             /** @private {command.CommandsImage} */
             this._image = image;
             /** @private {!goog.math.Coordinate} */
-            this._posMouse = posMouse;
+            this._mousePos = mousePos;
         },
 
         execute: function() {
-            this._image.move(this._posMouse);
+            this._image.move(this._mousePos);
         },
 
         undo: function() {
@@ -56,19 +56,19 @@ goog.scope(function() {
     });
 
     /** @param {command.CommandsImage} image
-     * @param {!goog.math.Coordinate} posMouse
+     * @param {!goog.math.Coordinate} mousePos
      * @implements {command.ICommand}
      * @constructor*/
     command.ResizeCommand = goog.defineClass(null, {
-        constructor: function(image, posMouse) {
+        constructor: function(image, mousePos) {
             /** @private {command.CommandsImage} */
             this._image = image;
             /** @private {!goog.math.Coordinate} */
-            this._posMouse = posMouse;
+            this._mousePos = mousePos;
         },
 
         execute: function() {
-            this._image.resize(this._posMouse);
+            this._image.resize(this._mousePos);
         },
 
         undo: function() {
