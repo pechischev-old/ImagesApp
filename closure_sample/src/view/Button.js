@@ -9,27 +9,37 @@ goog.scope(function () {
      * @param {string} text
      * @implements {view.IDOMElement}
      * @extends {view.Node}
-     * @constructor */
+     * @constructor
+     */
     view.Button = goog.defineClass(view.Node, {
+        /**
+         * @param {string} text
+         */
         constructor: function(text) {
             /** @private {string} */
             this._value = text;
             this._create();
         },
         
-        /** @param {Function} action */
+        /**
+         * @param {Function} action
+         */
         setAction: function(action) {
             this._btn.onclick = action;
         },
 
-        /** @return {!Element}
-         * @override */
+        /**
+         * @return {!Element}
+         * @override
+         */
         getDOMElement: function() {
             return this._btn;
         },
 
-        /** @private
-         * @override */
+        /**
+         * @private
+         * @override
+         */
         _create: function() {
             /** @private {!Element} */
             this._btn = document.createElement(goog.dom.TagName.BUTTON);

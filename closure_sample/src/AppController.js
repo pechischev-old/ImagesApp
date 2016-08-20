@@ -4,15 +4,16 @@ goog.require("AppModel");
 goog.require("AppView");
 goog.require("command.CommandsImage");
 
-/*goog.require("goog.events");
-goog.require("goog.events.EventType");*/
+goog.require("goog.events");
+goog.require("goog.events.EventType");
 
 goog.scope(function() {
     var commandsImage = command.CommandsImage;
 
-    /** @param {AppModel} model
-      * @constructor
-      */
+    /** 
+     * @param {AppModel} model
+     * @constructor
+     */
     AppController = goog.defineClass(null, {
         constructor: function(model) {
             /** @private {AppModel} */
@@ -30,7 +31,9 @@ goog.scope(function() {
 
         },
 
-        /** @private */
+        /** 
+         * @private 
+         */
         _openFile: function() { 
             var input = window.event.target;
             var reader = new FileReader();
@@ -40,16 +43,20 @@ goog.scope(function() {
             reader.readAsDataURL(input.files[0]);
         },
 
-        /** @param {number} index
+        /** 
+         * @param {number} index
          * @param {!goog.math.Coordinate} posMouse
-         * @private */
+         * @private 
+         */
         _move: function (index, posMouse) {
             var cmdImage = new commandsImage(this._model.getImageOfIndex(index));
             this._command = new command.MoveCommand(cmdImage, posMouse);
             this._commands.push(this._command);
         },
 
-        /** @private */
+        /** 
+         * @private 
+         */
         _undo: function () {
 
             if (this._commands.length == 0)
@@ -62,8 +69,10 @@ goog.scope(function() {
 
         },
         
-        /** @param {string} path
-         * @private */
+        /** 
+         * @param {string} path
+         * @private 
+         */
         _addImage: function(path) {
             var img = new Image(0, 0);
             img.src = path;
@@ -73,6 +82,13 @@ goog.scope(function() {
                 imageModel.registerObserver(imageView);
                 var imageElem = imageView.getDOMElement();
 
+                goog.events.listen(imageElem.parentElement, goog.events.EventType.CLICK, goog.bind(function() {
+                    if (imageView.isSelected())
+                    {
+                        imageView.isVisibleBorder(false);
+                    }
+                }, imageView));
+
                 imageElem.onmousedown = goog.bind(function(event) {
                     if (imageView.isSelected())
                     {
@@ -80,6 +96,11 @@ goog.scope(function() {
                         this._startDrag(imageModel, imageElem, event);
                     }
                 }, this);
+
+                imageElem.onclick = goog.bind(function(event) {
+                    event.stopPropagation();
+                    imageView.isVisibleBorder(true);
+                }, imageView);
             }, this);
             
             
@@ -108,7 +129,9 @@ goog.scope(function() {
 
         },
 
-        /** @private */
+        /**
+         * @private 
+         */
         _addActions: function() {
             var toolbar = this._view.getToolbar();
             toolbar.getButtonOnIndex(0).setAction(goog.bind(this._undo, this));
@@ -118,7 +141,9 @@ goog.scope(function() {
             
         },
 
-        /** @private */
+        /** 
+         * @private 
+         */
         _inputProcessing: function() {
             var dataInputForm = this._view.getDataInputForm();
             if (dataInputForm)

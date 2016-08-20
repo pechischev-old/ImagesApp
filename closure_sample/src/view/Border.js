@@ -9,23 +9,30 @@ goog.scope(function() {
     const CLASSES = ['se', 's', 'sw', 'e', 'w', 'ne', 'n', 'nw'];
     const SIDE = 10;
 
-    /** @param {goog.math.Rect} frame
+    /** 
+     * @param {goog.math.Rect} frame
      * @constructor 
-     * @extends {view.Node} */
+     * @extends {view.Node} 
+     */
     view.Border = goog.defineClass(view.Node, {
         constructor: function(frame) {
             /** @private {goog.math.Rect} */
             this._frame = frame;
             this._create();    
         },
-        /** @param {goog.math.Rect} frame */
+        
+        /** 
+         * @param {goog.math.Rect} frame 
+         */
         setFrame: function(frame) {
             this._frame = frame;
             this._reloadStyleSize();
         },
         
-        /** @return {!Element}
-         * @override */
+        /** 
+         * @return {!Element}
+         * @override 
+         */
         getDOMElement: function () {
             return this._border;
         },
@@ -38,7 +45,9 @@ goog.scope(function() {
             goog.style.setStyle(this._border, "display", "none");
         },
 
-        /** @private */
+        /** 
+         * @private 
+         */
         _reloadStyleSize: function() { // TODO: get rid of the duplication of code
             this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), this._border);
             var divs = this._border.getElementsByTagName(goog.dom.TagName.DIV);
@@ -59,8 +68,10 @@ goog.scope(function() {
             }
         },
         
-        /** @private
-         * @override*/
+        /** 
+         * @private
+         * @override
+         */
         _create: function() {
             /** @private {!Element} */
             this._border = document.createElement(goog.dom.TagName.DIV);

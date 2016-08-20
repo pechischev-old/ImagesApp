@@ -6,11 +6,14 @@ goog.require("observer.IObserver");
 goog.scope(function(){
 
     /**
-     * @implements {observer.IObservable}
+      * @implements {observer.IObservable}
       * @param {!goog.math.Rect} frame
       * @constructor
       */
     model.Image = goog.defineClass(null, {
+	    /**
+         * @param {!goog.math.Rect} frame
+         */
         constructor: function(frame) {
             /** @private {Array<observer.IObserver>}*/
             this._observers = [];
@@ -21,13 +24,16 @@ goog.scope(function(){
             this._isChange = false;
         },
 
-        /** @param {observer.IObserver} observer
-          */
+        /** 
+         * @param {observer.IObserver} observer
+         */
         registerObserver:function(observer) {
             this._observers.push(observer);
         },
         
-        /** @param {observer.IObserver} observer */
+        /** 
+         * @param {observer.IObserver} observer 
+         */
         removeObserver:function (observer) {
             var index =  this._observers.indexOf(observer);
             if (index >= 0) {
@@ -42,7 +48,9 @@ goog.scope(function(){
             });
         },
         
-        /** @param {!goog.math.Rect} frame */
+        /** 
+         * @param {!goog.math.Rect} frame 
+         */
         setFrame: function(frame) {
             /** @private {!goog.math.Size} */
             this._size = frame.getSize();
@@ -52,15 +60,19 @@ goog.scope(function(){
             this.notifyObservers();
         },
         
-        /** @return {!goog.math.Rect} */
+        /**
+         * @return {!goog.math.Rect} 
+         */
         getFrame: function() {
             return new goog.math.Rect(this._pos.x, this._pos.y, this._size.width, this._size.height);
         },
 
-        /** @param {!goog.math.Coordinate} posMouse */
-        resize: function(posMouse) {
-            var w = (posMouse.x - this._pos.x) || 50;
-            var h = (posMouse.y - this._pos.y) || 50;
+        /** 
+         * @param {!goog.math.Coordinate} mousePos 
+         */
+        resize: function(mousePos) {
+            var w = (mousePos.x - this._pos.x) || 50;
+            var h = (mousePos.y - this._pos.y) || 50;
             /** @private {goog.math.Size} */
             this._size = new goog.math.Size(w, h);
         },
@@ -72,12 +84,17 @@ goog.scope(function(){
             this._shift = goog.math.Coordinate.difference(mousePos, this._pos);
         },
 
-        /** @param {!goog.math.Coordinate} mousePos */
+        /** 
+         * @param {!goog.math.Coordinate} mousePos 
+         */
         move: function(mousePos) {
             /** @private {!goog.math.Coordinate} */
             this._pos = goog.math.Coordinate.difference(mousePos, this._shift);
         },
-        /** @param {!number} number */
+        
+        /** 
+         * @param {!number} number 
+         */
         outLog: function(number) {
             if (this._isChange)
             {

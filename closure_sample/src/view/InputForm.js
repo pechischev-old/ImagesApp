@@ -5,7 +5,8 @@ goog.require("goog.dom");
 
 goog.scope(function() {
 
-    /** @extends {view.Node}
+    /** 
+     * @extends {view.Node}
      * @constructor
      */
     view.InputForm = goog.defineClass(view.Node, {
@@ -13,19 +14,25 @@ goog.scope(function() {
             this._create();
         },
         
-        /** @return {string} */
+        /** 
+         * @return {string} 
+         */
         getValue: function() {
             return this._inputForm.value;
         },
 
-        /** @return {!Element}
-         * @override */
+        /** 
+         * @return {!Element}
+         * @override 
+         */
         getDOMElement: function(){
             return this._inputForm;
         },
 
-        /** @private
-         * @override */
+        /** 
+         * @private
+         * @override
+         */
         _create: function() {
             /** @private {!Element} */
             this._inputForm = document.createElement(goog.dom.TagName.INPUT);

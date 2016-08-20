@@ -6,8 +6,7 @@ goog.require("view.ImageView");
 goog.require("view.Toolbar");
 goog.require("view.InputForm");
 
-goog.require("goog.events");
-goog.require("goog.events.EventType");
+
 
 goog.scope(function() {
     /** @const {string} */
@@ -15,7 +14,9 @@ goog.scope(function() {
     /** @type {view.ImageView} */
     var imageView = view.ImageView;
 
-    /** @constructor */
+    /**
+     * @constructor
+     */
     AppView = goog.defineClass(null, {
         constructor: function() {
             var fragment = document.createDocumentFragment();
@@ -28,7 +29,9 @@ goog.scope(function() {
             this._images = [];
         },
 
-        /** @return {Array<number>}*/
+        /**
+         * @return {Array<number>}
+         */
         getArrayIndexsSelectingImage: function () {
             var indexs = [];
             this._images.forEach(function(image, index) {
@@ -40,12 +43,16 @@ goog.scope(function() {
             return indexs;
         },
         
-        /** @param {Function} action */
+        /**
+         * @param {Function} action
+         */
         setActionFileReader: function(action){
             this._fileReader.onchange = action;
         },
         
-        /** @return {string} */
+        /**
+         * @return {string}
+         */
         getDataInputForm: function() {
             return this._inputForm.getValue();
         },
@@ -54,24 +61,22 @@ goog.scope(function() {
             return this._fileReader.click();
         },
 
-        /** @param {!goog.math.Rect} frame
-          * @param {string} path */
+        /**
+         * @param {!goog.math.Rect} frame
+         * @param {string} path
+         */
         loadImage: function(frame, path) {
             /** @type {view.ImageView} */
             var image = new imageView(frame, path);
             var img = image.getDOMElement();
-            this._canvas.appendChild(img);
-            goog.events.listen(this._canvas, goog.events.EventType.CLICK, goog.bind(function() {
-                if (image.isSelected())
-                {
-                    image.isVisibleBorder(false);
-                }
-             }, image));
+            this._canvas.appendChild(img);            
             this._images.push(image);
             return image;
         },
 
-        /** @return {view.Toolbar} */
+        /**
+         * @return {view.Toolbar}
+         * */
         getToolbar: function() {
             return this._toolbar;
         },
@@ -99,8 +104,10 @@ goog.scope(function() {
             return this._fileReader;
         },
 
-        /** @private
-         * @return {!Element} */
+        /**
+         * @private
+         * @return {!Element}
+         */
         _createToolbar: function () {
             /** @private {view.Toolbar} */
             this._toolbar = new view.Toolbar();
@@ -110,8 +117,10 @@ goog.scope(function() {
             return this._toolbar.getDOMElement();
         },
 
-        /** @private 
-          * @return {!Element} */
+        /**
+         * @private
+         * @return {!Element}
+         */
         _createCanvas: function () {
             /** @private {!Element} */
             this._canvas = goog.dom.createElement(goog.dom.TagName.DIV);

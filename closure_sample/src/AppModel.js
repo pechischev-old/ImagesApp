@@ -7,6 +7,7 @@ goog.scope(function () {
 
 	/** @const {!goog.math.Size} */
 	const ALLOWABLE_SIZE = new goog.math.Size(512, 256);
+	
 	/**
 	 * @constructor
 	 */

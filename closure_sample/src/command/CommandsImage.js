@@ -14,34 +14,55 @@ goog.scope(function() {
      * @constructor
      */
     command.CommandsImage = goog.defineClass(null, {
-        constructor: function (model) {
-            /** @private {model.Image} */
+	    /**
+         * @param {model.Image} model
+         */
+        constructor: function(model) {
+            /** 
+             * @private {model.Image} 
+             */
             this._model = model;
         },
-        /** @param {!goog.math.Coordinate} mousePos*/
+        /** 
+         * @param {!goog.math.Coordinate} mousePos
+         */
         move: function(mousePos) {
             this._model.move(mousePos);
         },
-        /** @param {!goog.math.Coordinate} posMouse*/
-        resize: function(posMouse) {
-            this._model.resize(posMouse);
+        /** 
+         * @param {!goog.math.Coordinate} mousePos
+         */
+        resize: function(mousePos) {
+            this._model.resize(mousePos);
         },
 
-        /** @return {!goog.math.Coordinate} */
+        /**
+         * @return {!goog.math.Coordinate} 
+         */
         getOldPos: function() {
             return this._model.getFrame().getTopLeft();
         }
     });
 
-    /** @param {command.CommandsImage} image
+    /** 
+     * @param {command.CommandsImage} image
      * @param {!goog.math.Coordinate} mousePos
      * @implements {command.ICommand}
-     * @constructor*/
+     * @constructor
+     */
     command.MoveCommand = goog.defineClass(null, {
+        /**
+         * @param {command.CommandsImage} image
+         * @param {!goog.math.Coordinate} mousePos
+         */
         constructor: function(image, mousePos) {
-            /** @private {command.CommandsImage} */
+            /** 
+             * @private {command.CommandsImage} 
+             */
             this._image = image;
-            /** @private {!goog.math.Coordinate} */
+            /** 
+             * @private {!goog.math.Coordinate} 
+             */
             this._mousePos = mousePos;
         },
 
@@ -55,15 +76,25 @@ goog.scope(function() {
         }
     });
 
-    /** @param {command.CommandsImage} image
+    /** 
+     * @param {command.CommandsImage} image
      * @param {!goog.math.Coordinate} mousePos
      * @implements {command.ICommand}
-     * @constructor*/
+     * @constructor
+     */
     command.ResizeCommand = goog.defineClass(null, {
+        /**
+         * @param {command.CommandsImage} image
+         * @param {!goog.math.Coordinate} mousePos
+         */
         constructor: function(image, mousePos) {
-            /** @private {command.CommandsImage} */
+            /** 
+             * @private {command.CommandsImage} 
+             */
             this._image = image;
-            /** @private {!goog.math.Coordinate} */
+            /** 
+             * @private {!goog.math.Coordinate} 
+             */
             this._mousePos = mousePos;
         },
 
