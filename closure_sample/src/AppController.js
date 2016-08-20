@@ -65,18 +65,23 @@ goog.scope(function() {
         /** @param {string} path
          * @private */
         _addImage: function(path) {
-            var imageModel = this._model.addImage(path);
-            var imageView = this._view.loadImage(imageModel.getFrame(), path);
-            imageModel.registerObserver(imageView);
-            var imageElem = imageView.getDOMElement();
-           
-            imageElem.onmousedown = goog.bind(function(event) {
-                if (imageView.isSelected())
-                {
-                    imageModel.setCoordinatesOfMouseFirstClick(new goog.math.Coordinate(event.pageX, event.pageY));
-                    this._startDrag(imageModel, imageElem, event);
-                }
+            var img = new Image(0, 0);
+            img.src = path;
+            img.onload = goog.bind(function(){
+                var imageModel = this._model.addImage(new goog.math.Size(img.naturalWidth, img.naturalHeight));
+                var imageView = this._view.loadImage(imageModel.getFrame(), path);
+                imageModel.registerObserver(imageView);
+                var imageElem = imageView.getDOMElement();
+
+                imageElem.onmousedown = goog.bind(function(event) {
+                    if (imageView.isSelected())
+                    {
+                        imageModel.setCoordinatesOfMouseFirstClick(new goog.math.Coordinate(event.pageX, event.pageY));
+                        this._startDrag(imageModel, imageElem, event);
+                    }
+                }, this);
             }, this);
+            
             
             
         },
