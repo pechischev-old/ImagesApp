@@ -11,7 +11,6 @@ Sample.start = function()
 	var controller = new AppController(model);
 	var idTimer = setInterval(function() {
 		model.outputLog();
-		controller.eventLoop();
 	}, 0);
 
 };

@@ -2,33 +2,33 @@ goog.provide("AppController");
 
 goog.require("AppModel");
 goog.require("AppView");
-goog.require("command.CommandsImage");
+goog.require("command.History");
+goog.require("command.MoveCommand");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 
 goog.scope(function() {
-    var commandsImage = command.CommandsImage;
+    var MoveCommand = command.MoveCommand;
 
     /** 
      * @param {AppModel} model
      * @constructor
      */
     AppController = goog.defineClass(null, {
+        /**
+         * @param {AppModel} model
+         */
         constructor: function(model) {
             /** @private {AppModel} */
             this._model = model;
             /** @private {AppView} */
             this._view = new AppView();
+
+            /** @private {command.History} */
+            this._history = new command.History();
+            
             this._addActions();
-            /** @private {Array<command.ICommand>} */
-            this._commands = [];
-            /** @private {command.ICommand} */
-            this._command = null;
-        },
-
-        eventLoop: function () {
-
         },
 
         /** 
@@ -41,32 +41,6 @@ goog.scope(function() {
                 this._addImage(reader.result.toString());
             },  this);
             reader.readAsDataURL(input.files[0]);
-        },
-
-        /** 
-         * @param {number} index
-         * @param {!goog.math.Coordinate} posMouse
-         * @private 
-         */
-        _move: function (index, posMouse) {
-            var cmdImage = new commandsImage(this._model.getImageOfIndex(index));
-            this._command = new command.MoveCommand(cmdImage, posMouse);
-            this._commands.push(this._command);
-        },
-
-        /** 
-         * @private 
-         */
-        _undo: function () {
-
-            if (this._commands.length == 0)
-            {
-                throw new Error("Command stack is empty");
-            }
-            console.log("undo");
-            this._commands.pop();
-            this._command.undo();
-
         },
         
         /** 
@@ -104,7 +78,6 @@ goog.scope(function() {
                     }
                 }, this);
 
-
             }, this);
         },
 
@@ -119,9 +92,10 @@ goog.scope(function() {
             var posY = model.getFrame().top;
 
             document.onmousemove = goog.bind(function(event) {
+                //var command = new MoveCommand(model, new goog.math.Coordinate(event.clientX, event.clientY));
+                //this._history.recordAction(command);
                 model.move(new goog.math.Coordinate(event.clientX, event.clientY));
-                model.setFrame(model.getFrame());
-            }, model);
+            }, this);
 
             elem.onmouseup = goog.bind(function() {
                 document.onmousemove = null;
@@ -130,16 +104,31 @@ goog.scope(function() {
 
         },
 
+	    /**
+         * @private
+         */
+        _undo: function(){
+            console.log("undo");
+            this._history.undo();
+        },
+
+	    /**
+         * @private
+         */
+        _redo: function() {
+            console.log("redo");
+            this._history.redo();
+        },
+
         /**
          * @private 
          */
         _addActions: function() {
             var toolbar = this._view.getToolbar();
             toolbar.getButtonOnIndex(0).setAction(goog.bind(this._undo, this));
-            toolbar.getButtonOnIndex(1).setAction(function(){console.log("redo")});
+            toolbar.getButtonOnIndex(1).setAction(goog.bind(this._redo, this));
             toolbar.getButtonOnIndex(2).setAction(goog.bind(this._inputProcessing, this));
             var fileForm = this._view.setActionFileReader(goog.bind(this._openFile, this));
-            
         },
 
         /** 

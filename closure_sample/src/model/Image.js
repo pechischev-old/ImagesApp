@@ -90,6 +90,8 @@ goog.scope(function(){
         move: function(mousePos) {
             /** @private {!goog.math.Coordinate} */
             this._pos = goog.math.Coordinate.difference(mousePos, this._shift);
+            this._isChange = true;
+            this.notifyObservers();
         },
         
         /** 
