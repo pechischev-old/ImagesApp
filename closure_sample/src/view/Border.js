@@ -7,9 +7,8 @@ goog.require("view.Node");
 goog.scope(function() {
     /** @const {Array<string>} */
     const CLASSES = ['se', 's', 'sw', 'e', 'w', 'ne', 'n', 'nw'];
-    const SIDE = 10;
 
-    /** 
+    /**
      * @param {goog.math.Rect} frame
      * @constructor 
      * @extends {view.Node} 
@@ -20,15 +19,15 @@ goog.scope(function() {
             this._frame = frame;
             this._create();    
         },
-        
-        /** 
-         * @param {goog.math.Rect} frame 
+
+        /**
+         * @param {goog.math.Rect} frame
          */
         setFrame: function(frame) {
             this._frame = frame;
-            this._reloadStyleSize();
+            this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), this._border);
         },
-        
+
         /** 
          * @return {!Element}
          * @override 
@@ -46,29 +45,6 @@ goog.scope(function() {
         },
 
         /** 
-         * @private 
-         */
-        _reloadStyleSize: function() { // TODO: get rid of the duplication of code
-            this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), this._border);
-            var divs = this._border.getElementsByTagName(goog.dom.TagName.DIV);
-            var i = 0;
-            for (var h = 0; h <= 2; ++h )
-            {
-                for (var w = 0; w <= 2; ++w)
-                {
-                    if (!(h == 1 && w == 1))
-                    {
-                        var l = w * 0.5 * this._frame.width;
-                        var t = h * 0.5 * this._frame.height;
-                        var div = divs[i];
-                        this._setStyleElementPosition(new goog.math.Coordinate((l - SIDE / 2), (t - SIDE / 2)), div);
-                        ++i;
-                    }
-                }
-            }
-        },
-        
-        /** 
          * @private
          * @override
          */
@@ -78,23 +54,11 @@ goog.scope(function() {
             this._border.setAttribute("class", "border");
             this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), this._border);
             this.deactiveBorder();
-            var i = 0;
-            for (var h = 0; h <= 2; ++h )
+            for (var i = 0; i < CLASSES.length; ++i)
             {
-                for (var w = 0; w <= 2; ++w )
-                {
-                    if (!(h == 1 && w == 1))
-                    {
-                        var l = w * 0.5 * this._frame.width;
-                        var t = h * 0.5 * this._frame.height;
-                        var div = document.createElement(goog.dom.TagName.DIV);
-                        div.setAttribute("class", CLASSES[i]);
-                        this._setStyleElementPosition(new goog.math.Coordinate((l - SIDE / 2), (t - SIDE / 2)), div);
-                        this._setStyleElementSize(new goog.math.Size(SIDE, SIDE), div);
-                        this._border.appendChild(div);
-                        ++i;
-                    }
-                }
+                var div = document.createElement(goog.dom.TagName.DIV);
+                div.setAttribute("class", CLASSES[i]);
+                this._border.appendChild(div);
             }
         }
     });

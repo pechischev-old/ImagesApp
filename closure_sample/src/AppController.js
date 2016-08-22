@@ -82,6 +82,12 @@ goog.scope(function() {
                 imageModel.registerObserver(imageView);
                 var imageElem = imageView.getDOMElement();
 
+                goog.events.listen(imageElem, goog.events.EventType.CLICK, goog.bind(function(event) {
+                    this._view.deselectOtherImages();
+                    event.stopPropagation();
+                    imageView.isVisibleBorder(true);
+                }, this));
+
                 goog.events.listen(imageElem.parentElement, goog.events.EventType.CLICK, goog.bind(function() {
                     if (imageView.isSelected())
                     {
@@ -90,21 +96,16 @@ goog.scope(function() {
                 }, imageView));
 
                 imageElem.onmousedown = goog.bind(function(event) {
-                    if (imageView.isSelected())
+                    if (event.which > 1) return;
+                    if (imageView.isSelected() )
                     {
                         imageModel.setCoordinatesOfMouseFirstClick(new goog.math.Coordinate(event.pageX, event.pageY));
                         this._startDrag(imageModel, imageElem, event);
                     }
                 }, this);
 
-                imageElem.onclick = goog.bind(function(event) {
-                    event.stopPropagation();
-                    imageView.isVisibleBorder(true);
-                }, imageView);
+
             }, this);
-            
-            
-            
         },
 
 	    /**

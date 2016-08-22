@@ -29,6 +29,15 @@ goog.scope(function() {
             this._images = [];
         },
 
+        deselectOtherImages: function() {
+            this._images.forEach(function(image) {
+                if (image.isSelected())
+                {
+                    image.isVisibleBorder(false);
+                }
+            })
+        },
+
         /**
          * @return {Array<number>}
          */

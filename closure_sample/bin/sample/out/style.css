@@ -53,21 +53,34 @@ input {
 
 .border div {
   background: red;
-  position: absolute; }
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  transform: translate(-5px, -5px); }
 
 .border .se {
   cursor: se-resize; }
 .border .s {
-  cursor: s-resize; }
+  cursor: s-resize;
+  left: 50%; }
 .border .sw {
-  cursor: sw-resize; }
+  cursor: sw-resize;
+  left: 100%; }
 .border .e {
-  cursor: e-resize; }
+  cursor: e-resize;
+  top: 50%; }
 .border .w {
-  cursor: w-resize; }
+  cursor: w-resize;
+  left: 100%;
+  top: 50%; }
 .border .ne {
-  cursor: ne-resize; }
+  cursor: ne-resize;
+  top: 100%; }
 .border .n {
-  cursor: n-resize; }
+  cursor: n-resize;
+  left: 50%;
+  top: 100%; }
 .border .nw {
-  cursor: nw-resize; }
+  cursor: nw-resize;
+  left: 100%;
+  top: 100%; }
