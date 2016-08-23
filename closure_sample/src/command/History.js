@@ -16,7 +16,7 @@ goog.scope(function() {
 			/** @private {Array<command.IAction>}*/
 			this._actions = [];
 			/** @private {!number} */
-			this._currentActionIndex = 0;
+			this._currentActionIndex = -1;
 		},
 
 		/**
@@ -24,18 +24,13 @@ goog.scope(function() {
 		 */
 		recordAction: function(action) {
 
-			if (this._currentActionIndex < this._actions.length)
+			if (this._currentActionIndex < this._actions.length - 1)
 			{
 				this._cleaningActionsfromCurrentIndex();
-				this._actions[this._currentActionIndex + 1] = action;
 			}
-			else
-			{
-				this._actions.push(action);
-			}
-			action.execute();
+			this._actions.push(action);
 			++this._currentActionIndex;
-			console.log(this._actions.length + " " + this._currentActionIndex );
+			action.execute();
 		},
 
 
@@ -44,7 +39,8 @@ goog.scope(function() {
 			{
 				throw new Error("Command stack is empty");
 			}
-			this._actions[--this._currentActionIndex].unexecute();
+			this._actions[this._currentActionIndex].unexecute();
+			--this._currentActionIndex;
 
 		},
 
@@ -54,22 +50,21 @@ goog.scope(function() {
 			{
 				throw new Error("Command stack is empty");
 			}
-			else if (this._currentActionIndex >= this._actions.length  )
+			else if (this._currentActionIndex == this._actions.length - 1)
 			{
-				throw new Error("out of range");
+				throw new Error("Command stack is full");
 			}
-			this._actions[++this._currentActionIndex].execute();
-			//++this._currentActionIndex;
+			this._actions[this._currentActionIndex].execute();
+			++this._currentActionIndex;
+			
 		},
 
 		/**
 		 * @private
 		 */
 		_cleaningActionsfromCurrentIndex: function() {
-			for (var i = this._actions.length - 1; i == this._currentActionIndex; --i)
-			{
-				this._actions.pop();
-			}
+			this._actions = this._actions.slice(0, this._currentActionIndex);
+			--this._currentActionIndex;
 		}
 	});
 });
