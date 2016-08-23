@@ -6,7 +6,7 @@ goog.require("model.Image");
 goog.scope(function () {
 
 	/** @const {!goog.math.Size} */
-	const ALLOWABLE_SIZE = new goog.math.Size(512, 256);
+	const MAX_SIZE = new goog.math.Size(512, 256);
 	
 	/**
 	 * @constructor
@@ -31,16 +31,10 @@ goog.scope(function () {
 			return image;
 		},
 
-		/**
-		 * @param {!number} index
-		 * @return {model.Image}
-		 */
-		getImageOfIndex: function (index) {
-			if (this._images.length <= index || index < 0) {
-				throw new Error("out of range");
-			}
-			return this._images[index];
+		deleteImage: function () {
+			this._images.pop();
 		},
+		
 
 		outputLog: function () {
 			for (var i = 0; i < this._images.length; ++i) {
@@ -56,9 +50,9 @@ goog.scope(function () {
 		_getCalculatingAppropriateSize: function(size) {
 			var width = size.width;
 			var height = size.height;
-			var coeff = ( width > height) ? width / ALLOWABLE_SIZE.width : height / ALLOWABLE_SIZE.height;
-			width = (width > ALLOWABLE_SIZE.width) ? width / coeff : width;
-			height = (height > ALLOWABLE_SIZE.height) ? height / coeff : height;
+			var coeff = ( width > height) ? width / MAX_SIZE.width : height / MAX_SIZE.height;
+			width = (width > MAX_SIZE.width) ? width / coeff : width;
+			height = (height > MAX_SIZE.height) ? height / coeff : height;
 			return new goog.math.Size(width, height);
 		}
 	});

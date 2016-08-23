@@ -29,29 +29,34 @@ goog.scope(function() {
             this._images = [];
         },
 
+		/**
+		 * @return {number}
+         */
+        getIndexSelectedImage: function() {
+            for (var i = 0; i < this._images.length; ++i)
+            {
+                if (this._images[i].isSelected())
+                {
+                    break;
+                }
+            }
+            return i;
+        },
+
+        deleteImage: function () {
+            var image = this._images.pop().getDOMElement();
+            image.parentNode.removeChild(image);
+        },
+
         deselectOtherImages: function() {
             this._images.forEach(function(image) {
                 if (image.isSelected())
                 {
-                    image.isVisibleBorder(false);
+                    image.setVisibleBorder(false);
                 }
             })
         },
 
-        /**
-         * @return {Array<number>}
-         */
-        getArrayIndexsSelectingImage: function () {
-            var indexs = [];
-            this._images.forEach(function(image, index) {
-                if (image.isSelected())
-                {
-                    indexs.push(index);
-                }
-            }, indexs);
-            return indexs;
-        },
-        
         /**
          * @param {Function} action
          */
@@ -123,6 +128,7 @@ goog.scope(function() {
             this._toolbar.appendButton(new view.Button("Undo"));
             this._toolbar.appendButton(new view.Button("Redo"));
             this._toolbar.appendButton(new view.Button("Add image"));
+            this._toolbar.appendButton(new view.Button("Delete image"));
             return this._toolbar.getDOMElement();
         },
 

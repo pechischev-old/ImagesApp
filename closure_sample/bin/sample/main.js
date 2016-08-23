@@ -10,7 +10,7 @@ Sample.start = function()
 	var model = new AppModel();
 	var controller = new AppController(model);
 	var idTimer = setInterval(function() {
-		model.outputLog();
+		//model.outputLog();
 	}, 0);
 
 };

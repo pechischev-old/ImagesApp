@@ -17,24 +17,34 @@ goog.scope(function () {
 		 * @param {!goog.math.Coordinate} mousePos
 		 */
 		constructor: function(shapeModel, mousePos) {
+			goog.base(this);
+			/**
+			 * @type {model.Image}
+			 * @private
+			 */
 			this._shapeModel = shapeModel;
-			this._oldPos = shapeModel.getFrame().getTopLeft();
-
+			/**
+			 * @private {!goog.math.Rect}
+			 */
+			this._oldFrame = shapeModel.getFrame();
+			/** @private {!goog.math.Coordinate} */
 			this._mousePos = mousePos;
 		},
 
 		/**
-		 * @override
+		 * @inheritDoc
 		 */
-		doExecute: function() {
-			this._shapeModel.move(this._mousePos);
+		_doExecute: function() {
+			var frame = new goog.math.Rect(this._mousePos.x, this._mousePos.y, this._oldFrame.width, this._oldFrame.height);
+			this._shapeModel.setFrame(frame);
+			//this._shapeModel.move(this._mousePos);
 		},
 
 		/**
-		 * @override
+		 * @inheritDoc
 		 */
-		doUnexecute: function () {
-			this._shapeModel.move(this._oldPos);
+		_doUnexecute: function () {
+			this._shapeModel.setFrame(this._oldFrame);
 		}
 	});
 });

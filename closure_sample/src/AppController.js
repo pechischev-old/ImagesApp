@@ -4,12 +4,14 @@ goog.require("AppModel");
 goog.require("AppView");
 goog.require("command.History");
 goog.require("command.MoveCommand");
+goog.require("command.AddImageCommand");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 
 goog.scope(function() {
     var MoveCommand = command.MoveCommand;
+    var AddImageCommand = command.AddImageCommand;
 
     /** 
      * @param {AppModel} model
@@ -38,16 +40,28 @@ goog.scope(function() {
             var input = window.event.target;
             var reader = new FileReader();
             reader.onload = goog.bind(function() {
-                this._addImage(reader.result.toString());
+                var funcAddImage = goog.bind(this._addImage, this, reader.result.toString());
+                var funcDeleteImage = goog.bind(this._deleteImage, this);
+                var command = new AddImageCommand(funcAddImage, funcDeleteImage);
+                this._history.recordAction(command);
+                //this._addImage(reader.result.toString());
             },  this);
             reader.readAsDataURL(input.files[0]);
+        },
+
+		/**
+         * @private
+         */
+        _deleteImage: function() {
+            this._model.deleteImage();
+            this._view.deleteImage();
         },
         
         /** 
          * @param {string} path
          * @private 
          */
-        _addImage: function(path) {
+        _addImage: function(path) { // TODO: отметить загрузку картинки
             var img = new Image(0, 0);
             img.src = path;
             img.onload = goog.bind(function(){
@@ -56,26 +70,59 @@ goog.scope(function() {
                 imageModel.registerObserver(imageView);
                 var imageElem = imageView.getDOMElement();
 
-                goog.events.listen(imageElem, goog.events.EventType.CLICK, goog.bind(function(event) {
+                /*goog.events.listen(imageElem, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
+
                     this._view.deselectOtherImages();
-                    event.stopPropagation();
-                    imageView.isVisibleBorder(true);
-                }, this));
 
-                goog.events.listen(imageElem.parentElement, goog.events.EventType.CLICK, goog.bind(function() {
-                    if (imageView.isSelected())
+                    imageView.setVisibleBorder(true);
+                    if (event.defaultPrevented)
                     {
-                        imageView.isVisibleBorder(false);
+                        //console.log("mousedown exit 1");
+                        return ;
                     }
-                }, imageView));
-
-                imageElem.onmousedown = goog.bind(function(event) {
-                    if (event.which > 1) return;
+                    else if (event.which > 1) {
+                       // console.log("mousedown exit 2");
+                        return;
+                    }
                     if (imageView.isSelected() )
                     {
-                        imageModel.setCoordinatesOfMouseFirstClick(new goog.math.Coordinate(event.pageX, event.pageY));
-                        this._startDrag(imageModel, imageElem, event);
+                        //console.log("mousedown selected");
+                        //imageModel.setCoordinatesOfMouseFirstClick(new goog.math.Coordinate(event.pageX, event.pageY));
+                        this._startDrag(imageModel, imageView, event);
                     }
+                    event.preventDefault();
+                }, this));*/
+
+                goog.events.listen(imageElem.parentElement, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
+                    if (event.defaultPrevented)
+                    {
+                        return ;
+                    }
+                    if (imageView.isSelected())
+                    {
+                        imageView.setVisibleBorder(false);
+                    }
+                }, this));
+
+
+                imageElem.onmousedown = goog.bind(function(event) {
+
+                    this._view.deselectOtherImages();
+
+                    imageView.setVisibleBorder(true);
+                    if (event.defaultPrevented)
+                    {
+                        return ;
+                    }
+                    else if (event.which > 1) {
+                        return;
+                    }
+                    event.preventDefault();
+                    if (imageView.isSelected() )
+                    {
+                        this._startDrag(imageModel, imageView, event);
+                    }
+
                 }, this);
 
             }, this);
@@ -83,21 +130,47 @@ goog.scope(function() {
 
 	    /**
          * @param {model.Image} model
-         * @param {!Element} elem
+         * @param {view.ImageView} view
          * @param {!Event} event
 	     * @private
          */
-        _startDrag: function(model, elem,  event) {
-            var posX = model.getFrame().left;
-            var posY = model.getFrame().top;
+        _startDrag: function(model, view,  event) {
+            var pos = model.getFrame().getTopLeft();
+            var size = model.getFrame().getSize();
+            var elem = view.getDOMElement();
+
+            var shift = goog.math.Coordinate.difference(new goog.math.Coordinate(event.pageX, event.pageY), pos);
+
+            /*goog.events.listen(document, goog.events.EventType.MOUSEMOVE, goog.bind(function(event) {
+                var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
+                var newPos = goog.math.Coordinate.difference(mousePos, shift);
+                console.log(newPos);
+                view.setFrame(new goog.math.Rect(newPos.x, newPos.y, size.width, size.height));
+                //model.move(new goog.math.Coordinate(event.clientX, event.clientY));
+            }, this));
+
+            goog.events.listen(elem, goog.events.EventType.MOUSEUP, goog.bind(function() {
+
+                var newPos = view.getPos();
+                //console.log("mouseup    " + newPos);
+                var command = new MoveCommand(model, newPos);
+                this._history.recordAction(command);
+                goog.events.unlisten(document, goog.events.EventType.MOUSEMOVE, false);
+                goog.events.unlisten(elem, goog.events.EventType.MOUSEUP, false);
+                model.move(new goog.math.Coordinate(event.clientX, event.clientY));
+            }, this));*/
 
             document.onmousemove = goog.bind(function(event) {
-                //var command = new MoveCommand(model, new goog.math.Coordinate(event.clientX, event.clientY));
-                //this._history.recordAction(command);
-                model.move(new goog.math.Coordinate(event.clientX, event.clientY));
+                var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
+                var newPos = goog.math.Coordinate.difference(mousePos, shift);
+                view.setFrame(new goog.math.Rect(newPos.x, newPos.y, size.width, size.height));
+                //model.move(new goog.math.Coordinate(event.clientX, event.clientY));
             }, this);
 
             elem.onmouseup = goog.bind(function() {
+                var newPos = view.getPos();
+                var command = new MoveCommand(model, newPos);
+                this._history.recordAction(command);
                 document.onmousemove = null;
                 elem.onmouseup = null;
             }, this);
@@ -108,7 +181,6 @@ goog.scope(function() {
          * @private
          */
         _undo: function(){
-            console.log("undo");
             this._history.undo();
         },
 
@@ -116,7 +188,6 @@ goog.scope(function() {
          * @private
          */
         _redo: function() {
-            console.log("redo");
             this._history.redo();
         },
 
@@ -138,14 +209,15 @@ goog.scope(function() {
             var dataInputForm = this._view.getDataInputForm();
             if (dataInputForm)
             {
-                this._addImage(dataInputForm);
+                var funcAddImage = goog.bind(this._addImage, this, dataInputForm);
+                var funcDeleteImage = goog.bind(this._deleteImage, this);
+                var command = new AddImageCommand(funcAddImage, funcDeleteImage);
+                this._history.recordAction(command);
             }
             else
             {
                 this._view.clickFileReader();
             }
         }
-        
-       
     });
 });

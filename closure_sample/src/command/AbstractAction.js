@@ -15,16 +15,22 @@ goog.scope(function() {
 		},
 
 		execute: function() {
-			this.doExecute();
+			this._doExecute();
 		},
 
 		unexecute: function() {
-			this.doUnexecute();
+			this._doUnexecute();
 		},
 
-		doExecute: function () {},
+		/**
+		 * @protected
+		 */
+		_doExecute: function () {},
 
-		doUnexecute: function () {}
+		/**
+		 * @protected
+		 */
+		_doUnexecute: function () {}
 
 	})
 });

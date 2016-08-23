@@ -22,7 +22,8 @@ goog.scope(function() {
             this._path = path;
             /** @private {boolean} */
             this._isSelected = false;
-            this.setFrame(frame);
+            /** @private {!goog.math.Rect} */
+            this._frame = frame;
 
             this._init();
         },
@@ -61,8 +62,8 @@ goog.scope(function() {
          * @param {!goog.math.Rect} frame 
          */
         setFrame: function(frame){
-            /** @private {!goog.math.Rect} */
             this._frame = frame;
+            this._reloadStyleSize();
         },
 
 		/**
