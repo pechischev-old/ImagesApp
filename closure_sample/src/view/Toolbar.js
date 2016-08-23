@@ -11,7 +11,10 @@ goog.scope(function() {
      */
     view.Toolbar = goog.defineClass(view.Node, {
         constructor: function() {
-            this._create();
+            goog.base(this);
+            /** @private {!Element} */
+            this._toolbar = document.createElement(goog.dom.TagName.DIV);
+            this._toolbar.setAttribute("id", "toolbar");
             /** @private {Array<view.Button>} */
             this._buttons = [];
         },
@@ -45,16 +48,7 @@ goog.scope(function() {
          */
         getButtonsCount: function () {
             return this._buttons.length;
-        },
-        
-        /** 
-         * @private
-         * @override 
-         */
-        _create: function() {
-            /** @private {!Element} */
-            this._toolbar = document.createElement(goog.dom.TagName.DIV);
-            this._toolbar.setAttribute("id", "toolbar");
         }
+        
     });
 });

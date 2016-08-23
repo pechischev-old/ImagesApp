@@ -16,9 +16,11 @@ goog.scope(function () {
          * @param {string} text
          */
         constructor: function(text) {
-            /** @private {string} */
-            this._value = text;
-            this._create();
+            goog.base(this);
+            /** @private {!Element} */
+            this._btn = document.createElement(goog.dom.TagName.BUTTON);
+            this._btn.setAttribute("class", "button");
+            this._btn.innerHTML = text;
         },
         
         /**
@@ -30,21 +32,10 @@ goog.scope(function () {
 
         /**
          * @return {!Element}
-         * @override
+         * @inheritDoc
          */
         getDOMElement: function() {
             return this._btn;
-        },
-
-        /**
-         * @private
-         * @override
-         */
-        _create: function() {
-            /** @private {!Element} */
-            this._btn = document.createElement(goog.dom.TagName.BUTTON);
-            this._btn.setAttribute("class", "button");
-            this._btn.innerHTML = this._value;
         }
     });
 });

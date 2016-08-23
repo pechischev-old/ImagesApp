@@ -15,9 +15,10 @@ goog.scope(function() {
      */
     view.Border = goog.defineClass(view.Node, {
         constructor: function(frame) {
+            goog.base(this);
             /** @private {goog.math.Rect} */
             this._frame = frame;
-            this._create();    
+            this._init();    
         },
 
         /**
@@ -28,9 +29,8 @@ goog.scope(function() {
             this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), this._border);
         },
 
-        /** 
-         * @return {!Element}
-         * @override 
+        /**
+         * @inheritDoc 
          */
         getDOMElement: function () {
             return this._border;
@@ -46,9 +46,9 @@ goog.scope(function() {
 
         /** 
          * @private
-         * @override
          */
-        _create: function() {
+        _init: function() {
+            // TODO: создать отдельно 8 элементов и подписать обработчики (для ресайза)
             /** @private {!Element} */
             this._border = document.createElement(goog.dom.TagName.DIV);
             this._border.setAttribute("class", "border");

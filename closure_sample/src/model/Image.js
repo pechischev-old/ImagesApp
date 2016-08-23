@@ -59,7 +59,17 @@ goog.scope(function(){
             this._isChange = true;
             this.notifyObservers();
         },
-        
+
+		/**
+		 * @param {!goog.math.Coordinate} pos
+         */
+        setPosition: function(pos) {
+            /** @private {!goog.math.Coordinate} */
+            this._pos = pos;
+            this._isChange = true;
+            this.notifyObservers();
+        },
+
         /**
          * @return {!goog.math.Rect} 
          */

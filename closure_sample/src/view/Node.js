@@ -13,9 +13,6 @@ goog.scope(function() {
         constructor: function () {
         },
 
-        _create: function () {
-        },
-
         /**
          * @return {!Element}
          */

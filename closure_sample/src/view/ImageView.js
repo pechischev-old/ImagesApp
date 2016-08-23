@@ -17,17 +17,14 @@ goog.scope(function() {
      */
     view.ImageView = goog.defineClass(view.Node, {
         constructor: function(frame, path) {
+            goog.base(this);
             /** @private {string} */
             this._path = path;
             /** @private {boolean} */
             this._isSelected = false;
             this.setFrame(frame);
 
-            this._create();
-            /** @private {view.Border} */
-            this._border = new view.Border(this._frame);
-            this._container.appendChild(this._border.getDOMElement());
-            
+            this._init();
         },
 
         /** 
@@ -43,13 +40,12 @@ goog.scope(function() {
         update: function(frame) {
             this.setFrame(frame);
             this._border.setFrame(frame);
-            this._reloadStyleSize();
         },
 
         /** 
          * @param {boolean} isVisible
          */
-        isVisibleBorder: function(isVisible) {
+        setVisibleBorder: function(isVisible) {
             this._isSelected = isVisible;
             if (this.isSelected())
             {
@@ -68,8 +64,15 @@ goog.scope(function() {
             /** @private {!goog.math.Rect} */
             this._frame = frame;
         },
-	    
-        /** 
+
+		/**
+		 * @return {!goog.math.Coordinate}
+         */
+        getPos: function() {
+            return this._frame.getTopLeft();
+        },
+
+        /**
          * @return {!Element}
          * @override 
          */
@@ -88,9 +91,8 @@ goog.scope(function() {
 	    
         /**
          * @private
-         * @override
          */
-        _create: function() {
+        _init: function() {
             /** @private {!Element} */
             this._container = document.createElement(goog.dom.TagName.DIV);
             this._container.setAttribute("class", "capture");
@@ -102,6 +104,10 @@ goog.scope(function() {
             image.setAttribute("alt", "текст");
             this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
             this._container.appendChild(image);
+
+            /** @private {view.Border} */
+            this._border = new view.Border(this._frame);
+            this._container.appendChild(this._border.getDOMElement());
         }
 
     });
