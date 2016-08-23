@@ -27,9 +27,13 @@ goog.scope(function() {
 			if (this._currentActionIndex < this._actions.length - 1)
 			{
 				this._cleaningActionsfromCurrentIndex();
+				this._actions[this._currentActionIndex] = action;
 			}
-			this._actions.push(action);
-			++this._currentActionIndex;
+			else
+			{
+				this._actions.push(action);
+				++this._currentActionIndex;
+			}
 			action.execute();
 		},
 
@@ -39,8 +43,12 @@ goog.scope(function() {
 			{
 				throw new Error("Command stack is empty");
 			}
-			this._actions[this._currentActionIndex].unexecute();
-			--this._currentActionIndex;
+			else if (this._currentActionIndex > 0)
+			{
+				this._actions[this._currentActionIndex].unexecute();
+				--this._currentActionIndex;
+			}
+
 
 		},
 
@@ -54,8 +62,10 @@ goog.scope(function() {
 			{
 				throw new Error("Command stack is full");
 			}
-			this._actions[this._currentActionIndex].execute();
-			++this._currentActionIndex;
+			else {
+				this._actions[this._currentActionIndex].execute();
+				++this._currentActionIndex;
+			}
 			
 		},
 
@@ -63,8 +73,7 @@ goog.scope(function() {
 		 * @private
 		 */
 		_cleaningActionsfromCurrentIndex: function() {
-			this._actions = this._actions.slice(0, this._currentActionIndex);
-			--this._currentActionIndex;
+			this._actions = this._actions.slice(0, this._currentActionIndex + 1);
 		}
 	});
 });
