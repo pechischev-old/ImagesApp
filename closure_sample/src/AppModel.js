@@ -31,6 +31,26 @@ goog.scope(function () {
 			return image;
 		},
 
+		/**
+		 * @param {number} index
+		 * @return {model.Image}
+		 */
+		removeImageOnIndex: function(index) {
+			if (index < 0 && index >= this._images.length )
+			{
+				throw new Error("index is out of range array");
+			}
+			return this._images.splice(index, 1)[0];
+		},
+
+		/**
+		 * @param {model.Image} image
+		 * @param {number} index
+		 */
+		insertImageOnIndex: function (image, index) {
+			this._images.splice(index, 0, image);
+		},
+
 		deleteImage: function () {
 			this._images.pop();
 		},

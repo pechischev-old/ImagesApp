@@ -12,7 +12,7 @@ goog.scope(function() {
     /** @const {string} */
     const CANVAS_NAME = "canvas";
     /** @type {view.ImageView} */
-    var imageView = view.ImageView;
+    var ImageView = view.ImageView;
 
     /**
      * @constructor
@@ -30,17 +30,49 @@ goog.scope(function() {
         },
 
 		/**
-		 * @return {number}
+		 * @return {?number}
          */
-        getIndexSelectedImage: function() {
+        getIndexSelectingImage: function() {
             for (var i = 0; i < this._images.length; ++i)
             {
                 if (this._images[i].isSelected())
                 {
-                    break;
+                    return i;
                 }
             }
-            return i;
+            return null;
+        },
+
+		/**
+         * @param {number} index
+         * @return {view.ImageView}
+         */
+        removeImageOnIndex: function(index) {
+            if (index < 0 && index >= this._images.length )
+            {
+                throw new Error("index is out of range array");
+            }
+            var image = this._images.splice(index, 1)[0];
+            var img = image.getDOMElement();
+            img.parentNode.removeChild(img);
+            return image;
+        },
+
+		/**
+         * @param {view.ImageView} image
+         * @param {number} index
+         */
+        insertImageOnIndex:function(image, index) {
+            this._images.splice(index, 0, image);
+            if (this._canvas.childElementCount >= index)
+            {
+                this._canvas.insertBefore(image.getDOMElement(), this._canvas.children[index]);
+            }
+            else
+            {
+                this._canvas.appendChild(image.getDOMElement());
+            }
+
         },
 
         deleteImage: function () {
@@ -81,7 +113,7 @@ goog.scope(function() {
          */
         loadImage: function(frame, path) {
             /** @type {view.ImageView} */
-            var image = new imageView(frame, path);
+            var image = new ImageView(frame, path);
             var img = image.getDOMElement();
             this._canvas.appendChild(img);            
             this._images.push(image);

@@ -31,7 +31,7 @@ goog.scope(function() {
 			++this._currentActionIndex;
 			action.execute();
 
-			console.log(this._currentActionIndex + " " +  this._actions.length);
+			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 
@@ -46,7 +46,7 @@ goog.scope(function() {
 				this._actions[this._currentActionIndex].unexecute();
 			}
 
-			console.log(this._currentActionIndex + " " +  this._actions.length);
+			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 
@@ -64,7 +64,7 @@ goog.scope(function() {
 				this._actions[this._currentActionIndex].execute();
 				++this._currentActionIndex;
 			}
-			console.log(this._currentActionIndex + " " +  this._actions.length);
+			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 		/**
@@ -72,7 +72,7 @@ goog.scope(function() {
 		 */
 		_cleaningActionsfromCurrentIndex: function() {
 			this._actions = this._actions.slice(0, this._currentActionIndex);
-			console.log(this._currentActionIndex + " " + this._actions.length);
+			//console.log(this._currentActionIndex + " " + this._actions.length);
 		}
 	});
 });

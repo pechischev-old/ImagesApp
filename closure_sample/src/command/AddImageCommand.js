@@ -5,15 +5,15 @@ goog.require("command.AbstractAction");
 goog.scope(function() {
 
 	/**
-	 * @param {!function} addImage
-	 * @param {!function} deleteImage
+	 * @param {function()} addImage
+	 * @param {function()} deleteImage
  	 * @extends {command.AbstractAction}
 	 * @constructor
 	 */
 	command.AddImageCommand = goog.defineClass(command.AbstractAction, {
 		/**
-		 * @param {!function} addImage
-		 * @param {!function} deleteImage
+		 * @param {function()} addImage
+		 * @param {function()} deleteImage
 		 */
 		constructor: function (addImage, deleteImage) {
 			this.addImage = addImage;
@@ -24,7 +24,6 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		_doExecute: function() {
-			console.log('append');
 			this.addImage();
 		},
 
@@ -32,7 +31,6 @@ goog.scope(function() {
 		 * @inheritDoc
 	 	 */
 		_doUnexecute: function () {
-			console.log("delete");
 			this.deleteImage();
 		}
 	});

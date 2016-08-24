@@ -19,8 +19,7 @@ goog.scope(function () {
 		constructor: function(shapeModel, mousePos) {
 			goog.base(this);
 			/**
-			 * @type {model.Image}
-			 * @private
+			 * @private {model.Image}
 			 */
 			this._shapeModel = shapeModel;
 			/**
@@ -37,7 +36,6 @@ goog.scope(function () {
 		_doExecute: function() {
 			var frame = new goog.math.Rect(this._mousePos.x, this._mousePos.y, this._oldFrame.width, this._oldFrame.height);
 			this._shapeModel.setFrame(frame);
-			//this._shapeModel.move(this._mousePos);
 		},
 
 		/**
