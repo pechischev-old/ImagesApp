@@ -23,9 +23,9 @@ goog.scope(function () {
 			 */
 			this._shapeModel = shapeModel;
 			/**
-			 * @private {!goog.math.Rect}
+			 * @private {!goog.math.Coordinate}
 			 */
-			this._oldFrame = shapeModel.getFrame();
+			this._oldPos = shapeModel.getFrame().getTopLeft();
 			/** @private {!goog.math.Coordinate} */
 			this._mousePos = mousePos;
 		},
@@ -34,15 +34,14 @@ goog.scope(function () {
 		 * @inheritDoc
 		 */
 		_doExecute: function() {
-			var frame = new goog.math.Rect(this._mousePos.x, this._mousePos.y, this._oldFrame.width, this._oldFrame.height);
-			this._shapeModel.setFrame(frame);
+			this._shapeModel.setPosition(this._mousePos);
 		},
 
 		/**
 		 * @inheritDoc
 		 */
 		_doUnexecute: function () {
-			this._shapeModel.setFrame(this._oldFrame);
+			this._shapeModel.setPosition(this._oldPos);
 		}
 	});
 });

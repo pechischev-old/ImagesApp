@@ -67,6 +67,13 @@ goog.scope(function() {
         },
 
 		/**
+         * @returns {!goog.math.Rect}
+         */
+        getFrame: function() {
+            return this._frame;
+        },
+
+		/**
 		 * @return {!goog.math.Coordinate}
          */
         getPos: function() {

@@ -6,6 +6,7 @@ goog.require("command.History");
 goog.require("command.MoveCommand");
 goog.require("command.AddImageCommand");
 goog.require("command.DeleteCommand");
+goog.require("command.ResizeCommand");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
@@ -14,6 +15,8 @@ goog.scope(function() {
     var MoveCommand = command.MoveCommand;
     var AddImageCommand = command.AddImageCommand;
     var DeleteCommand = command.DeleteCommand;
+    var ResizeCommand = command.ResizeCommand;
+
     /** 
      * @param {AppModel} model
      * @constructor
@@ -98,8 +101,7 @@ goog.scope(function() {
                         imageView.setVisibleBorder(false);
                     }
                 }, this));
-
-
+                
                 imageElem.onmousedown = goog.bind(function(event) {
 
                     this._view.deselectOtherImages();

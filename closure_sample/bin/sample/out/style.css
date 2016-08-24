@@ -45,11 +45,12 @@ input {
   display: block; }
 
 .border {
-  top: -2px;
-  left: -2px;
+  top: 0;
+  left: 0;
   border: 2px solid red;
   position: absolute;
-  cursor: move; }
+  cursor: move;
+  transform: translate(-2px, -2px); }
 
 .border div {
   background: red;

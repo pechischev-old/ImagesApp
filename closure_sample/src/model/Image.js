@@ -76,34 +76,7 @@ goog.scope(function(){
         getFrame: function() {
             return new goog.math.Rect(this._pos.x, this._pos.y, this._size.width, this._size.height);
         },
-
-        /** 
-         * @param {!goog.math.Coordinate} mousePos 
-         */
-        resize: function(mousePos) {
-            var w = (mousePos.x - this._pos.x) || 50;
-            var h = (mousePos.y - this._pos.y) || 50;
-            /** @private {goog.math.Size} */
-            this._size = new goog.math.Size(w, h);
-        },
-	    /**
-         * @param {!goog.math.Coordinate} mousePos
-         */
-        setCoordinatesOfMouseFirstClick: function(mousePos){
-            /** @private {!goog.math.Coordinate} */
-            this._shift = goog.math.Coordinate.difference(mousePos, this._pos);
-        },
-
-        /** 
-         * @param {!goog.math.Coordinate} mousePos 
-         */
-        move: function(mousePos) {
-            /** @private {!goog.math.Coordinate} */
-            this._pos = goog.math.Coordinate.difference(mousePos, this._shift);
-            this._isChange = true;
-            this.notifyObservers();
-        },
-        
+                
         /** 
          * @param {!number} number 
          */
