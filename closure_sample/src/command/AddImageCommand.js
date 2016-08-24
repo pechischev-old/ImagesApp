@@ -5,33 +5,33 @@ goog.require("command.AbstractAction");
 goog.scope(function() {
 
 	/**
-	 * @param {function()} addImage
-	 * @param {function()} deleteImage
+	 * @param {model.ImagesModel} model
+	 * @param {view.ImagesView} view
  	 * @extends {command.AbstractAction}
 	 * @constructor
 	 */
 	command.AddImageCommand = goog.defineClass(command.AbstractAction, {
 		/**
-		 * @param {function()} addImage
-		 * @param {function()} deleteImage
+		 * @param {model.ImagesModel} model
+		 * @param {view.ImagesView} view
 		 */
-		constructor: function (addImage, deleteImage) {
-			this.addImage = addImage;
-			this.deleteImage = deleteImage;
+		constructor: function (model, view) {
+			this._model = model;
+			this._view = view;
 		},
 
 		/**
 		 * @inheritDoc
 		 */
 		_doExecute: function() {
-			this.addImage();
+			
 		},
 
 		/**
 		 * @inheritDoc
 	 	 */
 		_doUnexecute: function () {
-			this.deleteImage();
+
 		}
 	});
 });

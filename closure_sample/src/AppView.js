@@ -2,7 +2,7 @@ goog.provide("AppView");
 
 
 goog.require("goog.dom");
-goog.require("view.ImageView");
+goog.require("view.ImagesView");
 goog.require("view.Toolbar");
 goog.require("view.InputForm");
 
@@ -25,68 +25,16 @@ goog.scope(function() {
             fragment.appendChild(this._createFileReader());
             fragment.appendChild(this._createCanvas());
             document.body.appendChild(fragment);
-            /** @private {Array<view.ImageView>} */
-            this._images = [];
+
+            /** @private {view.ImagesView} */
+            this._imagesView = new view.ImagesView(this._canvas);
         },
 
 		/**
-		 * @return {?number}
+         * @returns {view.ImagesView}
          */
-        getIndexSelectingImage: function() {
-            for (var i = 0; i < this._images.length; ++i)
-            {
-                if (this._images[i].isSelected())
-                {
-                    return i;
-                }
-            }
-            return null;
-        },
-
-		/**
-         * @param {number} index
-         * @return {view.ImageView}
-         */
-        removeImageOnIndex: function(index) {
-            if (index < 0 && index >= this._images.length )
-            {
-                throw new Error("index is out of range array");
-            }
-            var image = this._images.splice(index, 1)[0];
-            var img = image.getDOMElement();
-            img.parentNode.removeChild(img);
-            return image;
-        },
-
-		/**
-         * @param {view.ImageView} image
-         * @param {number} index
-         */
-        insertImageOnIndex:function(image, index) {
-            this._images.splice(index, 0, image);
-            if (this._canvas.childElementCount >= index)
-            {
-                this._canvas.insertBefore(image.getDOMElement(), this._canvas.children[index]);
-            }
-            else
-            {
-                this._canvas.appendChild(image.getDOMElement());
-            }
-
-        },
-
-        deleteImage: function () {
-            var image = this._images.pop().getDOMElement();
-            image.parentNode.removeChild(image);
-        },
-
-        deselectOtherImages: function() {
-            this._images.forEach(function(image) {
-                if (image.isSelected())
-                {
-                    image.setVisibleBorder(false);
-                }
-            })
+        getImagesView: function () {
+            return this._imagesView;
         },
 
         /**
@@ -106,27 +54,14 @@ goog.scope(function() {
         clickFileReader: function() {
             return this._fileReader.click();
         },
-
-        /**
-         * @param {!goog.math.Rect} frame
-         * @param {string} path
-         */
-        loadImage: function(frame, path) {
-            /** @type {view.ImageView} */
-            var image = new ImageView(frame, path);
-            var img = image.getDOMElement();
-            this._canvas.appendChild(img);            
-            this._images.push(image);
-            return image;
-        },
-
+        
         /**
          * @return {view.Toolbar}
          * */
         getToolbar: function() {
             return this._toolbar;
         },
-
+        
         /** 
          * @return {!Element}
          * @private

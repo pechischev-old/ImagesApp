@@ -6,26 +6,26 @@ goog.require("command.AbstractAction");
 goog.scope(function () {
 
 	/**
-	 * @param {AppModel} model
-	 * @param {AppView} view
+	 * @param {model.ImagesModel} model
+	 * @param {view.ImagesView} view
 	 * @param {!number} index
 	 * @extends {command.AbstractAction}
 	 * @constructor
 	 */
 	command.DeleteCommand = goog.defineClass(command.AbstractAction, {
 		/**
-		 * @param {AppModel} model
-		 * @param {AppView} view
+		 * @param {model.ImagesModel} model
+		 * @param {view.ImagesView} view
 		 * @param {!number} index
 		 */
 		constructor: function(model, view, index) {
 			goog.base(this);
 			/**
-			 * @private {AppModel}
+			 * @private {model.ImagesModel}
 			 */
 			this._model = model;
 			/**
-			 * @private {AppView}
+			 * @private {view.ImagesView}
 			 */
 			this._view = view;
 
