@@ -42,14 +42,14 @@ input {
 
 .capture {
   position: absolute;
-  display: block; }
+  display: block;
+  cursor: move; }
 
 .border {
   top: 0;
   left: 0;
   border: 2px solid red;
   position: absolute;
-  cursor: move;
   transform: translate(-2px, -2px); }
 
 .border div {
@@ -59,29 +59,29 @@ input {
   width: 10px;
   transform: translate(-5px, -5px); }
 
-.border .se {
+.border .nw {
   cursor: se-resize; }
-.border .s {
+.border .n {
   cursor: s-resize;
   left: 50%; }
-.border .sw {
+.border .ne {
   cursor: sw-resize;
   left: 100%; }
-.border .e {
+.border .w {
   cursor: e-resize;
   top: 50%; }
-.border .w {
+.border .e {
   cursor: w-resize;
   left: 100%;
   top: 50%; }
-.border .ne {
+.border .sw {
   cursor: ne-resize;
   top: 100%; }
-.border .n {
+.border .s {
   cursor: n-resize;
   left: 50%;
   top: 100%; }
-.border .nw {
+.border .se {
   cursor: nw-resize;
   left: 100%;
   top: 100%; }

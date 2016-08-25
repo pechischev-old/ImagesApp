@@ -48,7 +48,7 @@ input {
 .capture {
   position: absolute;
   display: block;
-
+  cursor: move;
 }
 
 .border {
@@ -56,7 +56,6 @@ input {
   left: 0;
   border: 2px solid red;
   position: absolute;
-  cursor: move;
   transform: translate(-2px, -2px);
 }
 
@@ -69,36 +68,36 @@ input {
 }
 
 .border {
-  .se {
+  .nw {
     cursor: se-resize;
   }
-  .s {
+  .n {
     cursor: s-resize;
     left: 50%;
   }
-  .sw {
+  .ne {
     cursor: sw-resize;
     left: 100%;
   }
-  .e {
+  .w {
     cursor: e-resize;
     top: 50%;
   }
-  .w {
+  .e {
     cursor: w-resize;
     left: 100%;
     top: 50%;
   }
-  .ne {
+  .sw {
     cursor: ne-resize;
     top: 100%;
   }
-  .n {
+  .s {
     cursor: n-resize;
     left: 50%;
     top: 100%;
   }
-  .nw {
+  .se {
     cursor: nw-resize;
     left: 100%;
     top: 100%;

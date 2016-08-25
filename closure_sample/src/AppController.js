@@ -3,6 +3,7 @@ goog.provide("AppController");
 goog.require("AppModel");
 goog.require("AppView");
 goog.require("ImageController");
+goog.require("command.History");
 
 goog.scope(function() {
     
@@ -15,12 +16,14 @@ goog.scope(function() {
          * @param {AppModel} model
          */
         constructor: function(model) {
+            /** @private {command.History} */
+            this._history = new command.History();
             /** @private {AppModel} */
             this._model = model;
             /** @private {AppView} */
             this._view = new AppView();
 			/** @private {ImageController} */
-            this._imageCntr = new ImageController(this._model.getImagesModel(), this._view.getImagesView());
+            this._imageCntr = new ImageController(this._model.getImagesModel(), this._view.getImagesView(), this._history);
             
             this._addActions();
         },
@@ -56,14 +59,14 @@ goog.scope(function() {
          * @private
          */
         _undo: function(){
-            this._imageCntr.undo();
+            this._history.undo();
         },
 
-	    /**
+        /**
          * @private
          */
         _redo: function() {
-            this._imageCntr.redo();
+            this._history.redo();
         },
 
         /**

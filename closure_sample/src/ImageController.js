@@ -1,6 +1,5 @@
 goog.provide("ImageController");
 
-goog.require("command.History");
 goog.require("command.MoveCommand");
 goog.require("command.AddImageCommand");
 goog.require("command.DeleteCommand");
@@ -18,142 +17,138 @@ goog.scope(function () {
 	/**
 	 * @param {model.ImagesModel} imagesModel
 	 * @param {view.ImagesView} imagesView
+	 * @param {command.History} history
 	 * @constructor
 	 */
 	ImageController = goog.defineClass(null, {
 		/**
  		 * @param {model.ImagesModel} imagesModel
  		 * @param {view.ImagesView}imagesView
+		 * @param {command.History} history
 		 */
-		constructor: function (imagesModel, imagesView) {
+		constructor: function (imagesModel, imagesView, history) {
 			/** @private {model.ImagesModel} */
 			this._imagesModel = imagesModel;
 			/** @private {view.ImagesView} */
 			this._imagesView = imagesView;
 
 			/** @private {command.History} */
-			this._history = new command.History();
-		},
-
-		undo: function () {
-			this._history.undo();
-		},
-
-		redo: function () {
-			
-			this._history.redo();
+			this._history = history; // TODO: заменить на табы пробелы
 		},
 
 		/**
 		 * @param {string} path
 		 */
 		addImage: function(path) {
-
 			var img = new Image(0, 0);
 			img.src = path;
-			img.onload = goog.bind(function(){
-				var imageModel = this._imagesModel.createImage(new goog.math.Size(img.naturalWidth, img.naturalHeight));
-				var imageView = new view.ImageView(imageModel.getFrame(), path);
-				imageModel.registerObserver(imageView);
-
-				var imageElem = imageView.getDOMElement();
-				var command = new AddImageCommand(this._imagesModel, this._imagesView, imageModel, imageView);
-
-				this._history.recordAction(command);
-				goog.events.listen(imageElem.parentElement, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
-					if (event.defaultPrevented)
-					{
-						return false;
-					}
-					else if (imageView.isSelected())
-					{
-						imageView.setVisibleBorder(false);
-					}
-				}, this));
-				
-				imageElem.onmousedown = goog.bind(function(event) {
-
-					this._imagesView.deselectOtherImages();
-
-					imageView.setVisibleBorder(true);
-					if (event.defaultPrevented)
-					{
-						return;
-					}
-					else if (event.which > 1) {
-						return;
-					}
-					if (imageView.isSelected() )
-					{
-						this._startDrag(imageModel, imageView, event);
-					}
-					event.preventDefault();
-				}, this);
-				this._resize(imageModel, imageView);
-			}, this);
+			img.onload = goog.bind(this._onLoadImage, this, new goog.math.Size(img.naturalWidth, img.naturalHeight), path);
 		},
 
 		/**
-		 * @param {model.Image} model
-		 * @param {view.ImageView} view
+		 * @param {!goog.math.Size} size
+		 * @param {string} path
 		 * @private
 		 */
-		_resize:function (model, view) {
-			var se = view.getSECorner();
-			se.onmousedown = goog.bind(function(event) {
-				if ( event.defaultPrevented ) { return; }
-				else if ( event.which > 1 ) { return; }
-				else if ( !view.isSelected()) {return; }
+		_onLoadImage: function(size, path) {
+			var imageModel = this._imagesModel.createImage(size);
+			var imageView = new view.ImageView(imageModel.getFrame(), path);
+			imageModel.registerObserver(imageView);
 
-				var oldFrame = view.getFrame();
-				var oldSize = oldFrame.getSize();
+			var imageElem = imageView.getDOMElement();
+			var command = new AddImageCommand(this._imagesModel, this._imagesView, imageModel, imageView);
 
-				var shift = goog.math.Coordinate.difference(new goog.math.Coordinate(event.pageX, event.pageY), oldFrame.getTopLeft());
+			this._history.recordAction(command);
+			goog.events.listen(imageElem.parentElement, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
+				if (event.defaultPrevented)
+				{
+					return false;
+				}
+				else if (imageView.isSelected())
+				{
+					imageView.setVisibleBorder(false);
+				}
+			}, this));
 
-				var keyMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, goog.bind(function(event) {
+			imageElem.onmousedown = goog.bind(function(event) {
 
-					var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
-					var deltaD = goog.math.Coordinate.difference(oldFrame.getTopLeft(), mousePos);
-					var pos = goog.math.Coordinate.difference(mousePos, shift);
-					var width = oldSize.width + deltaD.x;
-					var height = oldSize.height + deltaD.y;
-					//if (!view.checkOutputAbroadForResize(pos)) {
-						view.setFrame(new goog.math.Rect(pos.x, pos.y, width, height));
-					//}
-				}, this));
+				this._imagesView.deselectOtherImages();
 
-				var keyUp = goog.events.listen(se, goog.events.EventType.MOUSEUP, goog.bind(function() {
-					var newframe = view.getFrame();
-					if (!goog.math.Rect.equals(newframe, oldFrame))
-					{
-						var command = new ResizeCommand(model, newframe);
-						this._history.recordAction(command);
-					}
-					goog.events.unlistenByKey(keyMove);
-					goog.events.unlistenByKey(keyUp);
-				}, this));
+				imageView.setVisibleBorder(true);
+				if (event.defaultPrevented)
+				{
+					return;
+				}
+				else if (event.which > 1) {
+					return;
+				}
+				if (imageView.isSelected() )
+				{
+					this._startDrag(imageModel, imageView, event);
+				}
 				event.preventDefault();
 			}, this);
 
-			var nw = view.getNWCorner(); // TODO: рассчитать сдвиги
-			nw.onmousedown = goog.bind(function(event) {
+			var nw = imageView.getNWCorner();
+			this._addResizeListener(nw, imageModel, imageView, function(frame, shift){
+				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width + shift.x, frame.height + shift.y);
+			});
+
+			var ne = imageView.getNECorner();
+			this._addResizeListener(ne, imageModel, imageView, function(frame, shift){
+				return new goog.math.Rect(frame.left, frame.top - shift.y, frame.width - shift.x, frame.height + shift.y);
+			});
+
+			var sw = imageView.getSWCorner();
+			this._addResizeListener(sw, imageModel, imageView, function(frame, shift){
+				return new goog.math.Rect(frame.left - shift.x, frame.top , frame.width + shift.x, frame.height - shift.y);
+			});
+
+			var se = imageView.getSECorner();
+			this._addResizeListener(se, imageModel, imageView, function(frame, shift){
+				return new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height - shift.y);
+			});
+
+			var e = imageView.getECorner();
+			this._addResizeListener(e, imageModel, imageView, function(frame, shift){
+				return new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height);
+			});
+
+			var w = imageView.getWCorner();
+			this._addResizeListener(w, imageModel, imageView, function(frame, shift){
+				return new goog.math.Rect(frame.left - shift.x, frame.top, frame.width + shift.x, frame.height);
+			});
+
+			var n = imageView.getNCorner();
+			this._addResizeListener(n, imageModel, imageView, function(frame, shift){
+				return new goog.math.Rect(frame.left, frame.top - shift.y, frame.width , frame.height + shift.y);
+			});
+
+			var s = imageView.getSCorner();
+			this._addResizeListener(s, imageModel, imageView, function(frame, shift){
+				return new goog.math.Rect(frame.left, frame.top, frame.width, frame.height - shift.y);
+			});
+		},
+
+		_addResizeListener: function(corner, model, view, handler) {
+			corner.onmousedown = goog.bind(function(event) {
 				if ( event.defaultPrevented ) { return; }
 				else if ( event.which > 1 ) { return; }
 				else if ( !view.isSelected()) {return; }
 
 				var oldFrame = view.getFrame();
-				var oldSize = oldFrame.getSize();
-				var firstMousePos = new goog.math.Coordinate(event.pageX, event.pageY);
-				var keyMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, goog.bind(function(event) {
-					var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
-					var deltaD = goog.math.Coordinate.difference(mousePos, firstMousePos);
-					var width = oldSize.width + deltaD.x;
-					var height = oldSize.height + deltaD.y;
-					var pos = oldFrame.getTopLeft();
-					view.setFrame(new goog.math.Rect(pos.x, pos.y, width, height));
+				var startPos = new goog.math.Coordinate(event.pageX, event.pageY);
 
-				}, this));
-				var keyUp = goog.events.listen(nw, goog.events.EventType.MOUSEUP, goog.bind(function() {
+				var keyMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, function(event) {
+					var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
+					var shiftMouse = goog.math.Coordinate.difference(startPos, mousePos);
+
+					var newRect = handler(oldFrame, shiftMouse);
+					view.setFrame(newRect);
+
+				});
+
+				var keyUp = goog.events.listen(document, goog.events.EventType.MOUSEUP, goog.bind(function() {
 					var newframe = view.getFrame();
 					if (!goog.math.Rect.equals(newframe, oldFrame))
 					{

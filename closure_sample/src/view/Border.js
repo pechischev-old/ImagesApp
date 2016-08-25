@@ -4,9 +4,6 @@ goog.require("goog.dom");
 goog.require("goog.math.Rect");
 goog.require("view.Node");
 
-goog.require("goog.events");
-goog.require("goog.events.EventType");
-
 goog.scope(function() {
     
 

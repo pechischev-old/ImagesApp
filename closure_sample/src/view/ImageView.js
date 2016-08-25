@@ -8,7 +8,7 @@ goog.require("view.Node");
 
 goog.scope(function() {
     /** @const {Array<string>} */
-    const CLASSES = ['se', 's', 'sw', 'e', 'w', 'ne', 'n', 'nw'];
+    const CLASSES = ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se'];
     
     /**
      * @param {!goog.math.Rect} frame
@@ -137,21 +137,21 @@ goog.scope(function() {
          */
         _initCorners: function () {
             /** @private {!Element} */
-            this._SECorner = this._border.createCorner(CLASSES[0]);
+            this._NWCorner = this._border.createCorner(CLASSES[0]);
             /** @private {!Element} */
-            this._SCorner = this._border.createCorner(CLASSES[1]);
+            this._NCorner = this._border.createCorner(CLASSES[1]);
             /** @private {!Element} */
-            this._SWCorner = this._border.createCorner(CLASSES[2]);
+            this._NECorner = this._border.createCorner(CLASSES[2]);
             /** @private {!Element} */
-            this._ECorner = this._border.createCorner(CLASSES[3]);
+            this._WCorner = this._border.createCorner(CLASSES[3]);
             /** @private {!Element} */
-            this._WCorner = this._border.createCorner(CLASSES[4]);
+            this._ECorner = this._border.createCorner(CLASSES[4]);
             /** @private {!Element} */
-            this._NECorner = this._border.createCorner(CLASSES[5]);
+            this._SWCorner = this._border.createCorner(CLASSES[5]);
             /** @private {!Element} */
-            this._NCorner = this._border.createCorner(CLASSES[6]);
+            this._SCorner = this._border.createCorner(CLASSES[6]);
             /** @private {!Element} */
-            this._NWCorner = this._border.createCorner(CLASSES[7]);
+            this._SECorner = this._border.createCorner(CLASSES[7]);
         },
 
         /** @return {!Element} */
@@ -172,6 +172,26 @@ goog.scope(function() {
         /** @return {!Element} */
         getNECorner: function() {
             return this._NECorner;
+        },
+        
+        /** @return {!Element} */
+        getSCorner: function() {
+            return this._SCorner;
+        },
+
+        /** @return {!Element} */
+        getWCorner: function() {
+            return this._WCorner;
+        },
+
+        /** @return {!Element} */
+        getNCorner: function() {
+            return this._NCorner;
+        },
+
+        /** @return {!Element} */
+        getECorner: function() {
+            return this._ECorner;
         }
 
     });
