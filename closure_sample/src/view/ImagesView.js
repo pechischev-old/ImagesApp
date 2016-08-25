@@ -39,15 +39,34 @@ goog.scope(function () {
 		 * @return {view.ImageView}
 		 */
 		removeImageOnIndex: function(index) {
-			index = (index == -1) ? this._imagesView.length - 1 : index;
-			if (index < 0 && index >= this._imagesView.length )
+			var image;
+			if (index == -1)
+			{
+				
+				image = this._imagesView.pop();
+				this._deleteFromDOM(image);
+				return image;
+			}
+			else if (index < 0 && index >= this._imagesView.length )
 			{
 				throw new Error("index is out of range array");
 			}
-			var image = this._imagesView.splice(index, 1)[0];
+			else
+			{
+				image = this._imagesView.splice(index, 1)[0];
+				this._deleteFromDOM(image);
+				return image;
+			}
+
+		},
+
+		/**
+		 * @param {view.ImageView} image
+		 * @private
+		 */
+		_deleteFromDOM: function (image) {
 			var img = image.getDOMElement();
 			img.parentNode.removeChild(img);
-			return image;
 		},
 
 		/**

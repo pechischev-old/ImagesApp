@@ -33,8 +33,11 @@ goog.scope(function () {
 		 * @return {model.Image}
 		 */
 		removeImageOnIndex: function(index) {
-			index = (index == -1) ? (this._imagesModel.length - 1) : index;
-			if (index < 0 && index >= this._imagesModel.length )
+			if (index == -1) 
+			{
+				return this._imagesModel.pop();
+			}
+			else if (index < 0 && index >= this._imagesModel.length )
 			{
 				throw new Error("index is out of range array");
 			}

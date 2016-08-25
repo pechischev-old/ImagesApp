@@ -42,8 +42,8 @@ goog.scope(function() {
 		 * @inheritDoc
 	 	 */
 		_doUnexecute: function () {
-			this._model.removeImageOnIndex(this._lastModel, -1);
-			this._view.removeImageOnIndex(this._lastView, -1);
+			this._model.removeImageOnIndex(-1);
+			this._view.removeImageOnIndex(-1);
 			this._lastView.setVisibleBorder(false);
 		}
 	});
