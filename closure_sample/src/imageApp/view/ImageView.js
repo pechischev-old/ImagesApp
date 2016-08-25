@@ -10,6 +10,8 @@ goog.scope(function() {
     /** @const {Array<string>} */
     const CLASSES = ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se'];
 
+    /** @const {!goog.math.Size} */
+    const MIN_SIZE = new goog.math.Size(200, 200);
     /**
      * @param {!goog.math.Rect} frame
      * @param {string} path
@@ -64,9 +66,10 @@ goog.scope(function() {
          * @param {!goog.math.Rect} frame 
          */
         setFrame: function(frame){
-            this._frame = frame;
+            var minFrame = this._getMinFrame(frame.clone());
+            this._frame = ((!goog.math.Rect.equals(minFrame, frame)) ? minFrame : frame);
             this._reloadStyleSize();
-            this._border.setFrame(frame);
+            this._border.setFrame(this._frame);
         },
 
         /**
@@ -89,6 +92,19 @@ goog.scope(function() {
          */
         getDOMElement: function(){
             return this._container;
+        },
+
+		/**
+         * @param {!goog.math.Rect} frame
+         * @returns {!goog.math.Rect}
+         * @private
+         */
+        _getMinFrame: function (frame) {
+            frame.left = (frame.width < MIN_SIZE.width) ? this._frame.left : frame.left;
+            frame.top = (frame.height < MIN_SIZE.height) ? this._frame.top : frame.top;
+            frame.width = (frame.width < MIN_SIZE.width) ? MIN_SIZE.width : frame.width;
+            frame.height = (frame.height < MIN_SIZE.height) ? MIN_SIZE.height : frame.height;
+            return frame;
         },
 
         /** 
@@ -122,6 +138,8 @@ goog.scope(function() {
             
             this._initCorners();
         },
+
+
 
         /**
          * @private
