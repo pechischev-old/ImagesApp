@@ -34,6 +34,21 @@ goog.scope(function () {
 
 			/** @private {imageApp.command.History} */
 			this._history = history;
+
+			document.addEventListener("append", goog.bind(function (event) {
+				/** @type {imageApp.model.Image} */
+				var imageModel = event.detail.model;
+				var imageView = new imageApp.view.ImageView(imageModel.getFrame(), imageModel.getPath());
+				imageModel.registerObserver(imageView);
+
+				this._imagesView.insertImageOnIndex(imageView, event.detail.index);
+
+				this._addHandlers(imageModel, imageView);
+			}, this), false);
+
+			document.addEventListener("delete", goog.bind(function (event) {
+				this._imagesView.removeImageOnIndex(event.detail.index);
+			}, this), false);
 		},
 
 		/**
@@ -51,16 +66,23 @@ goog.scope(function () {
 		 * @private
 		 */
 		_onLoadImage: function(elem) {
-			
-			var imageModel = this._imagesModel.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight));
-			var imageView = new imageApp.view.ImageView(imageModel.getFrame(), elem.src);
-			imageModel.registerObserver(imageView);
+			var imageModel = this._imagesModel.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight), elem.src);
 
+			var command = new AddImageCommand(this._imagesModel, imageModel);
+			this._history.recordAction(command);
+
+			goog.style.setStyle(document.documentElement, "cursor", "default");
+
+		},
+
+		/**
+		 * @param {imageApp.model.Image} imageModel
+		 * @param {imageApp.view.ImageView} imageView
+		 * @private
+		 */
+		_addHandlers: function(imageModel, imageView) {
 			var imageElem = imageView.getDOMElement();
 
-			var command = new AddImageCommand(this._imagesModel, this._imagesView, imageModel, imageView);
-			this._history.recordAction(command);
-			goog.style.setStyle(document.documentElement, "cursor", "default");
 			goog.events.listen(imageElem.parentElement, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
 				if (event.defaultPrevented)
 				{
@@ -121,7 +143,7 @@ goog.scope(function () {
 			});
 
 			var s = imageView.getSCorner();
-			this._addResizeListener(s, imageModel, imageView, function(frame, shift){
+			this._addResizeListener(s, imageModel, imageView, function(frame, shift) {
 				return new goog.math.Rect(frame.left, frame.top, frame.width, frame.height - shift.y);
 			});
 		},
@@ -205,7 +227,7 @@ goog.scope(function () {
 			var index = this._imagesView.getIndexSelectingImage();
 			if (index !== null)
 			{
-				var command = new DeleteCommand(this._imagesModel, this._imagesView, index);
+				var command = new DeleteCommand(this._imagesModel, index);
 				this._history.recordAction(command);
 			}
 		}

@@ -24,11 +24,12 @@ goog.scope(function () {
 
 		/**
 		 * @param {!goog.math.Size} naturalSize
+		 * @param {string} path
 		 * @return {imageApp.model.Image}
 		 */
-		createImage: function (naturalSize) {
+		createImage: function (naturalSize, path) {
 			var size = this._getCalculatingAppropriateSize(naturalSize);
-			return new imageApp.model.Image(new goog.math.Rect(50, 50, size.width, size.height));
+			return new imageApp.model.Image(new goog.math.Rect(50, 50, size.width, size.height), path);
 		},
 
 		/**

@@ -8,20 +8,29 @@ goog.scope(function(){
 	/**
 	  * @implements {imageApp.observer.IObservable}
 	  * @param {!goog.math.Rect} frame
+	  * @param {string} path
 	  * @constructor
 	  */
 	imageApp.model.Image = goog.defineClass(null, {
 		/**
 		 * @param {!goog.math.Rect} frame
+		 * @param {string} path
 		 */
-		constructor: function(frame) {
+		constructor: function(frame, path) {
 			/** @private {Array<imageApp.observer.IObserver>}*/
 			this._observers = [];
-
+			this._path = path;
 			this.setFrame(frame);
 
 			/** @private {boolean}*/
 			this._isChange = false;
+		},
+
+		/**
+		 * @return {string}
+		 */
+		getPath: function () {
+			return this._path;
 		},
 
 		/** 
