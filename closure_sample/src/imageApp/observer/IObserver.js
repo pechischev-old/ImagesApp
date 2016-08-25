@@ -9,10 +9,10 @@ imageApp.observer.IObserver.prototype.update = goog.abstractMethod;
 imageApp.observer.IObservable = function() {};
 imageApp.observer.IObservable.prototype = {
 
-    registerObserver: goog.abstractMethod,
+	registerObserver: goog.abstractMethod,
 
-    removeObserver: goog.abstractMethod,
+	removeObserver: goog.abstractMethod,
 
-    notifyObservers: goog.abstractMethod
+	notifyObservers: goog.abstractMethod
 };
 

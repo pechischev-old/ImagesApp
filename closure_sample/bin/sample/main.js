@@ -2,6 +2,7 @@ goog.provide("Sample");
 
 goog.require("imageApp.AppController");
 goog.require("imageApp.AppModel");
+
 /**
  * @export
  */
