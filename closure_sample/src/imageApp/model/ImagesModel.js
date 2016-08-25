@@ -38,6 +38,7 @@ goog.scope(function () {
 		removeImageOnIndex: function(index) {
 			if (index == -1) 
 			{
+				this._isChange = true;
 				return this._imagesModel.pop();
 			}
 			else if (index < 0 && index >= this._imagesModel.length )

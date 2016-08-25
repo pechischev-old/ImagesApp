@@ -23,7 +23,7 @@ goog.scope(function () {
 	imageApp.ImageController = goog.defineClass(null, {
 		/**
  		 * @param {imageApp.model.ImagesModel} imagesModel
- 		 * @param {imageApp.view.ImagesView}imagesView
+ 		 * @param {imageApp.view.ImagesView} imagesView
 		 * @param {imageApp.command.History} history
 		 */
 		constructor: function (imagesModel, imagesView, history) {
@@ -79,7 +79,8 @@ goog.scope(function () {
 				{
 					return;
 				}
-				else if (event.which > 1) {
+				else if (event.which > 1)
+				{
 					return;
 				}
 				if (imageView.isSelected() )
@@ -139,9 +140,18 @@ goog.scope(function () {
 		 */
 		_addResizeListener: function(corner, model, view, handler) {
 			corner.onmousedown = goog.bind(function(event) {
-				if ( event.defaultPrevented ) { return; }
-				else if ( event.which > 1 ) { return; }
-				else if ( !view.isSelected()) {return; }
+				if ( event.defaultPrevented )
+				{
+					return;
+				}
+				else if ( event.which > 1 )
+				{
+					return;
+				}
+				else if ( !view.isSelected())
+				{
+					return;
+				}
 
 				var oldFrame = view.getFrame();
 				var startPos = new goog.math.Coordinate(event.pageX, event.pageY);
@@ -176,7 +186,10 @@ goog.scope(function () {
 		 * @private
 		 */
 		_startDrag: function(model, view,  event) {
-			if (event.defaultPrevented) { return; }
+			if (event.defaultPrevented)
+			{
+				return;
+			}
 			var oldPos = model.getFrame().getTopLeft();
 			var size = model.getFrame().getSize();
 			var elem = view.getDOMElement();
@@ -204,7 +217,7 @@ goog.scope(function () {
 
 		deleteImage: function() {
 			var index = this._imagesView.getIndexSelectingImage();
-			if (String(index))
+			if (index !== null)
 			{
 				var command = new DeleteCommand(this._imagesModel, this._imagesView, index);
 				this._history.recordAction(command);

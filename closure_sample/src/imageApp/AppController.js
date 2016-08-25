@@ -4,6 +4,7 @@ goog.require("imageApp.AppModel");
 goog.require("imageApp.AppView");
 goog.require("imageApp.ImageController");
 goog.require("imageApp.command.History");
+goog.require("goog.events.KeyCodes");
 
 goog.scope(function() {
 
@@ -26,6 +27,8 @@ goog.scope(function() {
 			this._imageCntr = new imageApp.ImageController(this._model.getImagesModel(), this._view.getImagesView(), this._history);
 			
 			this._addActions();
+
+
 		},
 
 		/** 
@@ -40,18 +43,11 @@ goog.scope(function() {
 			reader.readAsDataURL(input.files[0]);
 		},
 
-		/**
-		 * @private
-		 */
-		_deleteImage: function() {
-			this._imageCntr.deleteImage();
-		},
-
 		/** 
 		 * @param {string} path
 		 * @private 
 		 */
-		_addImage: function(path) { // TODO: отметить загрузку картинки
+		_addImage: function(path) {
 			this._imageCntr.addImage(path);
 		},
 
@@ -79,6 +75,22 @@ goog.scope(function() {
 			toolbar.getButtonOnIndex(2).setAction(goog.bind(this._inputProcessing, this));
 			toolbar.getButtonOnIndex(3).setAction(goog.bind(this._deleteSelectingImage, this));
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
+
+			goog.events.listen(document, goog.events.EventType.KEYDOWN, goog.bind(function(event) {
+				if (event.defaultPrevented)
+				{
+					return;
+				}
+				else if (event.ctrlKey && event.keyCode == goog.events.KeyCodes.Z)
+				{
+					this._undo();
+				}
+				else if (event.ctrlKey && event.keyCode == goog.events.KeyCodes.Y)
+				{
+					this._redo();
+				}
+				event.preventDefault();
+			}, this));
 		},
 
 		/**
