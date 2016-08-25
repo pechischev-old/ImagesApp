@@ -46,6 +46,7 @@ goog.scope(function () {
 		_doExecute: function() {
 			this._imageView = this._view.removeImageOnIndex(this._index);
 			this._imageModel = this._model.removeImageOnIndex(this._index);
+			this._imageView.setVisibleBorder(false);
 		},
 
 		/**

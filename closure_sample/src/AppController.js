@@ -21,7 +21,7 @@ goog.scope(function() {
             this._view = new AppView();
 			/** @private {ImageController} */
             this._imageCntr = new ImageController(this._model.getImagesModel(), this._view.getImagesView());
-
+            
             this._addActions();
         },
 

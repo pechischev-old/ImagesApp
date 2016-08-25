@@ -39,6 +39,7 @@ goog.scope(function () {
 		 * @return {view.ImageView}
 		 */
 		removeImageOnIndex: function(index) {
+			index = (index == -1) ? this._imagesView.length - 1 : index;
 			if (index < 0 && index >= this._imagesView.length )
 			{
 				throw new Error("index is out of range array");
@@ -54,6 +55,7 @@ goog.scope(function () {
 		 * @param {number} index
 		 */
 		insertImageOnIndex:function(image, index) {
+			index = (index == -1) ? this._imagesView.length : index;
 			this._imagesView.splice(index, 0, image);
 			if (this._canvas.childElementCount >= index)
 			{
@@ -66,11 +68,6 @@ goog.scope(function () {
 
 		},
 
-		deleteImage: function () {
-			var image = this._imagesView.pop().getDOMElement();
-			image.parentNode.removeChild(image);
-		},
-
 		deselectOtherImages: function() {
 			this._imagesView.forEach(function(image) {
 				if (image.isSelected())
@@ -78,18 +75,6 @@ goog.scope(function () {
 					image.setVisibleBorder(false);
 				}
 			});
-		},
-
-
-		/**
-		 * @param {!goog.math.Rect} frame
-		 * @param {string} path
-		 */
-		addImage: function(frame, path) {
-			/** @type {view.ImageView} */
-			var image = new view.ImageView(frame, path);
-			this._imagesView.push(image);
-			return image;
 		}
 	});
 });

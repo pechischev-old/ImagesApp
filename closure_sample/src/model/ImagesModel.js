@@ -23,12 +23,9 @@ goog.scope(function () {
 		 * @param {!goog.math.Size} naturalSize
 		 * @return {model.Image}
 		 */
-		addImage: function (naturalSize) {
+		createImage: function (naturalSize) {
 			var size = this._getCalculatingAppropriateSize(naturalSize);
-			/** @type {model.Image} */
-			var image = new model.Image(new goog.math.Rect(50, 50, size.width, size.height));
-			this._imagesModel.push(image);
-			return image;
+			return new model.Image(new goog.math.Rect(50, 50, size.width, size.height));
 		},
 
 		/**
@@ -36,7 +33,8 @@ goog.scope(function () {
 		 * @return {model.Image}
 		 */
 		removeImageOnIndex: function(index) {
-			if (index < 0 && index >= this._images.length )
+			index = (index == -1) ? (this._imagesModel.length - 1) : index;
+			if (index < 0 && index >= this._imagesModel.length )
 			{
 				throw new Error("index is out of range array");
 			}
@@ -48,14 +46,8 @@ goog.scope(function () {
 		 * @param {number} index
 		 */
 		insertImageOnIndex: function (image, index) {
+			index = (index == -1) ? this._imagesModel.length : index;
 			this._imagesModel.splice(index, 0, image);
-		},
-
-		/**
-		 * @return {model.Image}
-		 */
-		removeLastImage: function () { // TODO: что-нибудь придумать!!!
-			return this._imagesModel.pop();
 		},
 
 		/**

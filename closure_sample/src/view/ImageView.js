@@ -7,7 +7,9 @@ goog.require("observer.IObserver");
 goog.require("view.Node");
 
 goog.scope(function() {
-
+    /** @const {Array<string>} */
+    const CLASSES = ['se', 's', 'sw', 'e', 'w', 'ne', 'n', 'nw'];
+    
     /**
      * @param {!goog.math.Rect} frame
      * @param {string} path
@@ -64,6 +66,7 @@ goog.scope(function() {
         setFrame: function(frame){
             this._frame = frame;
             this._reloadStyleSize();
+            this._border.setFrame(frame);
         },
 
 		/**
@@ -96,6 +99,15 @@ goog.scope(function() {
             var image = this._container.getElementsByTagName(goog.dom.TagName.IMG)[0];
             this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
         },
+
+		/**
+         * @param {!goog.math.Coordinate} position
+         * @returns {boolean}
+         */
+        checkOutputAbroadForResize:function(position) {
+            return this._frame.contains(position);
+
+        },
 	    
         /**
          * @private
@@ -116,6 +128,50 @@ goog.scope(function() {
             /** @private {view.Border} */
             this._border = new view.Border(this._frame);
             this._container.appendChild(this._border.getDOMElement());
+            
+            this._initCorners();
+        },
+
+		/**
+		 * @private
+         */
+        _initCorners: function () {
+            /** @private {!Element} */
+            this._SECorner = this._border.createCorner(CLASSES[0]);
+            /** @private {!Element} */
+            this._SCorner = this._border.createCorner(CLASSES[1]);
+            /** @private {!Element} */
+            this._SWCorner = this._border.createCorner(CLASSES[2]);
+            /** @private {!Element} */
+            this._ECorner = this._border.createCorner(CLASSES[3]);
+            /** @private {!Element} */
+            this._WCorner = this._border.createCorner(CLASSES[4]);
+            /** @private {!Element} */
+            this._NECorner = this._border.createCorner(CLASSES[5]);
+            /** @private {!Element} */
+            this._NCorner = this._border.createCorner(CLASSES[6]);
+            /** @private {!Element} */
+            this._NWCorner = this._border.createCorner(CLASSES[7]);
+        },
+
+        /** @return {!Element} */
+        getSECorner: function() {
+            return this._SECorner;
+        },
+
+        /** @return {!Element} */
+        getSWCorner: function() {
+            return this._SWCorner;
+        },
+
+        /** @return {!Element} */
+        getNWCorner: function() {
+            return this._NWCorner;
+        },
+
+        /** @return {!Element} */
+        getNECorner: function() {
+            return this._NECorner;
         }
 
     });

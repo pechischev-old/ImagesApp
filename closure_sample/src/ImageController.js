@@ -46,30 +46,31 @@ goog.scope(function () {
 
 		/**
 		 * @param {string} path
-		 * @param {!Element} canvas
 		 */
-		addImage: function(path, canvas) {
+		addImage: function(path) {
 
 			var img = new Image(0, 0);
 			img.src = path;
 			img.onload = goog.bind(function(){
-				var imageModel = this._imagesModel.addImage(new goog.math.Size(img.naturalWidth, img.naturalHeight));
-				var imageView = this._imagesView.addImage(imageModel.getFrame(), path);
+				var imageModel = this._imagesModel.createImage(new goog.math.Size(img.naturalWidth, img.naturalHeight));
+				var imageView = new view.ImageView(imageModel.getFrame(), path);
 				imageModel.registerObserver(imageView);
+
 				var imageElem = imageView.getDOMElement();
-				canvas.appendChild(imageElem);
-				
+				var command = new AddImageCommand(this._imagesModel, this._imagesView, imageModel, imageView);
+
+				this._history.recordAction(command);
 				goog.events.listen(imageElem.parentElement, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
 					if (event.defaultPrevented)
 					{
-						return;
+						return false;
 					}
 					else if (imageView.isSelected())
 					{
 						imageView.setVisibleBorder(false);
 					}
 				}, this));
-
+				
 				imageElem.onmousedown = goog.bind(function(event) {
 
 					this._imagesView.deselectOtherImages();
@@ -88,10 +89,84 @@ goog.scope(function () {
 					}
 					event.preventDefault();
 				}, this);
-
+				//this._resize(imageModel, imageView);
 			}, this);
 		},
 
+		/**
+		 * @param {model.Image} model
+		 * @param {view.ImageView} view
+		 * @private
+		 */
+		/*_resize:function (model, view) {
+			var se = view.getSECorner();
+			se.onmousedown = goog.bind(function(event) {
+				if ( event.defaultPrevented ) { return; }
+				else if ( event.which > 1 ) { return; }
+				else if ( !view.isSelected()) {return; }
+
+				var oldFrame = view.getFrame();
+				var oldSize = oldFrame.getSize();
+
+				var shift = goog.math.Coordinate.difference(new goog.math.Coordinate(event.pageX, event.pageY), oldFrame.getTopLeft());
+
+				var keyMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, goog.bind(function(event) {
+
+					var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
+					var deltaD = goog.math.Coordinate.difference(oldFrame.getTopLeft(), mousePos);
+					var pos = goog.math.Coordinate.difference(mousePos, shift);
+					var width = oldSize.width + deltaD.x;
+					var height = oldSize.height + deltaD.y;
+					if (!view.checkOutputAbroadForResize(pos)) {
+						view.setFrame(new goog.math.Rect(pos.x, pos.y, width, height));
+					}
+				}, this));
+				var keyUp = goog.events.listen(se, goog.events.EventType.MOUSEUP, goog.bind(function() {
+					var newframe = view.getFrame();
+					if (!goog.math.Rect.equals(newframe, oldFrame))
+					{
+						var command = new ResizeCommand(model, newframe);
+						this._history.recordAction(command);
+					}
+					goog.events.unlistenByKey(keyMove);
+					goog.events.unlistenByKey(keyUp);
+				}, this));
+				event.preventDefault();
+			}, this);
+
+			var nw = view.getNWCorner(); // TODO: рассчитать сдвиги
+			nw.onmousedown = goog.bind(function(event) {
+				if ( event.defaultPrevented ) { return; }
+				else if ( event.which > 1 ) { return; }
+				else if ( !view.isSelected()) {return; }
+
+				var oldFrame = view.getFrame();
+				var oldSize = oldFrame.getSize();
+
+				var keyMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, goog.bind(function(event) {
+
+					var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
+					var deltaD = goog.math.Coordinate.difference(mousePos, oldFrame.getBottomRight());
+					console.log(deltaD);
+					var width = oldSize.width + deltaD.x;
+					var height = oldSize.height + deltaD.y;
+					var pos = oldFrame.getTopLeft();
+					view.setFrame(new goog.math.Rect(pos.x, pos.y, width, height));
+
+				}, this));
+				var keyUp = goog.events.listen(nw, goog.events.EventType.MOUSEUP, goog.bind(function() {
+					var newframe = view.getFrame();
+					if (!goog.math.Rect.equals(newframe, oldFrame))
+					{
+						var command = new ResizeCommand(model, newframe);
+						this._history.recordAction(command);
+					}
+					goog.events.unlistenByKey(keyMove);
+					goog.events.unlistenByKey(keyUp);
+				}, this));
+				event.preventDefault();
+			}, this);
+		},*/
 
 		/**
 		 * @param {model.Image} model
@@ -100,6 +175,7 @@ goog.scope(function () {
 		 * @private
 		 */
 		_startDrag: function(model, view,  event) {
+			if (event.defaultPrevented) { return; }
 			var oldPos = model.getFrame().getTopLeft();
 			var size = model.getFrame().getSize();
 			var elem = view.getDOMElement();
@@ -125,10 +201,7 @@ goog.scope(function () {
 
 		},
 
-		/**
-		 * @param {!Element} canvas
-		 */
-		deleteImage: function(canvas) {
+		deleteImage: function() {
 			var index = this._imagesView.getIndexSelectingImage();
 			if (String(index))
 			{
