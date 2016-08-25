@@ -1,31 +1,31 @@
-goog.provide("command.DeleteCommand");
+goog.provide("imageApp.command.DeleteCommand");
 
-goog.require("command.AbstractAction");
+goog.require("imageApp.command.AbstractAction");
 
 
 goog.scope(function () {
 
 	/**
-	 * @param {model.ImagesModel} model
-	 * @param {view.ImagesView} view
+	 * @param {imageApp.model.ImagesModel} model
+	 * @param {imageApp.view.ImagesView} view
 	 * @param {!number} index
-	 * @extends {command.AbstractAction}
+	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
-	command.DeleteCommand = goog.defineClass(command.AbstractAction, {
+	imageApp.command.DeleteCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
-		 * @param {model.ImagesModel} model
-		 * @param {view.ImagesView} view
+		 * @param {imageApp.model.ImagesModel} model
+		 * @param {imageApp.view.ImagesView} view
 		 * @param {!number} index
 		 */
 		constructor: function(model, view, index) {
 			goog.base(this);
 			/**
-			 * @private {model.ImagesModel}
+			 * @private {imageApp.model.ImagesModel}
 			 */
 			this._model = model;
 			/**
-			 * @private {view.ImagesView}
+			 * @private {imageApp.view.ImagesView}
 			 */
 			this._view = view;
 
@@ -33,9 +33,9 @@ goog.scope(function () {
 			 * @private {!number}
 			 */
 			this._index = index;
-			/** @private {?view.ImageView} */
+			/** @private {?imageApp.view.ImageView} */
 			this._imageView = null;
-			/** @private {?model.Image} */
+			/** @private {?imageApp.model.Image} */
 			this._imageModel = null;
 
 		},

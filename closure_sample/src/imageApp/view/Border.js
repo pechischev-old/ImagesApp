@@ -1,8 +1,8 @@
-goog.provide("view.Border");
+goog.provide("imageApp.view.Border");
 
 goog.require("goog.dom");
 goog.require("goog.math.Rect");
-goog.require("view.Node");
+goog.require("imageApp.view.Node");
 
 goog.scope(function() {
     
@@ -10,9 +10,9 @@ goog.scope(function() {
     /**
      * @param {goog.math.Rect} frame
      * @constructor 
-     * @extends {view.Node} 
+     * @extends {imageApp.view.Node} 
      */
-    view.Border = goog.defineClass(view.Node, {
+    imageApp.view.Border = goog.defineClass(imageApp.view.Node, {
         constructor: function(frame) {
             goog.base(this);
             /** @private {goog.math.Rect} */
@@ -55,7 +55,7 @@ goog.scope(function() {
             this.deactiveBorder();
         },
         
-		/**
+        /**
          * @param {string} name
          * @return {!Element}
          */

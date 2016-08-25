@@ -1,6 +1,6 @@
-goog.provide("view.ImagesView");
+goog.provide("imageApp.view.ImagesView");
 
-goog.require("view.ImageView");
+goog.require("imageApp.view.ImageView");
 
 goog.scope(function () {
 
@@ -8,13 +8,13 @@ goog.scope(function () {
 	 * @param {!Element} canvas
 	 * @constructor
 	 */
-	view.ImagesView = goog.defineClass(null, {
+	imageApp.view.ImagesView = goog.defineClass(null, {
 
 		/**
 		 * @param {!Element} canvas
 		 */
 		constructor: function (canvas) {
-			/** @private {Array<view.ImageView>} */
+			/** @private {Array<imageApp.view.ImageView>} */
 			this._imagesView = [];
 			/** @private {!Element} */
 			this._canvas = canvas;
@@ -36,7 +36,7 @@ goog.scope(function () {
 
 		/**
 		 * @param {number} index
-		 * @return {view.ImageView}
+		 * @return {imageApp.view.ImageView}
 		 */
 		removeImageOnIndex: function(index) {
 			var image;
@@ -61,7 +61,7 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @param {view.ImageView} image
+		 * @param {imageApp.view.ImageView} image
 		 * @private
 		 */
 		_deleteFromDOM: function (image) {
@@ -70,7 +70,7 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @param {view.ImageView} image
+		 * @param {imageApp.view.ImageView} image
 		 * @param {number} index
 		 */
 		insertImageOnIndex:function(image, index) {

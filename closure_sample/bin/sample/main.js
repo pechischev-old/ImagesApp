@@ -1,16 +1,16 @@
 goog.provide("Sample");
 
-goog.require("AppController");
-goog.require("AppModel");
+goog.require("imageApp.AppController");
+goog.require("imageApp.AppModel");
 /**
  * @export
  */
 Sample.start = function()
 {
-	var model = new AppModel();
-	var controller = new AppController(model);
+	var model = new imageApp.AppModel();
+	var controller = new imageApp.AppController(model);
 	var idTimer = setInterval(function() {
-		//model.outputLog();
+		model.outputLog();
 	}, 0);
 
 };

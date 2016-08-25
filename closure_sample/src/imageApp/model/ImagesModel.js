@@ -1,6 +1,6 @@
-goog.provide("model.ImagesModel");
+goog.provide("imageApp.model.ImagesModel");
 
-goog.require("model.Image");
+goog.require("imageApp.model.Image");
 
 goog.scope(function () {
 
@@ -10,27 +10,30 @@ goog.scope(function () {
 	/**
 	 * @constructor
 	 */
-	model.ImagesModel = goog.defineClass(null, {
+	imageApp.model.ImagesModel = goog.defineClass(null, {
 		constructor: function () {
 
 			/**
-			 * @private {Array<model.Image>}
+			 * @private {Array<imageApp.model.Image>}
 			 */
 			this._imagesModel = [];
+
+			/** @private {boolean} */
+			this._isChange = false;
 		},
 
 		/**
 		 * @param {!goog.math.Size} naturalSize
-		 * @return {model.Image}
+		 * @return {imageApp.model.Image}
 		 */
 		createImage: function (naturalSize) {
 			var size = this._getCalculatingAppropriateSize(naturalSize);
-			return new model.Image(new goog.math.Rect(50, 50, size.width, size.height));
+			return new imageApp.model.Image(new goog.math.Rect(50, 50, size.width, size.height));
 		},
 
 		/**
 		 * @param {number} index
-		 * @return {model.Image}
+		 * @return {imageApp.model.Image}
 		 */
 		removeImageOnIndex: function(index) {
 			if (index == -1) 
@@ -41,16 +44,18 @@ goog.scope(function () {
 			{
 				throw new Error("index is out of range array");
 			}
+			this._isChange = true;
 			return this._imagesModel.splice(index, 1)[0];
 		},
 
 		/**
-		 * @param {model.Image} image
+		 * @param {imageApp.model.Image} image
 		 * @param {number} index
 		 */
 		insertImageOnIndex: function (image, index) {
 			index = (index == -1) ? this._imagesModel.length : index;
 			this._imagesModel.splice(index, 0, image);
+			this._isChange = true;
 		},
 
 		/**
@@ -68,8 +73,20 @@ goog.scope(function () {
 		},
 
 		outputLog: function () {
+			this._outLog();
 			for (var i = 0; i < this._imagesModel.length; ++i) {
 				this._imagesModel[i].outLog(i);
+			}
+		},
+
+		/**
+		 * @private
+		 */
+		_outLog: function () {
+			if (this._isChange)
+			{
+				console.log("The number of models: " + this._imagesModel.length);
+				this._isChange = false;
 			}
 		}
 

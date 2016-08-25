@@ -1,39 +1,39 @@
-goog.provide("ImageController");
+goog.provide("imageApp.ImageController");
 
-goog.require("command.MoveCommand");
-goog.require("command.AddImageCommand");
-goog.require("command.DeleteCommand");
-goog.require("command.ResizeCommand");
+goog.require("imageApp.command.MoveCommand");
+goog.require("imageApp.command.AddImageCommand");
+goog.require("imageApp.command.DeleteCommand");
+goog.require("imageApp.command.ResizeCommand");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 
 goog.scope(function () {
-	var MoveCommand = command.MoveCommand;
-	var AddImageCommand = command.AddImageCommand;
-	var DeleteCommand = command.DeleteCommand;
-	var ResizeCommand = command.ResizeCommand;
+	var MoveCommand = imageApp.command.MoveCommand;
+	var AddImageCommand = imageApp.command.AddImageCommand;
+	var DeleteCommand = imageApp.command.DeleteCommand;
+	var ResizeCommand = imageApp.command.ResizeCommand;
 
 	/**
-	 * @param {model.ImagesModel} imagesModel
-	 * @param {view.ImagesView} imagesView
-	 * @param {command.History} history
+	 * @param {imageApp.model.ImagesModel} imagesModel
+	 * @param {imageApp.view.ImagesView} imagesView
+	 * @param {imageApp.command.History} history
 	 * @constructor
 	 */
-	ImageController = goog.defineClass(null, {
+	imageApp.ImageController = goog.defineClass(null, {
 		/**
- 		 * @param {model.ImagesModel} imagesModel
- 		 * @param {view.ImagesView}imagesView
-		 * @param {command.History} history
+ 		 * @param {imageApp.model.ImagesModel} imagesModel
+ 		 * @param {imageApp.view.ImagesView}imagesView
+		 * @param {imageApp.command.History} history
 		 */
 		constructor: function (imagesModel, imagesView, history) {
-			/** @private {model.ImagesModel} */
+			/** @private {imageApp.model.ImagesModel} */
 			this._imagesModel = imagesModel;
-			/** @private {view.ImagesView} */
+			/** @private {imageApp.view.ImagesView} */
 			this._imagesView = imagesView;
 
-			/** @private {command.History} */
-			this._history = history; // TODO: заменить на табы пробелы
+			/** @private {imageApp.command.History} */
+			this._history = history;
 		},
 
 		/**
@@ -52,7 +52,7 @@ goog.scope(function () {
 		 */
 		_onLoadImage: function(size, path) {
 			var imageModel = this._imagesModel.createImage(size);
-			var imageView = new view.ImageView(imageModel.getFrame(), path);
+			var imageView = new imageApp.view.ImageView(imageModel.getFrame(), path);
 			imageModel.registerObserver(imageView);
 
 			var imageElem = imageView.getDOMElement();
@@ -130,6 +130,13 @@ goog.scope(function () {
 			});
 		},
 
+		/**
+		 * @param corner
+		 * @param model
+		 * @param view
+		 * @param handler
+		 * @private
+		 */
 		_addResizeListener: function(corner, model, view, handler) {
 			corner.onmousedown = goog.bind(function(event) {
 				if ( event.defaultPrevented ) { return; }
@@ -163,8 +170,8 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @param {model.Image} model
-		 * @param {view.ImageView} view
+		 * @param {imageApp.model.Image} model
+		 * @param {imageApp.view.ImageView} view
 		 * @param {!Event} event
 		 * @private
 		 */
@@ -182,7 +189,7 @@ goog.scope(function () {
 				view.setFrame(new goog.math.Rect(newPos.x, newPos.y, size.width, size.height));
 			}, this));
 
-			var keyMouseUp = goog.events.listen(elem, goog.events.EventType.MOUSEUP, goog.bind(function() {
+			var keyMouseUp = goog.events.listen(document, goog.events.EventType.MOUSEUP, goog.bind(function() {
 				var newPos = view.getPos();
 				if (!goog.math.Coordinate.equals(newPos,oldPos))
 				{

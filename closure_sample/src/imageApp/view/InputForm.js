@@ -1,15 +1,15 @@
-goog.provide("view.InputForm");
+goog.provide("imageApp.view.InputForm");
 
-goog.require("view.Node");
+goog.require("imageApp.view.Node");
 goog.require("goog.dom");
 
 goog.scope(function() {
 
     /** 
-     * @extends {view.Node}
+     * @extends {imageApp.view.Node}
      * @constructor
      */
-    view.InputForm = goog.defineClass(view.Node, {
+    imageApp.view.InputForm = goog.defineClass(imageApp.view.Node, {
         constructor: function() {
             goog.base(this);
             /** @private {!Element} */

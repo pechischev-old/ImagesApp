@@ -1,23 +1,23 @@
-goog.provide("view.ImageView");
+goog.provide("imageApp.view.ImageView");
 
 
 goog.require("goog.dom");
-goog.require("view.Border");
-goog.require("observer.IObserver");
-goog.require("view.Node");
+goog.require("imageApp.view.Border");
+goog.require("imageApp.observer.IObserver");
+goog.require("imageApp.view.Node");
 
 goog.scope(function() {
     /** @const {Array<string>} */
     const CLASSES = ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se'];
-    
+
     /**
      * @param {!goog.math.Rect} frame
      * @param {string} path
-     * @implements {observer.IObserver}
-     * @extends {view.Node}
+     * @implements {imageApp.observer.IObserver}
+     * @extends {imageApp.view.Node}
      * @constructor
      */
-    view.ImageView = goog.defineClass(view.Node, {
+    imageApp.view.ImageView = goog.defineClass(imageApp.view.Node, {
         constructor: function(frame, path) {
             goog.base(this);
             /** @private {string} */
@@ -69,15 +69,15 @@ goog.scope(function() {
             this._border.setFrame(frame);
         },
 
-		/**
+        /**
          * @returns {!goog.math.Rect}
          */
         getFrame: function() {
             return this._frame;
         },
 
-		/**
-		 * @return {!goog.math.Coordinate}
+        /**
+         * @return {!goog.math.Coordinate}
          */
         getPos: function() {
             return this._frame.getTopLeft();
@@ -90,7 +90,7 @@ goog.scope(function() {
         getDOMElement: function(){
             return this._container;
         },
-	    
+
         /** 
          * @private 
          */
@@ -100,15 +100,6 @@ goog.scope(function() {
             this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
         },
 
-		/**
-         * @param {!goog.math.Coordinate} position
-         * @returns {boolean}
-         */
-        checkOutputAbroadForResize:function(position) {
-            return this._frame.contains(position);
-
-        },
-	    
         /**
          * @private
          */
@@ -125,15 +116,15 @@ goog.scope(function() {
             this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
             this._container.appendChild(image);
 
-            /** @private {view.Border} */
-            this._border = new view.Border(this._frame);
+            /** @private {imageApp.view.Border} */
+            this._border = new imageApp.view.Border(this._frame);
             this._container.appendChild(this._border.getDOMElement());
             
             this._initCorners();
         },
 
-		/**
-		 * @private
+        /**
+         * @private
          */
         _initCorners: function () {
             /** @private {!Element} */
@@ -154,45 +145,60 @@ goog.scope(function() {
             this._SECorner = this._border.createCorner(CLASSES[7]);
         },
 
-        /** @return {!Element} */
+        /** 
+         * @return {!Element} 
+         */
         getSECorner: function() {
             return this._SECorner;
         },
 
-        /** @return {!Element} */
+        /** 
+         * @return {!Element} 
+         */
         getSWCorner: function() {
             return this._SWCorner;
         },
 
-        /** @return {!Element} */
+        /** 
+         * @return {!Element} 
+         */
         getNWCorner: function() {
             return this._NWCorner;
         },
 
-        /** @return {!Element} */
+        /**
+         * @return {!Element} 
+         */
         getNECorner: function() {
             return this._NECorner;
         },
         
-        /** @return {!Element} */
+        /**
+         * @return {!Element} 
+         */
         getSCorner: function() {
             return this._SCorner;
         },
 
-        /** @return {!Element} */
+        /** 
+         * @return {!Element} 
+         */
         getWCorner: function() {
             return this._WCorner;
         },
 
-        /** @return {!Element} */
+        /** 
+         * @return {!Element} 
+         */
         getNCorner: function() {
             return this._NCorner;
         },
 
-        /** @return {!Element} */
+        /** 
+         * @return {!Element} 
+         */
         getECorner: function() {
             return this._ECorner;
         }
-
     });
 });

@@ -1,26 +1,26 @@
-goog.provide("command.History");
+goog.provide("imageApp.command.History");
 
 
-goog.require("command.IHistory");
-goog.require("command.IAction");
+goog.require("imageApp.command.IHistory");
+goog.require("imageApp.command.IAction");
 
 goog.scope(function() {
 
 	/**
-	 * @implements {command.IHistory}
-	 * @implements {command.IHistoryViewDelegate}
+	 * @implements {imageApp.command.IHistory}
+	 * @implements {imageApp.command.IHistoryViewDelegate}
 	 * @constructor
 	 */
-	command.History = goog.defineClass(null, {
+	imageApp.command.History = goog.defineClass(null, {
 		constructor: function() {
-			/** @private {Array<command.IAction>}*/
+			/** @private {Array<imageApp.command.IAction>}*/
 			this._actions = [];
 			/** @private {!number} */
 			this._currentActionIndex = 0;
 		},
 
 		/**
-		 * @param {command.IAction} action
+		 * @param {imageApp.command.IAction} action
 		 */
 		recordAction: function(action) {
 			if (this._currentActionIndex < this._actions.length)

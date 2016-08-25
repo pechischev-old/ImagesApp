@@ -1,22 +1,22 @@
-goog.provide("AppModel");
+goog.provide("imageApp.AppModel");
 
-goog.require("model.ImagesModel");
+goog.require("imageApp.model.ImagesModel");
 
 goog.scope(function () {
 
 	/**
 	 * @constructor
 	 */
-	AppModel = goog.defineClass(null, {
+	imageApp.AppModel = goog.defineClass(null, {
 		constructor: function () {
 			/**
-			 * @private {model.ImagesModel}
+			 * @private {imageApp.model.ImagesModel}
 			 */
-			this._imagesModel = new model.ImagesModel();
+			this._imagesModel = new imageApp.model.ImagesModel();
 		},
 
 		/**
-		 * @returns {model.ImagesModel}
+		 * @returns {imageApp.model.ImagesModel}
 		 */
 		getImagesModel: function () {
 			return this._imagesModel;

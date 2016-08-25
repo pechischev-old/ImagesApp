@@ -1,15 +1,15 @@
-goog.provide("view.Node");
+goog.provide("imageApp.view.Node");
 
-goog.require("view.IDOMElement");
+goog.require("imageApp.view.IDOMElement");
 goog.require("goog.style");
 
 goog.scope(function() {
 
     /**
-     * @implements {view.IDOMElement}
+     * @implements {imageApp.view.IDOMElement}
      * @constructor
      */
-    view.Node = goog.defineClass(null, {
+    imageApp.view.Node = goog.defineClass(null, {
         constructor: function () {
         },
 

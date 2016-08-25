@@ -1,17 +1,17 @@
-goog.provide("view.Button");
+goog.provide("imageApp.view.Button");
 
 goog.require("goog.dom");
-goog.require("view.Node");
+goog.require("imageApp.view.Node");
 
 goog.scope(function () {
 
     /**
      * @param {string} text
-     * @implements {view.IDOMElement}
-     * @extends {view.Node}
+     * @implements {imageApp.view.IDOMElement}
+     * @extends {imageApp.view.Node}
      * @constructor
      */
-    view.Button = goog.defineClass(view.Node, {
+    imageApp.view.Button = goog.defineClass(imageApp.view.Node, {
         /**
          * @param {string} text
          */

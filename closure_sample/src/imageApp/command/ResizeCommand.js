@@ -1,24 +1,24 @@
-goog.provide("command.ResizeCommand");
+goog.provide("imageApp.command.ResizeCommand");
 
-goog.require("command.AbstractAction");
-goog.require("model.Image");
+goog.require("imageApp.command.AbstractAction");
+goog.require("imageApp.model.Image");
 
 goog.scope(function () {
 
 	/**
-	 * @param {model.Image} shapeModel
+	 * @param {imageApp.model.Image} shapeModel
 	 * @param {!goog.math.Rect} newFrame
-	 * @extends {command.AbstractAction}
+	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
-	command.ResizeCommand = goog.defineClass(command.AbstractAction, {
+	imageApp.command.ResizeCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
-		 * @param {model.Image} shapeModel
+		 * @param {imageApp.model.Image} shapeModel
 		 * @param {!goog.math.Rect} newFrame
 		 */
 		constructor: function(shapeModel, newFrame) {
 			goog.base(this);
-			/** @private {model.Image} */
+			/** @private {imageApp.model.Image} */
 			this._shapeModel = shapeModel;
 			/** @private {!goog.math.Rect} */
 			this._oldFrame = shapeModel.getFrame();
