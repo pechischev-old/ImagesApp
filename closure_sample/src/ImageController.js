@@ -89,7 +89,7 @@ goog.scope(function () {
 					}
 					event.preventDefault();
 				}, this);
-				//this._resize(imageModel, imageView);
+				this._resize(imageModel, imageView);
 			}, this);
 		},
 
@@ -98,7 +98,7 @@ goog.scope(function () {
 		 * @param {view.ImageView} view
 		 * @private
 		 */
-		/*_resize:function (model, view) {
+		_resize:function (model, view) {
 			var se = view.getSECorner();
 			se.onmousedown = goog.bind(function(event) {
 				if ( event.defaultPrevented ) { return; }
@@ -117,10 +117,11 @@ goog.scope(function () {
 					var pos = goog.math.Coordinate.difference(mousePos, shift);
 					var width = oldSize.width + deltaD.x;
 					var height = oldSize.height + deltaD.y;
-					if (!view.checkOutputAbroadForResize(pos)) {
+					//if (!view.checkOutputAbroadForResize(pos)) {
 						view.setFrame(new goog.math.Rect(pos.x, pos.y, width, height));
-					}
+					//}
 				}, this));
+
 				var keyUp = goog.events.listen(se, goog.events.EventType.MOUSEUP, goog.bind(function() {
 					var newframe = view.getFrame();
 					if (!goog.math.Rect.equals(newframe, oldFrame))
@@ -142,12 +143,10 @@ goog.scope(function () {
 
 				var oldFrame = view.getFrame();
 				var oldSize = oldFrame.getSize();
-
+				var firstMousePos = new goog.math.Coordinate(event.pageX, event.pageY);
 				var keyMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, goog.bind(function(event) {
-
 					var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
-					var deltaD = goog.math.Coordinate.difference(mousePos, oldFrame.getBottomRight());
-					console.log(deltaD);
+					var deltaD = goog.math.Coordinate.difference(mousePos, firstMousePos);
 					var width = oldSize.width + deltaD.x;
 					var height = oldSize.height + deltaD.y;
 					var pos = oldFrame.getTopLeft();
@@ -166,7 +165,7 @@ goog.scope(function () {
 				}, this));
 				event.preventDefault();
 			}, this);
-		},*/
+		},
 
 		/**
 		 * @param {model.Image} model
