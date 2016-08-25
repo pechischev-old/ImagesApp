@@ -40,57 +40,50 @@ goog.scope(function () {
 		 * @param {string} path
 		 */
 		addImage: function(path) {
-			goog.style.setStyle(document.body, "cursor", "progress");
+			goog.style.setStyle(document.documentElement, "cursor", "progress");
 			var img = new Image(0, 0);
 			img.src = path;
-			img.onload = goog.bind(this._onLoadImage, this, new goog.math.Size(img.naturalWidth, img.naturalHeight), path);
+			img.onload = goog.bind(this._onLoadImage, this, img);
 		},
 
 		/**
-		 * @param {!goog.math.Size} size
-		 * @param {string} path
+		 * @param {Image} elem
 		 * @private
 		 */
-		_onLoadImage: function(size, path) {
-			goog.style.setStyle(document.body, "cursor", "default");
-			var imageModel = this._imagesModel.createImage(size);
-			var imageView = new imageApp.view.ImageView(imageModel.getFrame(), path);
+		_onLoadImage: function(elem) {
+			
+			var imageModel = this._imagesModel.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight));
+			var imageView = new imageApp.view.ImageView(imageModel.getFrame(), elem.src);
 			imageModel.registerObserver(imageView);
 
 			var imageElem = imageView.getDOMElement();
-			var command = new AddImageCommand(this._imagesModel, this._imagesView, imageModel, imageView);
 
+			var command = new AddImageCommand(this._imagesModel, this._imagesView, imageModel, imageView);
 			this._history.recordAction(command);
+			goog.style.setStyle(document.documentElement, "cursor", "default");
 			goog.events.listen(imageElem.parentElement, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
 				if (event.defaultPrevented)
 				{
 					return false;
 				}
-				else if (imageView.isSelected())
+				if (imageView.isSelected())
 				{
 					imageView.setVisibleBorder(false);
 				}
 			}, this));
 
-			imageElem.onmousedown = goog.bind(function(event) {
-
+			goog.events.listen(imageElem, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
 				this._imagesView.deselectOtherImages();
 
 				imageView.setVisibleBorder(true);
-				if (event.defaultPrevented)
+				if (event.defaultPrevented || event.which > 1 || !imageView.isSelected())
 				{
 					return;
 				}
-				else if (event.which > 1)
-				{
-					return;
-				}
-				if (imageView.isSelected() )
-				{
-					this._startDrag(imageModel, imageView, event);
-				}
+				this._startDrag(imageModel, imageView, event);
 				event.preventDefault();
-			}, this);
+			}, this));
+
 
 			var nw = imageView.getNWCorner();
 			this._addResizeListener(nw, imageModel, imageView, function(frame, shift){
@@ -134,32 +127,24 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @param corner
-		 * @param model
-		 * @param view
-		 * @param handler
+		 * @param {!Element} corner
+		 * @param {imageApp.model.Image} model
+		 * @param {imageApp.view.ImageView} view
+		 * @param {function(!goog.math.Rect, !goog.math.Coordinate): !goog.math.Rect} handler
 		 * @private
 		 */
 		_addResizeListener: function(corner, model, view, handler) {
-			corner.onmousedown = goog.bind(function(event) {
-				if ( event.defaultPrevented )
-				{
-					return;
-				}
-				else if ( event.which > 1 )
-				{
-					return;
-				}
-				else if ( !view.isSelected())
+			goog.events.listen(corner, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
+				if ( event.defaultPrevented || event.which > 1 || !view.isSelected())
 				{
 					return;
 				}
 
 				var oldFrame = view.getFrame();
-				var startPos = new goog.math.Coordinate(event.pageX, event.pageY);
+				var startPos = new goog.math.Coordinate(event.screenX, event.screenY);
 
 				var keyMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, function(event) {
-					var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
+					var mousePos = new goog.math.Coordinate(event.screenX, event.screenY);
 					var shiftMouse = goog.math.Coordinate.difference(startPos, mousePos);
 
 					var newRect = handler(oldFrame, shiftMouse);
@@ -178,7 +163,7 @@ goog.scope(function () {
 					goog.events.unlistenByKey(keyUp);
 				}, this));
 				event.preventDefault();
-			}, this);
+			}, this));
 		},
 
 		/**
@@ -194,15 +179,14 @@ goog.scope(function () {
 			}
 			var oldPos = model.getFrame().getTopLeft();
 			var size = model.getFrame().getSize();
-			var elem = view.getDOMElement();
 
-			var shift = goog.math.Coordinate.difference(new goog.math.Coordinate(event.pageX, event.pageY), oldPos);
+			var shift = goog.math.Coordinate.difference(new goog.math.Coordinate(event.screenX, event.screenY), oldPos);
 
-			var keyMouseMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, goog.bind(function(event) {
-				var mousePos = new goog.math.Coordinate(event.clientX, event.clientY);
+			var keyMouseMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, function(event) {
+				var mousePos = new goog.math.Coordinate(event.screenX, event.screenY);
 				var newPos = goog.math.Coordinate.difference(mousePos, shift);
 				view.setFrame(new goog.math.Rect(newPos.x, newPos.y, size.width, size.height));
-			}, this));
+			});
 
 			var keyMouseUp = goog.events.listen(document, goog.events.EventType.MOUSEUP, goog.bind(function() {
 				var newPos = view.getPos();

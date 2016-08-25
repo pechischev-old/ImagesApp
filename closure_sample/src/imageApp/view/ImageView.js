@@ -7,11 +7,10 @@ goog.require("imageApp.observer.IObserver");
 goog.require("imageApp.view.Node");
 
 goog.scope(function() {
-	/** @const {Array<string>} */
-	const CLASSES = ['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se'];
 
 	/** @const {!goog.math.Size} */
 	const MIN_SIZE = new goog.math.Size(200, 200);
+
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @param {string} path
@@ -140,27 +139,26 @@ goog.scope(function() {
 		},
 
 
-
 		/**
 		 * @private
 		 */
 		_initCorners: function () {
 			/** @private {!Element} */
-			this._NWCorner = this._border.createCorner(CLASSES[0]);
+			this._NWCorner = this._border.createCorner("nw");
 			/** @private {!Element} */
-			this._NCorner = this._border.createCorner(CLASSES[1]);
+			this._NCorner = this._border.createCorner("n");
 			/** @private {!Element} */
-			this._NECorner = this._border.createCorner(CLASSES[2]);
+			this._NECorner = this._border.createCorner("ne");
 			/** @private {!Element} */
-			this._WCorner = this._border.createCorner(CLASSES[3]);
+			this._WCorner = this._border.createCorner("w");
 			/** @private {!Element} */
-			this._ECorner = this._border.createCorner(CLASSES[4]);
+			this._ECorner = this._border.createCorner("e");
 			/** @private {!Element} */
-			this._SWCorner = this._border.createCorner(CLASSES[5]);
+			this._SWCorner = this._border.createCorner("sw");
 			/** @private {!Element} */
-			this._SCorner = this._border.createCorner(CLASSES[6]);
+			this._SCorner = this._border.createCorner("s");
 			/** @private {!Element} */
-			this._SECorner = this._border.createCorner(CLASSES[7]);
+			this._SECorner = this._border.createCorner("se");
 		},
 
 		/** 

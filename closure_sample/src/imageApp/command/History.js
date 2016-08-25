@@ -31,7 +31,6 @@ goog.scope(function() {
 			++this._currentActionIndex;
 			action.execute();
 
-			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 
@@ -40,13 +39,11 @@ goog.scope(function() {
 			{
 				throw new Error("Command stack is empty");
 			}
-			else if (this._currentActionIndex > 0)
+			if (this._currentActionIndex > 0)
 			{
 				--this._currentActionIndex;
 				this._actions[this._currentActionIndex].unexecute();
 			}
-
-			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 
@@ -55,16 +52,15 @@ goog.scope(function() {
 			{
 				throw new Error("Command stack is empty");
 			}
-			else if (this._currentActionIndex == this._actions.length)
+			if (this._currentActionIndex == this._actions.length)
 			{
 				throw new Error("Command stack is full");
 			}
-			else if (this._currentActionIndex <= this._actions.length)
+			if (this._currentActionIndex <= this._actions.length)
 			{
 				this._actions[this._currentActionIndex].execute();
 				++this._currentActionIndex;
 			}
-			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 		/**
@@ -72,7 +68,6 @@ goog.scope(function() {
 		 */
 		_cleaningActionsfromCurrentIndex: function() {
 			this._actions = this._actions.slice(0, this._currentActionIndex);
-			//console.log(this._currentActionIndex + " " + this._actions.length);
 		}
 	});
 });
