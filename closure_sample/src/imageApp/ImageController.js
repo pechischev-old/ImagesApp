@@ -40,6 +40,7 @@ goog.scope(function () {
 		 * @param {string} path
 		 */
 		addImage: function(path) {
+			goog.style.setStyle(document.body, "cursor", "progress");
 			var img = new Image(0, 0);
 			img.src = path;
 			img.onload = goog.bind(this._onLoadImage, this, new goog.math.Size(img.naturalWidth, img.naturalHeight), path);
@@ -51,6 +52,7 @@ goog.scope(function () {
 		 * @private
 		 */
 		_onLoadImage: function(size, path) {
+			goog.style.setStyle(document.body, "cursor", "default");
 			var imageModel = this._imagesModel.createImage(size);
 			var imageView = new imageApp.view.ImageView(imageModel.getFrame(), path);
 			imageModel.registerObserver(imageView);
