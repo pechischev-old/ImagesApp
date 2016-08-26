@@ -1,25 +1,25 @@
-goog.provide("command.MoveCommand");
+goog.provide("imageApp.command.MoveCommand");
 
-goog.require("command.AbstractAction");
-goog.require("model.Image");
+goog.require("imageApp.command.AbstractAction");
+goog.require("imageApp.model.Image");
 
 goog.scope(function () {
 
 	/**
-	 * @param {model.Image} shapeModel
+	 * @param {imageApp.model.Image} shapeModel
 	 * @param {!goog.math.Coordinate} mousePos
-	 * @extends {command.AbstractAction}
+	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
-	command.MoveCommand = goog.defineClass(command.AbstractAction, {
+	imageApp.command.MoveCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
-		 * @param {model.Image} shapeModel
+		 * @param {imageApp.model.Image} shapeModel
 		 * @param {!goog.math.Coordinate} mousePos
 		 */
 		constructor: function(shapeModel, mousePos) {
 			goog.base(this);
 			/**
-			 * @private {model.Image}
+			 * @private {imageApp.model.Image}
 			 */
 			this._shapeModel = shapeModel;
 			/**

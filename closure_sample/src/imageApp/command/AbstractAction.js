@@ -1,15 +1,15 @@
-goog.provide("command.AbstractAction");
+goog.provide("imageApp.command.AbstractAction");
 
 
-goog.require("command.IAction");
+goog.require("imageApp.command.IAction");
 
 goog.scope(function() {
 
 	/**
-	 * @implements {command.IAction}
+	 * @implements {imageApp.command.IAction}
 	 * @constructor
 	 */
-	command.AbstractAction = goog.defineClass(null, {
+	imageApp.command.AbstractAction = goog.defineClass(null, {
 		constructor: function() {
 
 		},

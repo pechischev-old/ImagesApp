@@ -1,26 +1,26 @@
-goog.provide("command.History");
+goog.provide("imageApp.command.History");
 
 
-goog.require("command.IHistory");
-goog.require("command.IAction");
+goog.require("imageApp.command.IHistory");
+goog.require("imageApp.command.IAction");
 
 goog.scope(function() {
 
 	/**
-	 * @implements {command.IHistory}
-	 * @implements {command.IHistoryViewDelegate}
+	 * @implements {imageApp.command.IHistory}
+	 * @implements {imageApp.command.IHistoryViewDelegate}
 	 * @constructor
 	 */
-	command.History = goog.defineClass(null, {
+	imageApp.command.History = goog.defineClass(null, {
 		constructor: function() {
-			/** @private {Array<command.IAction>}*/
+			/** @private {Array<imageApp.command.IAction>}*/
 			this._actions = [];
 			/** @private {!number} */
 			this._currentActionIndex = 0;
 		},
 
 		/**
-		 * @param {command.IAction} action
+		 * @param {imageApp.command.IAction} action
 		 */
 		recordAction: function(action) {
 			if (this._currentActionIndex < this._actions.length)
@@ -31,7 +31,6 @@ goog.scope(function() {
 			++this._currentActionIndex;
 			action.execute();
 
-			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 
@@ -40,13 +39,11 @@ goog.scope(function() {
 			{
 				throw new Error("Command stack is empty");
 			}
-			else if (this._currentActionIndex > 0)
+			if (this._currentActionIndex > 0)
 			{
 				--this._currentActionIndex;
 				this._actions[this._currentActionIndex].unexecute();
 			}
-
-			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 
@@ -55,16 +52,15 @@ goog.scope(function() {
 			{
 				throw new Error("Command stack is empty");
 			}
-			else if (this._currentActionIndex == this._actions.length)
+			if (this._currentActionIndex == this._actions.length)
 			{
 				throw new Error("Command stack is full");
 			}
-			else if (this._currentActionIndex <= this._actions.length)
+			if (this._currentActionIndex <= this._actions.length)
 			{
 				this._actions[this._currentActionIndex].execute();
 				++this._currentActionIndex;
 			}
-			//console.log(this._currentActionIndex + " " +  this._actions.length);
 		},
 
 		/**
@@ -72,7 +68,6 @@ goog.scope(function() {
 		 */
 		_cleaningActionsfromCurrentIndex: function() {
 			this._actions = this._actions.slice(0, this._currentActionIndex);
-			//console.log(this._currentActionIndex + " " + this._actions.length);
 		}
 	});
 });
