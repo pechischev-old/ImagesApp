@@ -2,6 +2,8 @@ goog.provide("imageApp.command.AddImageCommand");
 
 goog.require("imageApp.command.AbstractAction");
 
+goog.require("imageApp.model.ImagesModel");
+
 goog.scope(function() {
 
 	/**
@@ -30,9 +32,9 @@ goog.scope(function() {
 		_doExecute: function() {
 			this._model.insertImageOnIndex(this._lastModel, -1);
 			var event = new CustomEvent("append", {
-				"detail": {
-					"model": this._lastModel,
-					"index": -1
+				detail: {
+					model: this._lastModel,
+					index: -1
 				}
 			});
 			document.dispatchEvent(event);
@@ -44,8 +46,8 @@ goog.scope(function() {
 		_doUnexecute: function () {
 			this._model.removeImageOnIndex(-1);
 			var event = new CustomEvent("delete", {
-				"detail": {
-					"index": -1
+				detail: {
+					index: -1
 				}
 			});
 			document.dispatchEvent(event);

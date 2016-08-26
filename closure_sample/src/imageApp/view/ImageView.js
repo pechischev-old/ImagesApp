@@ -8,9 +8,6 @@ goog.require("imageApp.view.Node");
 
 goog.scope(function() {
 
-	/** @const {!goog.math.Size} */
-	const MIN_SIZE = new goog.math.Size(200, 200);
-
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @param {string} path
@@ -19,6 +16,10 @@ goog.scope(function() {
 	 * @constructor
 	 */
 	imageApp.view.ImageView = goog.defineClass(imageApp.view.Node, {
+		/**
+		 * @param {!goog.math.Rect} frame
+		 * @param {string} path
+		 */
 		constructor: function(frame, path) {
 			goog.base(this);
 			/** @private {string} */
@@ -27,7 +28,6 @@ goog.scope(function() {
 			this._isSelected = false;
 			/** @private {!goog.math.Rect} */
 			this._frame = frame;
-
 			this._init();
 		},
 
@@ -65,8 +65,7 @@ goog.scope(function() {
 		 * @param {!goog.math.Rect} frame 
 		 */
 		setFrame: function(frame){
-			var minFrame = this._getMinFrame(frame.clone());
-			this._frame = ((!goog.math.Rect.equals(minFrame, frame)) ? minFrame : frame);
+			this._frame = frame;
 			this._reloadStyleSize();
 			this._border.setFrame(this._frame);
 		},
@@ -93,18 +92,6 @@ goog.scope(function() {
 			return this._container;
 		},
 
-		/**
-		 * @param {!goog.math.Rect} frame
-		 * @returns {!goog.math.Rect}
-		 * @private
-		 */
-		_getMinFrame: function (frame) {
-			frame.left = (frame.width < MIN_SIZE.width) ? this._frame.left : frame.left;
-			frame.top = (frame.height < MIN_SIZE.height) ? this._frame.top : frame.top;
-			frame.width = (frame.width < MIN_SIZE.width) ? MIN_SIZE.width : frame.width;
-			frame.height = (frame.height < MIN_SIZE.height) ? MIN_SIZE.height : frame.height;
-			return frame;
-		},
 
 		/** 
 		 * @private 
@@ -119,6 +106,7 @@ goog.scope(function() {
 		 * @private
 		 */
 		_init: function() {
+
 			/** @private {!Element} */
 			this._container = document.createElement(goog.dom.TagName.DIV);
 			this._container.setAttribute("class", "capture");

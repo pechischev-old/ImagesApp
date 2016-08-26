@@ -40,8 +40,8 @@ goog.scope(function () {
 
 			this._imageModel = this._model.removeImageOnIndex(this._index);
 			var event = new CustomEvent("delete", {
-				"detail": {
-					"index": this._index
+				detail: {
+					index: this._index
 				}
 			});
 			document.dispatchEvent(event);
@@ -53,9 +53,9 @@ goog.scope(function () {
 		_doUnexecute: function () {
 			this._model.insertImageOnIndex(this._imageModel, this._index);
 			var event = new CustomEvent("append", {
-				"detail": {
-					"model": this._imageModel,
-					"index": this._index
+				detail: {
+					model: this._imageModel,
+					index: this._index
 				}
 			});
 			document.dispatchEvent(event);

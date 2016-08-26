@@ -6,7 +6,8 @@ goog.scope(function () {
 
 	/** @const {!goog.math.Size} */
 	const MAX_SIZE = new goog.math.Size(512, 256);
-
+	/** @const {!goog.math.Size} */
+	const MIN_SIZE = new goog.math.Size(100, 100);
 	/**
 	 * @constructor
 	 */
@@ -72,6 +73,19 @@ goog.scope(function () {
 			width = (width > MAX_SIZE.width) ? width / coeff : width;
 			height = (height > MAX_SIZE.height) ? height / coeff : height;
 			return new goog.math.Size(width, height);
+		},
+
+		/**
+		 * @param {!goog.math.Rect} frame
+		 * @param {!goog.math.Coordinate} oldPos
+		 * @returns {!goog.math.Rect}
+		 */
+		getMinFrame: function (frame, oldPos) {
+			frame.left = (frame.width < MIN_SIZE.width) ? oldPos.x : frame.left;
+			frame.top = (frame.height < MIN_SIZE.height) ? oldPos.y : frame.top;
+			frame.width = (frame.width < MIN_SIZE.width) ? MIN_SIZE.width : frame.width;
+			frame.height = (frame.height < MIN_SIZE.height) ? MIN_SIZE.height : frame.height;
+			return frame;
 		},
 
 		outputLog: function () {

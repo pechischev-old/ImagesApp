@@ -5,6 +5,8 @@ goog.require("imageApp.command.AddImageCommand");
 goog.require("imageApp.command.DeleteCommand");
 goog.require("imageApp.command.ResizeCommand");
 
+goog.require("imageApp.view.ImagesView");
+
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 
@@ -37,13 +39,14 @@ goog.scope(function () {
 
 			document.addEventListener("append", goog.bind(function (event) {
 				/** @type {imageApp.model.Image} */
+				//var imageModel = ('model' in event.detail) ? event.detail['model'] : event.detail;
 				var imageModel = event.detail.model;
+				/** @type {imageApp.view.ImageView} */
 				var imageView = new imageApp.view.ImageView(imageModel.getFrame(), imageModel.getPath());
 				imageModel.registerObserver(imageView);
-
 				this._imagesView.insertImageOnIndex(imageView, event.detail.index);
-
 				this._addHandlers(imageModel, imageView);
+
 			}, this), false);
 
 			document.addEventListener("delete", goog.bind(function (event) {
@@ -108,45 +111,46 @@ goog.scope(function () {
 
 
 			var nw = imageView.getNWCorner();
-			this._addResizeListener(nw, imageModel, imageView, function(frame, shift){
-				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width + shift.x, frame.height + shift.y);
-			});
+			this._addResizeListener(nw, imageModel, imageView, goog.bind(function(frame, shift){
+				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width + shift.x, frame.height + shift.y), imageView.getPos());
+			}, this));
 
 			var ne = imageView.getNECorner();
-			this._addResizeListener(ne, imageModel, imageView, function(frame, shift){
-				return new goog.math.Rect(frame.left, frame.top - shift.y, frame.width - shift.x, frame.height + shift.y);
-			});
+			this._addResizeListener(ne, imageModel, imageView, goog.bind(function(frame, shift){
+				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width - shift.x, frame.height + shift.y), imageView.getPos());
+			}, this));
 
 			var sw = imageView.getSWCorner();
-			this._addResizeListener(sw, imageModel, imageView, function(frame, shift){
-				return new goog.math.Rect(frame.left - shift.x, frame.top , frame.width + shift.x, frame.height - shift.y);
-			});
+			this._addResizeListener(sw, imageModel, imageView, goog.bind(function(frame, shift){
+				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top , frame.width + shift.x, frame.height - shift.y), imageView.getPos());
+			}, this));
 
 			var se = imageView.getSECorner();
-			this._addResizeListener(se, imageModel, imageView, function(frame, shift){
-				return new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height - shift.y);
-			});
+			this._addResizeListener(se, imageModel, imageView, goog.bind(function(frame, shift){
+				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height - shift.y), imageView.getPos());
+			}, this));
 
 			var e = imageView.getECorner();
-			this._addResizeListener(e, imageModel, imageView, function(frame, shift){
-				return new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height);
-			});
+			this._addResizeListener(e, imageModel, imageView, goog.bind(function(frame, shift){
+				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height), imageView.getPos());
+			}, this));
 
 			var w = imageView.getWCorner();
-			this._addResizeListener(w, imageModel, imageView, function(frame, shift){
-				return new goog.math.Rect(frame.left - shift.x, frame.top, frame.width + shift.x, frame.height);
-			});
+			this._addResizeListener(w, imageModel, imageView, goog.bind(function(frame, shift){
+				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top, frame.width + shift.x, frame.height), imageView.getPos());
+			}, this));
 
 			var n = imageView.getNCorner();
-			this._addResizeListener(n, imageModel, imageView, function(frame, shift){
-				return new goog.math.Rect(frame.left, frame.top - shift.y, frame.width , frame.height + shift.y);
-			});
+			this._addResizeListener(n, imageModel, imageView, goog.bind(function(frame, shift){
+				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width , frame.height + shift.y), imageView.getPos());
+			}, this));
 
 			var s = imageView.getSCorner();
-			this._addResizeListener(s, imageModel, imageView, function(frame, shift) {
-				return new goog.math.Rect(frame.left, frame.top, frame.width, frame.height - shift.y);
-			});
+			this._addResizeListener(s, imageModel, imageView, goog.bind(function(frame, shift){
+				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width, frame.height - shift.y), imageView.getPos());
+			}, this));
 		},
+
 
 		/**
 		 * @param {!Element} corner

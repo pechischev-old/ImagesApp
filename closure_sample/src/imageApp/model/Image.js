@@ -61,10 +61,8 @@ goog.scope(function(){
 		 * @param {!goog.math.Rect} frame 
 		 */
 		setFrame: function(frame) {
-			/** @private {!goog.math.Size} */
-			this._size = frame.getSize();
-			/** @private {!goog.math.Coordinate} */
-			this._pos = frame.getTopLeft();
+			/** @private {!goog.math.Rect} */
+			this._frame = frame;
 			this._isChange = true;
 			this.notifyObservers();
 		},
@@ -73,8 +71,8 @@ goog.scope(function(){
 		 * @param {!goog.math.Coordinate} pos
 		 */
 		setPosition: function(pos) {
-			/** @private {!goog.math.Coordinate} */
-			this._pos = pos;
+			this._frame.left = pos.x;
+			this._frame.top = pos.y;
 			this._isChange = true;
 			this.notifyObservers();
 		},
@@ -83,7 +81,7 @@ goog.scope(function(){
 		 * @return {!goog.math.Rect} 
 		 */
 		getFrame: function() {
-			return new goog.math.Rect(this._pos.x, this._pos.y, this._size.width, this._size.height);
+			return this._frame;
 		},
 
 		/** 
@@ -93,8 +91,8 @@ goog.scope(function(){
 			if (this._isChange)
 			{
 				console.log("#### image: " + number);
-				console.log(this._pos.x + " " + this._pos.y);
-				console.log(this._size.width + " " + this._size.height);
+				console.log("pos: " + this._frame.left + " " + this._frame.top);
+				console.log("size: " + this._frame.width + " " + this._frame.height);
 				this._isChange = false;
 			}
 		}
