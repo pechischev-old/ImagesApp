@@ -103,6 +103,17 @@ goog.scope(function() {
 		},
 
 		/**
+		 * @param {goog.math.Rect|goog.math.Coordinate} another
+		 * @return {boolean}
+		 */
+		isContain: function(another) {
+			var widthCanvas = 1000;//this._container.parentNode.style.width;
+			var heightCanvas = 800;//this._container.parentNode.style.height;
+			var frameCanvas = new goog.math.Rect(0, 0, widthCanvas, heightCanvas);
+			return frameCanvas.contains(another);
+		},
+
+		/**
 		 * @private
 		 */
 		_init: function() {

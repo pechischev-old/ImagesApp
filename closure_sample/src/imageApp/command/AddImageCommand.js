@@ -23,7 +23,20 @@ goog.scope(function() {
 			
 			/** @private {imageApp.model.Image} */
 			this._lastModel = lastModel;
-			
+
+			/** @type {CustomEvent} */
+			this._deleteEvent = new CustomEvent("delete", {
+				detail: {
+					index: -1
+				}
+			});
+			/** @type {CustomEvent} */
+			this._appendEvent = new CustomEvent("append", {
+				detail: {
+					model: this._lastModel,
+					index: -1
+				}
+			});
 		},
 
 		/**
@@ -31,13 +44,8 @@ goog.scope(function() {
 		 */
 		_doExecute: function() {
 			this._model.insertImageOnIndex(this._lastModel, -1);
-			var event = new CustomEvent("append", {
-				detail: {
-					model: this._lastModel,
-					index: -1
-				}
-			});
-			document.dispatchEvent(event);
+			
+			document.dispatchEvent(this._appendEvent);
 		},
 
 		/**
@@ -45,12 +53,7 @@ goog.scope(function() {
 	 	 */
 		_doUnexecute: function () {
 			this._model.removeImageOnIndex(-1);
-			var event = new CustomEvent("delete", {
-				detail: {
-					index: -1
-				}
-			});
-			document.dispatchEvent(event);
+			document.dispatchEvent(this._deleteEvent);
 			
 		}
 	});

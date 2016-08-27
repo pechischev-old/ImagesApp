@@ -174,8 +174,10 @@ goog.scope(function () {
 					var shiftMouse = goog.math.Coordinate.difference(startPos, mousePos);
 
 					var newRect = handler(oldFrame, shiftMouse);
-					view.setFrame(newRect);
-
+					//if (view.isContain(newRect))
+					//{
+						view.setFrame(newRect);
+					//}
 				});
 
 				var keyUp = goog.events.listen(document, goog.events.EventType.MOUSEUP, goog.bind(function() {
@@ -211,7 +213,12 @@ goog.scope(function () {
 			var keyMouseMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, function(event) {
 				var mousePos = new goog.math.Coordinate(event.screenX, event.screenY);
 				var newPos = goog.math.Coordinate.difference(mousePos, shift);
-				view.setFrame(new goog.math.Rect(newPos.x, newPos.y, size.width, size.height));
+				var newFrame = new goog.math.Rect(newPos.x, newPos.y, size.width, size.height);
+
+				//if (view.isContain(newFrame))
+				//{
+					view.setFrame(newFrame);
+				//}
 			});
 
 			var keyMouseUp = goog.events.listen(document, goog.events.EventType.MOUSEUP, goog.bind(function() {

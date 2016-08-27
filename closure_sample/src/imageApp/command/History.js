@@ -2,7 +2,7 @@ goog.provide("imageApp.command.History");
 
 
 goog.require("imageApp.command.IHistory");
-goog.require("imageApp.command.IAction");
+goog.require("imageApp.command.AbstractAction");
 
 goog.scope(function() {
 
@@ -13,14 +13,14 @@ goog.scope(function() {
 	 */
 	imageApp.command.History = goog.defineClass(null, {
 		constructor: function() {
-			/** @private {Array<imageApp.command.IAction>}*/
+			/** @private {Array<imageApp.command.AbstractAction>}*/
 			this._actions = [];
 			/** @private {!number} */
 			this._currentActionIndex = 0;
 		},
 
 		/**
-		 * @param {imageApp.command.IAction} action
+		 * @param {imageApp.command.AbstractAction} action
 		 */
 		recordAction: function(action) {
 			if (this._currentActionIndex < this._actions.length)

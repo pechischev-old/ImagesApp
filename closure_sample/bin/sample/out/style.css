@@ -7,27 +7,23 @@ body {
   -moz-user-select: none;
   -webkit-user-select: none; }
 
+#toolbar {
+  border: 1px solid black;
+  float: left;
+  margin: 5px; }
+
 .button {
   cursor: pointer;
   width: 80px;
   height: 40px;
   left: 20px;
   top: 20px;
+  margin: 5px;
   float: left; }
 
-#toolbar {
-  border: 1px solid black;
-  float: left;
-  margin: 5px;
-  padding: 4px; }
-
 #canvas {
-  margin: 1%;
+  margin: 80px;
   border: 2px outset black;
-  left: 5%;
-  top: 5%;
-  height: 800px;
-  width: 1000px;
   position: absolute; }
 
 input {
@@ -37,7 +33,8 @@ input {
   float: left;
   -ms-user-select: text;
   -moz-user-select: text;
-  -webkit-user-select: text; }
+  -webkit-user-select: text;
+  position: absolute; }
 
 .capture {
   position: absolute;

@@ -11,6 +11,8 @@ goog.require("imageApp.view.InputForm");
 goog.scope(function() {
 	/** @const {string} */
 	const CANVAS_NAME = "canvas";
+	/** @const {!goog.math.Size} */
+	const CANVAS_SIZE = new goog.math.Size(1000, 800);
 
 	/**
 	 * @constructor
@@ -105,6 +107,8 @@ goog.scope(function() {
 			/** @private {!Element} */
 			this._canvas = goog.dom.createElement(goog.dom.TagName.DIV);
 			this._canvas.id = CANVAS_NAME;
+			goog.style.setStyle(this._canvas, "width", CANVAS_SIZE.width + "px");
+			goog.style.setStyle(this._canvas, "height", CANVAS_SIZE.height  + "px");
 			return this._canvas;
 		}
 	});
