@@ -70,10 +70,12 @@ goog.scope(function() {
 		 */
 		_addActions: function() {
 			var toolbar = this._view.getToolbar();
-			toolbar.getButtonOnIndex(0).setAction(goog.bind(this._undo, this));
-			toolbar.getButtonOnIndex(1).setAction(goog.bind(this._redo, this));
-			toolbar.getButtonOnIndex(2).setAction(goog.bind(this._inputProcessing, this));
-			toolbar.getButtonOnIndex(3).setAction(goog.bind(this._deleteSelectingImage, this));
+			toolbar.appendButton(this._createButtonWithAction("Undo", goog.bind(this._undo, this)));
+			toolbar.appendButton(this._createButtonWithAction("Redo", goog.bind(this._redo, this)));
+			toolbar.appendButton(this._createButtonWithAction("Add image", goog.bind(this._inputProcessing, this)));
+			toolbar.appendButton(this._createButtonWithAction("Add text area", goog.bind(this._addTextArea, this)));
+			toolbar.appendButton(this._createButtonWithAction("Delete", goog.bind(this._deleteSelectingImage, this)));
+
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 
 			goog.events.listen(document, goog.events.EventType.KEYDOWN, goog.bind(function(event) {
@@ -91,6 +93,25 @@ goog.scope(function() {
 				}
 				event.preventDefault();
 			}, this));
+		},
+
+		/**
+		 * @private
+		 */
+		_addTextArea: function () {
+			console.log("add text area");
+		},
+
+		/**
+		 * @param name
+		 * @param {Function} action
+		 * @private
+		 * @return {imageApp.view.Button}
+		 */
+		_createButtonWithAction:function(name, action) {
+			var btn = new imageApp.view.Button(name);
+			btn.setAction(action);
+			return btn;
 		},
 
 		/**

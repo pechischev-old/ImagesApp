@@ -92,10 +92,6 @@ goog.scope(function() {
 		_createToolbar: function () {
 			/** @private {imageApp.view.Toolbar} */
 			this._toolbar = new imageApp.view.Toolbar();
-			this._toolbar.appendButton(new imageApp.view.Button("Undo"));
-			this._toolbar.appendButton(new imageApp.view.Button("Redo"));
-			this._toolbar.appendButton(new imageApp.view.Button("Add image"));
-			this._toolbar.appendButton(new imageApp.view.Button("Delete image"));
 			return this._toolbar.getDOMElement();
 		},
 
