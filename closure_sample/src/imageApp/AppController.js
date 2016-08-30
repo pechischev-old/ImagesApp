@@ -98,7 +98,7 @@ goog.scope(function() {
 				{
 					this._redo();
 				}
-				event.preventDefault();
+				//event.preventDefault();
 			}, this));
 		},
 

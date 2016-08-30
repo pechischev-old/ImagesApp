@@ -25,18 +25,18 @@ goog.scope(function() {
 			this._lastModel = lastModel;
 
 			/** @type {CustomEvent} */
-			/*this._deleteEvent = new CustomEvent("delete", {
+			this._deleteEvent = new CustomEvent("delete", {
 				detail: {
 					index: -1
 				}
-			});*/
+			});
 			/** @type {CustomEvent} */
-			/*this._appendEvent = new CustomEvent("append", {
+			this._appendEvent = new CustomEvent("append text area", {
 				detail: {
 					model: this._lastModel,
 					index: -1
 				}
-			});*/
+			});
 		},
 
 		/**
@@ -44,7 +44,7 @@ goog.scope(function() {
 		 */
 		_doExecute: function() {
 			this._model.insertImageOnIndex(this._lastModel, -1);
-			//document.dispatchEvent(this._appendEvent);
+			document.dispatchEvent(this._appendEvent);
 		},
 
 		/**
@@ -52,7 +52,7 @@ goog.scope(function() {
 		 */
 		_doUnexecute: function () {
 			this._model.removeImageOnIndex(-1);
-			//document.dispatchEvent(this._deleteEvent);
+			document.dispatchEvent(this._deleteEvent);
 
 		}
 	});

@@ -8,6 +8,7 @@ goog.require("imageApp.command.AddTextAreaCommand");
 
 goog.require("imageApp.view.ImagesView");
 goog.require("imageApp.view.ImageView");
+goog.require("imageApp.view.TextAreaView");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
@@ -49,6 +50,15 @@ goog.scope(function () {
 				this._objectsView.insertImageOnIndex(imageView, event.detail.index);
 				this._addHandlers(imageModel, imageView);
 
+			}, this), false);
+
+			document.addEventListener("append text area", goog.bind(function (event) {
+
+				var model = event.detail.model;
+				/** @type {imageApp.view.ObjectView} */
+				var textAreaView = new imageApp.view.TextAreaView(model.getFrame());
+				model.registerObserver(textAreaView);
+				this._objectsView.insertImageOnIndex(textAreaView, event.detail.index);
 			}, this), false);
 
 			document.addEventListener("delete", goog.bind(function (event) {

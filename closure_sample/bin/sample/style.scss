@@ -49,6 +49,14 @@ input {
   cursor: move;
 }
 
+.textarea {
+  position: absolute;
+}
+
+textarea {
+  resize: none;
+}
+
 .border {
   top: 0;
   left: 0;
