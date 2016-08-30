@@ -6,6 +6,7 @@ goog.require("imageApp.command.DeleteCommand");
 goog.require("imageApp.command.ResizeCommand");
 
 goog.require("imageApp.view.ImagesView");
+goog.require("imageApp.view.ImageView");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
@@ -38,10 +39,9 @@ goog.scope(function () {
 			this._history = history;
 
 			document.addEventListener("append", goog.bind(function (event) {
-				/** @type {imageApp.model.Image} */
-				//var imageModel = ('model' in event.detail) ? event.detail['model'] : event.detail;
+				
 				var imageModel = event.detail.model;
-				/** @type {imageApp.view.ImageView} */
+				/** @type {imageApp.view.ObjectView} */
 				var imageView = new imageApp.view.ImageView(imageModel.getFrame(), imageModel.getPath());
 				imageModel.registerObserver(imageView);
 				this._imagesView.insertImageOnIndex(imageView, event.detail.index);
@@ -80,7 +80,7 @@ goog.scope(function () {
 
 		/**
 		 * @param {imageApp.model.Image} imageModel
-		 * @param {imageApp.view.ImageView} imageView
+		 * @param {imageApp.view.ObjectView} imageView
 		 * @private
 		 */
 		_addHandlers: function(imageModel, imageView) {
@@ -155,7 +155,7 @@ goog.scope(function () {
 		/**
 		 * @param {!Element} corner
 		 * @param {imageApp.model.Image} model
-		 * @param {imageApp.view.ImageView} view
+		 * @param {imageApp.view.ObjectView} view
 		 * @param {function(!goog.math.Rect, !goog.math.Coordinate): !goog.math.Rect} handler
 		 * @private
 		 */
@@ -196,7 +196,7 @@ goog.scope(function () {
 
 		/**
 		 * @param {imageApp.model.Image} model
-		 * @param {imageApp.view.ImageView} view
+		 * @param {imageApp.view.ObjectView} view
 		 * @param {!Event} event
 		 * @private
 		 */
