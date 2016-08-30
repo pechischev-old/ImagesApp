@@ -1,6 +1,5 @@
 goog.provide("imageApp.view.ObjectView");
 
-goog.require("goog.dom");
 goog.require("imageApp.view.Border");
 goog.require("imageApp.observer.IObserver");
 goog.require("imageApp.view.Node");
@@ -89,15 +88,12 @@ goog.scope(function () {
 		/**
 		 * @protected
 		 */
-		_reloadStyleSize: function() {
-		},
+		_reloadStyleSize: function() {},
 		
 		/**
 		 * @protected
 		 */
-		_init: function () {
-			
-		},
+		_init: function () {},
 
 		/**
 		 * @returns {!Element}

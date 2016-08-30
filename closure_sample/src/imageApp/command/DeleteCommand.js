@@ -6,20 +6,20 @@ goog.require("imageApp.command.AbstractAction");
 goog.scope(function () {
 
 	/**
-	 * @param {imageApp.model.ImagesModel} model
+	 * @param {imageApp.model.ObjectsModel} model
 	 * @param {!number} index
 	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
 	imageApp.command.DeleteCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
-		 * @param {imageApp.model.ImagesModel} model
+		 * @param {imageApp.model.ObjectsModel} model
 		 * @param {!number} index
 		 */
 		constructor: function(model, index) {
 			goog.base(this);
 			/**
-			 * @private {imageApp.model.ImagesModel}
+			 * @private {imageApp.model.ObjectsModel}
 			 */
 			this._model = model;
 
@@ -28,7 +28,7 @@ goog.scope(function () {
 			 */
 			this._index = index;
 
-			/** @private {?imageApp.model.Image} */
+			/** @private {?imageApp.model.Object} */
 			this._imageModel = null;
 
 		},
@@ -37,7 +37,7 @@ goog.scope(function () {
 		 * @inheritDoc
 		 */
 		_doExecute: function() {
-
+			
 			this._imageModel = this._model.removeImageOnIndex(this._index);
 			var event = new CustomEvent("delete", {
 				detail: {

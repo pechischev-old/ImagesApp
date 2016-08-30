@@ -25,7 +25,7 @@ goog.scope(function() {
 		
 
 		/**
-		 * @inheriDoc 
+		 * @inheritDoc 
 		 */
 		getDOMElement: function(){
 			return this._container;
@@ -33,7 +33,7 @@ goog.scope(function() {
 
 
 		/** 
-		 * @inheriDoc 
+		 * @inheritDoc 
 		 */
 		_reloadStyleSize: function() {
 			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);

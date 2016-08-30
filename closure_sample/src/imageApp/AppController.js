@@ -54,6 +54,13 @@ goog.scope(function() {
 		/**
 		 * @private
 		 */
+		_addTextArea: function () {
+			this._imageCntr.addTextArea();
+		},
+
+		/**
+		 * @private
+		 */
 		_undo: function(){
 			this._history.undo();
 		},
@@ -93,13 +100,6 @@ goog.scope(function() {
 				}
 				event.preventDefault();
 			}, this));
-		},
-
-		/**
-		 * @private
-		 */
-		_addTextArea: function () {
-			console.log("add text area");
 		},
 
 		/**

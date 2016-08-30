@@ -27,14 +27,14 @@ goog.scope(function() {
 			document.body.appendChild(fragment);
 
 			/** @private {imageApp.view.ImagesView} */
-			this._imagesView = new imageApp.view.ImagesView(this._canvas);
+			this._objectsView = new imageApp.view.ImagesView(this._canvas);
 		},
 
 		/**
 		 * @returns {imageApp.view.ImagesView}
 		 */
 		getImagesView: function () {
-			return this._imagesView;
+			return this._objectsView;
 		},
 
 		/**

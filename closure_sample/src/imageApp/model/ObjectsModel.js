@@ -1,6 +1,8 @@
-goog.provide("imageApp.model.ImagesModel");
+goog.provide("imageApp.model.ObjectsModel");
 
+goog.require("imageApp.model.Object");
 goog.require("imageApp.model.Image");
+goog.require("imageApp.model.TextArea");
 
 goog.scope(function () {
 
@@ -11,13 +13,13 @@ goog.scope(function () {
 	/**
 	 * @constructor
 	 */
-	imageApp.model.ImagesModel = goog.defineClass(null, {
+	imageApp.model.ObjectsModel = goog.defineClass(null, {
 		constructor: function () {
 
 			/**
-			 * @private {Array<imageApp.model.Image>}
+			 * @private {Array<imageApp.model.Object>}
 			 */
-			this._imagesModel = [];
+			this._object = [];
 
 			/** @private {boolean} */
 			this._isChange = false;
@@ -26,7 +28,7 @@ goog.scope(function () {
 		/**
 		 * @param {!goog.math.Size} naturalSize
 		 * @param {string} path
-		 * @return {imageApp.model.Image}
+		 * @return {!imageApp.model.Image}
 		 */
 		createImage: function (naturalSize, path) {
 			var size = this._getCalculatingAppropriateSize(naturalSize);
@@ -34,30 +36,37 @@ goog.scope(function () {
 		},
 
 		/**
+		 * @returns {!imageApp.model.TextArea}
+		 */
+		createTextArea: function() {
+			return new imageApp.model.TextArea(new goog.math.Rect(50, 50, 200, 200));
+		},
+
+		/**
 		 * @param {number} index
-		 * @return {imageApp.model.Image}
+		 * @return {imageApp.model.Object}
 		 */
 		removeImageOnIndex: function(index) {
 			if (index == -1) 
 			{
 				this._isChange = true;
-				return this._imagesModel.pop();
+				return this._object.pop();
 			}
-			else if (index < 0 && index >= this._imagesModel.length )
+			else if (index < 0 && index >= this._object.length )
 			{
 				throw new Error("index is out of range array");
 			}
 			this._isChange = true;
-			return this._imagesModel.splice(index, 1)[0];
+			return this._object.splice(index, 1)[0];
 		},
 
 		/**
-		 * @param {imageApp.model.Image} image
+		 * @param {imageApp.model.Object} image
 		 * @param {number} index
 		 */
 		insertImageOnIndex: function (image, index) {
-			index = (index == -1) ? this._imagesModel.length : index;
-			this._imagesModel.splice(index, 0, image);
+			index = (index == -1) ? this._object.length : index;
+			this._object.splice(index, 0, image);
 			this._isChange = true;
 		},
 
@@ -90,8 +99,8 @@ goog.scope(function () {
 
 		outputLog: function () {
 			this._outLog();
-			for (var i = 0; i < this._imagesModel.length; ++i) {
-				this._imagesModel[i].outLog(i);
+			for (var i = 0; i < this._object.length; ++i) {
+				this._object[i].outLog(i);
 			}
 		},
 
@@ -101,7 +110,7 @@ goog.scope(function () {
 		_outLog: function () {
 			if (this._isChange)
 			{
-				console.log("The number of models: " + this._imagesModel.length);
+				console.log("The number of models: " + this._object.length);
 				this._isChange = false;
 			}
 		}

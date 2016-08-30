@@ -2,6 +2,7 @@ goog.provide("imageApp.view.ImagesView");
 
 goog.require("imageApp.view.ObjectView");
 
+
 goog.scope(function () {
 
 	/**
@@ -15,7 +16,7 @@ goog.scope(function () {
 		 */
 		constructor: function (canvas) {
 			/** @private {Array<imageApp.view.ObjectView>} */
-			this._imagesView = [];
+			this._objectsView = [];
 			/** @private {!Element} */
 			this._canvas = canvas;
 		},
@@ -24,9 +25,9 @@ goog.scope(function () {
 		 * @return {?number}
 		 */
 		getIndexSelectingImage: function() {
-			for (var i = 0; i < this._imagesView.length; ++i)
+			for (var i = 0; i < this._objectsView.length; ++i)
 			{
-				if (this._imagesView[i].isSelected())
+				if (this._objectsView[i].isSelected())
 				{
 					return i;
 				}
@@ -43,17 +44,17 @@ goog.scope(function () {
 			if (index == -1)
 			{
 				
-				image = this._imagesView.pop();
+				image = this._objectsView.pop();
 				this._deleteFromDOM(image);
 				return image;
 			}
-			else if (index < 0 && index >= this._imagesView.length )
+			else if (index < 0 && index >= this._objectsView.length )
 			{
 				throw new Error("index is out of range array");
 			}
 			else
 			{
-				image = this._imagesView.splice(index, 1)[0];
+				image = this._objectsView.splice(index, 1)[0];
 				this._deleteFromDOM(image);
 				return image;
 			}
@@ -74,8 +75,8 @@ goog.scope(function () {
 		 * @param {number} index
 		 */
 		insertImageOnIndex:function(image, index) {
-			index = (index == -1) ? this._imagesView.length : index;
-			this._imagesView.splice(index, 0, image);
+			index = (index == -1) ? this._objectsView.length : index;
+			this._objectsView.splice(index, 0, image);
 			if (this._canvas.childElementCount >= index)
 			{
 				this._canvas.insertBefore(image.getDOMElement(), this._canvas.children[index]);
@@ -88,7 +89,7 @@ goog.scope(function () {
 		},
 
 		deselectOtherImages: function() {
-			this._imagesView.forEach(function(image) {
+			this._objectsView.forEach(function(image) {
 				if (image.isSelected())
 				{
 					image.setVisibleBorder(false);

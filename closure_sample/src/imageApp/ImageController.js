@@ -4,6 +4,7 @@ goog.require("imageApp.command.MoveCommand");
 goog.require("imageApp.command.AddImageCommand");
 goog.require("imageApp.command.DeleteCommand");
 goog.require("imageApp.command.ResizeCommand");
+goog.require("imageApp.command.AddTextAreaCommand");
 
 goog.require("imageApp.view.ImagesView");
 goog.require("imageApp.view.ImageView");
@@ -16,24 +17,25 @@ goog.scope(function () {
 	var AddImageCommand = imageApp.command.AddImageCommand;
 	var DeleteCommand = imageApp.command.DeleteCommand;
 	var ResizeCommand = imageApp.command.ResizeCommand;
+	var AddTextAreaCommand = imageApp.command.AddTextAreaCommand;
 
 	/**
-	 * @param {imageApp.model.ImagesModel} imagesModel
+	 * @param {imageApp.model.ObjectsModel} imagesModel
 	 * @param {imageApp.view.ImagesView} imagesView
 	 * @param {imageApp.command.History} history
 	 * @constructor
 	 */
 	imageApp.ImageController = goog.defineClass(null, {
 		/**
- 		 * @param {imageApp.model.ImagesModel} imagesModel
- 		 * @param {imageApp.view.ImagesView} imagesView
+ 		 * @param {imageApp.model.ObjectsModel} objectsModel
+ 		 * @param {imageApp.view.ImagesView} objectsView
 		 * @param {imageApp.command.History} history
 		 */
-		constructor: function (imagesModel, imagesView, history) {
-			/** @private {imageApp.model.ImagesModel} */
-			this._imagesModel = imagesModel;
+		constructor: function (objectsModel, objectsView, history) {
+			/** @private {imageApp.model.ObjectsModel} */
+			this._object = objectsModel;
 			/** @private {imageApp.view.ImagesView} */
-			this._imagesView = imagesView;
+			this._objectsView = objectsView;
 
 			/** @private {imageApp.command.History} */
 			this._history = history;
@@ -44,14 +46,21 @@ goog.scope(function () {
 				/** @type {imageApp.view.ObjectView} */
 				var imageView = new imageApp.view.ImageView(imageModel.getFrame(), imageModel.getPath());
 				imageModel.registerObserver(imageView);
-				this._imagesView.insertImageOnIndex(imageView, event.detail.index);
+				this._objectsView.insertImageOnIndex(imageView, event.detail.index);
 				this._addHandlers(imageModel, imageView);
 
 			}, this), false);
 
 			document.addEventListener("delete", goog.bind(function (event) {
-				this._imagesView.removeImageOnIndex(event.detail.index);
+				this._objectsView.removeImageOnIndex(event.detail.index);
 			}, this), false);
+		},
+
+		addTextArea: function () {
+			var textAreaModel = this._object.createTextArea();
+			
+			var command = new AddTextAreaCommand(this._object, textAreaModel);
+			this._history.recordAction(command);
 		},
 
 		/**
@@ -69,9 +78,10 @@ goog.scope(function () {
 		 * @private
 		 */
 		_onLoadImage: function(elem) {
-			var imageModel = this._imagesModel.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight), elem.src);
+			
+			var imageModel = this._object.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight), elem.src);
 
-			var command = new AddImageCommand(this._imagesModel, imageModel);
+			var command = new AddImageCommand(this._object, imageModel);
 			this._history.recordAction(command);
 
 			goog.style.setStyle(document.documentElement, "cursor", "default");
@@ -98,7 +108,7 @@ goog.scope(function () {
 			}, this));
 
 			goog.events.listen(imageElem, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
-				this._imagesView.deselectOtherImages();
+				this._objectsView.deselectOtherImages();
 
 				imageView.setVisibleBorder(true);
 				if (event.defaultPrevented || event.which > 1 || !imageView.isSelected())
@@ -112,42 +122,42 @@ goog.scope(function () {
 
 			var nw = imageView.getNWCorner();
 			this._addResizeListener(nw, imageModel, imageView, goog.bind(function(frame, shift){
-				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width + shift.x, frame.height + shift.y), imageView.getPos());
+				return this._object.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width + shift.x, frame.height + shift.y), imageView.getPos());
 			}, this));
 
 			var ne = imageView.getNECorner();
 			this._addResizeListener(ne, imageModel, imageView, goog.bind(function(frame, shift){
-				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width - shift.x, frame.height + shift.y), imageView.getPos());
+				return this._object.getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width - shift.x, frame.height + shift.y), imageView.getPos());
 			}, this));
 
 			var sw = imageView.getSWCorner();
 			this._addResizeListener(sw, imageModel, imageView, goog.bind(function(frame, shift){
-				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top , frame.width + shift.x, frame.height - shift.y), imageView.getPos());
+				return this._object.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top , frame.width + shift.x, frame.height - shift.y), imageView.getPos());
 			}, this));
 
 			var se = imageView.getSECorner();
 			this._addResizeListener(se, imageModel, imageView, goog.bind(function(frame, shift){
-				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height - shift.y), imageView.getPos());
+				return this._object.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height - shift.y), imageView.getPos());
 			}, this));
 
 			var e = imageView.getECorner();
 			this._addResizeListener(e, imageModel, imageView, goog.bind(function(frame, shift){
-				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height), imageView.getPos());
+				return this._object.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height), imageView.getPos());
 			}, this));
 
 			var w = imageView.getWCorner();
 			this._addResizeListener(w, imageModel, imageView, goog.bind(function(frame, shift){
-				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top, frame.width + shift.x, frame.height), imageView.getPos());
+				return this._object.getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top, frame.width + shift.x, frame.height), imageView.getPos());
 			}, this));
 
 			var n = imageView.getNCorner();
 			this._addResizeListener(n, imageModel, imageView, goog.bind(function(frame, shift){
-				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width , frame.height + shift.y), imageView.getPos());
+				return this._object.getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width , frame.height + shift.y), imageView.getPos());
 			}, this));
 
 			var s = imageView.getSCorner();
 			this._addResizeListener(s, imageModel, imageView, goog.bind(function(frame, shift){
-				return this._imagesModel.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width, frame.height - shift.y), imageView.getPos());
+				return this._object.getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width, frame.height - shift.y), imageView.getPos());
 			}, this));
 		},
 
@@ -235,10 +245,10 @@ goog.scope(function () {
 		},
 
 		deleteImage: function() {
-			var index = this._imagesView.getIndexSelectingImage();
+			var index = this._objectsView.getIndexSelectingImage();
 			if (index !== null)
 			{
-				var command = new DeleteCommand(this._imagesModel, index);
+				var command = new DeleteCommand(this._object, index);
 				this._history.recordAction(command);
 			}
 		}
