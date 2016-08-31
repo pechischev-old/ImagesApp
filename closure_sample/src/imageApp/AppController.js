@@ -6,6 +6,8 @@ goog.require("imageApp.ImageController");
 goog.require("imageApp.command.History");
 goog.require("goog.events.KeyCodes");
 
+goog.require("imageApp.ObjectController");
+
 goog.scope(function() {
 
 	/** 
@@ -24,8 +26,10 @@ goog.scope(function() {
 			/** @private {imageApp.AppView} */
 			this._view = new imageApp.AppView();
 			/** @private {imageApp.ImageController} */
-			this._imageCntr = new imageApp.ImageController(this._model.getImagesModel(), this._view.getImagesView(), this._history);
-			
+			//this._imageCntr = new imageApp.ImageController(this._model, this._view.getImagesView(), this._history);
+
+			/** @private {imageApp.ObjectController} */
+			this._objectCntr = new imageApp.ObjectController(this._model, this._history);
 			this._addActions();
 
 
@@ -48,14 +52,16 @@ goog.scope(function() {
 		 * @private 
 		 */
 		_addImage: function(path) {
-			this._imageCntr.addImage(path);
+			//this._imageCntr.addImage(path);
+			this._objectCntr.addImage(path);
 		},
 
 		/**
 		 * @private
 		 */
 		_addTextArea: function () {
-			this._imageCntr.addTextArea();
+			//his._imageCntr.addTextArea();
+			this._objectCntr.addTextArea();
 		},
 
 		/**
@@ -81,7 +87,7 @@ goog.scope(function() {
 			toolbar.appendButton(this._createButtonWithAction("Redo", goog.bind(this._redo, this)));
 			toolbar.appendButton(this._createButtonWithAction("Add image", goog.bind(this._inputProcessing, this)));
 			toolbar.appendButton(this._createButtonWithAction("Add text area", goog.bind(this._addTextArea, this)));
-			toolbar.appendButton(this._createButtonWithAction("Delete", goog.bind(this._deleteSelectingImage, this)));
+			toolbar.appendButton(this._createButtonWithAction("Delete", goog.bind(this._deleteSelectingObject, this)));
 
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 
@@ -117,8 +123,9 @@ goog.scope(function() {
 		/**
 		 * @private
 		 */
-		_deleteSelectingImage:function() {
-			this._imageCntr.deleteImage();
+		_deleteSelectingObject:function() {
+			//this._imageCntr.deleteObject();
+			this._objectCntr.deleteObject();
 		},
 
 		/**

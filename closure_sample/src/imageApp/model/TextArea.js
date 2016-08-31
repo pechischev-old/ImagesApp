@@ -20,8 +20,15 @@ goog.scope(function(){
 		/**
 		 * @inheritDoc
 		 */
+		getType: function () {
+			return "textarea";
+		},
+
+		/**
+		 * @inheritDoc
+		 */
 		_appendProperties: function () {
-			return "text area";
+			return this.getType();
 		}
 	});
 });

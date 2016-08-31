@@ -69,6 +69,13 @@ goog.scope(function(){
 		},
 
 		/**
+		 * @return {string}
+		 */
+		getType: function () {
+			
+		},
+
+		/**
 		 * @return {!goog.math.Rect}
 		 */
 		getFrame: function() {
