@@ -17,18 +17,35 @@ goog.scope(function() {
 	/**
 	 * @param {imageApp.AppModel} models
 	 * @param {imageApp.command.History} history
+	 * @param {imageApp.ObjectCollection} collection
 	 * @constructor
 	 */
 	imageApp.ObjectController = goog.defineClass(null, {
 		/**
 		 * @param {imageApp.AppModel} models
 		 * @param {imageApp.command.History} history
+		 * @param {imageApp.ObjectCollection} collection
 		 */
-		constructor: function(models, history) {
+		constructor: function(models, history, collection) {
 			/** @private {imageApp.AppModel} */
 			this._object = models;
 			/** @private {imageApp.command.History} */
 			this._history = history;
+			/** @private {imageApp.ObjectCollection} */
+			this._objectCollection = collection;
+
+			document.addEventListener("append", goog.bind(function (event) {
+
+			 var imageModel = event.detail.model;
+			 this._objectCollection.appendObject(imageModel);
+			 //this._addHandlers(imageModel, imageView);
+
+			 }, this), false);
+			
+
+			 document.addEventListener("delete", goog.bind(function (event) {
+			 this._objectCollection.removeObject(event.detail.model);
+			 }, this), false);
 		},
 
 		addTextArea: function () {
@@ -64,7 +81,7 @@ goog.scope(function() {
 		},
 
 		deleteObject: function() {
-			// var object = this._objectCollection.getSelectingObject()
+			var object = this._objectCollection.getSelectingObject();
 			/*var index = this._objectsView.getIndexSelectingImage();
 			if (index !== null)
 			{

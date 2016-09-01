@@ -25,18 +25,17 @@ goog.scope(function() {
 			this._lastModel = lastModel;
 
 			/** @type {CustomEvent} */
-			/*this._deleteEvent = new CustomEvent("delete", {
+			this._deleteEvent = new CustomEvent("delete", {
 				detail: {
-					index: -1
+					model: this._lastModel
 				}
-			});*/
+			});
 			/** @type {CustomEvent} */
-			/*this._appendEvent = new CustomEvent("append text area", {
+			this._appendEvent = new CustomEvent("append", {
 				detail: {
-					model: this._lastModel,
-					index: -1
+					model: this._lastModel
 				}
-			});*/
+			});
 		},
 
 		/**
@@ -44,7 +43,7 @@ goog.scope(function() {
 		 */
 		_doExecute: function() {
 			this._model.insertObjectOnIndex(this._lastModel, -1);
-			//document.dispatchEvent(this._appendEvent);
+			document.dispatchEvent(this._appendEvent);
 		},
 
 		/**
@@ -52,7 +51,7 @@ goog.scope(function() {
 		 */
 		_doUnexecute: function () {
 			this._model.removeObjectOnIndex(-1);
-			//document.dispatchEvent(this._deleteEvent);
+			document.dispatchEvent(this._deleteEvent);
 
 		}
 	});

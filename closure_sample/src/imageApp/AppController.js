@@ -6,6 +6,7 @@ goog.require("imageApp.ImageController");
 goog.require("imageApp.command.History");
 goog.require("goog.events.KeyCodes");
 
+goog.require("imageApp.ObjectCollection");
 goog.require("imageApp.ObjectController");
 
 goog.scope(function() {
@@ -27,12 +28,11 @@ goog.scope(function() {
 			this._view = new imageApp.AppView();
 			/** @private {imageApp.ImageController} */
 			//this._imageCntr = new imageApp.ImageController(this._model, this._view.getImagesView(), this._history);
-
+			/** @private {imageApp.ObjectCollection} */
+			this._collection = new imageApp.ObjectCollection(this._view.getCanvas());
 			/** @private {imageApp.ObjectController} */
-			this._objectCntr = new imageApp.ObjectController(this._model, this._history);
+			this._objectCntr = new imageApp.ObjectController(this._model, this._history, this._collection);
 			this._addActions();
-
-
 		},
 
 		/** 

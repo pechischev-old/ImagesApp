@@ -62,6 +62,13 @@ goog.scope(function() {
 			return this._toolbar;
 		},
 
+		/**
+		 * @returns {!Element}
+		 */
+		getCanvas: function () {
+			return this._canvas;
+		},
+
 		/** 
 		 * @return {!Element}
 		 * @private
