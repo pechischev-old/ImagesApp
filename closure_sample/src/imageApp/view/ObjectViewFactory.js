@@ -11,13 +11,17 @@ goog.scope(function() {
 	 * @return {imageApp.view.ObjectView}
 	 */
 	imageApp.view.ObjectViewFactory.createObject = function(object) {
-			if (object.getType() == "image") 
+			if (object.getType() == "image")
 			{
 				return new imageApp.view.ImageView(object.getFrame(), object.getPath());
 			}
-			else if (object.getType() == "textarea") 
+			else if (object.getType() == "textarea")
 			{
 				return new imageApp.view.TextAreaView(object.getFrame());
+			}
+			else
+			{
+				throw new Error("unknown type");
 			}
 		};
 });

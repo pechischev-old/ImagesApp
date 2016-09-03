@@ -14,7 +14,7 @@ goog.scope(function() {
 	 */
 	imageApp.command.AddTextAreaCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
-		 * @param {imageApp.AppModel} collection
+		 * @param {imageApp.ObjectCollection} collection
 		 * @param {!imageApp.model.TextArea} lastModel
 		 */
 		constructor: function (collection, lastModel) {

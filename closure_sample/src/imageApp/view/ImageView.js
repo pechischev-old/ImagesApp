@@ -4,7 +4,9 @@ goog.provide("imageApp.view.ImageView");
 goog.require("imageApp.view.ObjectView");
 
 goog.scope(function() {
-
+	/** @const {!goog.math.Size} */
+	const MIN_SIZE = new goog.math.Size(100, 100);
+	
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @param {string} path
@@ -29,6 +31,17 @@ goog.scope(function() {
 		 */
 		getDOMElement: function(){
 			return this._container;
+		},
+
+		/**
+		 * @inheritDoc
+		 */
+		getMinFrame: function(frame, oldPos) {
+			frame.left = (frame.width < MIN_SIZE.width) ? oldPos.x : frame.left;
+			frame.top = (frame.height < MIN_SIZE.height) ? oldPos.y : frame.top;
+			frame.width = (frame.width < MIN_SIZE.width) ? MIN_SIZE.width : frame.width;
+			frame.height = (frame.height < MIN_SIZE.height) ? MIN_SIZE.height : frame.height;
+			return frame;
 		},
 
 

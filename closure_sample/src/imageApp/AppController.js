@@ -2,12 +2,15 @@ goog.provide("imageApp.AppController");
 
 goog.require("imageApp.AppModel");
 goog.require("imageApp.AppView");
-goog.require("imageApp.ImageController");
+//goog.require("imageApp.ImageController");
 goog.require("imageApp.command.History");
 goog.require("goog.events.KeyCodes");
 
 goog.require("imageApp.ObjectCollection");
 goog.require("imageApp.ObjectController");
+
+goog.require("goog.events");
+goog.require("goog.events.EventType");
 
 goog.scope(function() {
 
@@ -26,10 +29,9 @@ goog.scope(function() {
 			this._model = model;
 			/** @private {imageApp.AppView} */
 			this._view = new imageApp.AppView();
-			/** @private {imageApp.ImageController} */
-			//this._imageCntr = new imageApp.ImageController(this._model, this._view.getImagesView(), this._history);
+
 			/** @private {imageApp.ObjectCollection} */
-			this._collection = new imageApp.ObjectCollection(this._view.getCanvas());
+			this._collection = new imageApp.ObjectCollection();
 			/** @private {imageApp.ObjectController} */
 			this._objectCntr = new imageApp.ObjectController(this._model, this._view , this._history, this._collection);
 			this._addActions();
@@ -52,7 +54,6 @@ goog.scope(function() {
 		 * @private 
 		 */
 		_addImage: function(path) {
-			//this._imageCntr.addImage(path);
 			this._objectCntr.addImage(path);
 		},
 
@@ -60,7 +61,6 @@ goog.scope(function() {
 		 * @private
 		 */
 		_addTextArea: function () {
-			//his._imageCntr.addTextArea();
 			this._objectCntr.addTextArea();
 		},
 
@@ -124,7 +124,6 @@ goog.scope(function() {
 		 * @private
 		 */
 		_deleteSelectingObject:function() {
-			//this._imageCntr.deleteObject();
 			this._objectCntr.deleteObject();
 		},
 

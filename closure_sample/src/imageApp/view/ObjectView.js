@@ -72,6 +72,15 @@ goog.scope(function () {
 		},
 
 		/**
+		 * @param {!goog.math.Rect} frame
+		 * @param {!goog.math.Coordinate} oldPos
+		 * @return {!goog.math.Rect}
+		 */
+		getMinFrame: function(frame, oldPos) {
+			
+		},
+
+		/**
 		 * @return {!goog.math.Coordinate}
 		 */
 		getPos: function() {

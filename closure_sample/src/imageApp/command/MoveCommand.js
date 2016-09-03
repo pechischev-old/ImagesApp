@@ -18,9 +18,7 @@ goog.scope(function () {
 		 */
 		constructor: function(objectModel, mousePos) {
 			goog.base(this);
-			/**
-			 * @private {imageApp.model.Object}
-			 */
+			/** @private {imageApp.model.Object} */
 			this._object = objectModel;
 			/**
 			 * @private {!goog.math.Coordinate}

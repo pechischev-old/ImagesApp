@@ -28,6 +28,14 @@ goog.scope(function() {
 			return this._container;
 		},
 
+
+		/**
+		 * @inheritDoc
+		 */
+		getMinFrame: function (frame, oldPos) {
+			return frame;
+		},
+
 		/**
 		 * @inheritDoc
 		 */

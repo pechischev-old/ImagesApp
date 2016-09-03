@@ -7,7 +7,7 @@ goog.require("imageApp.view.InputForm");
 goog.require("goog.structs.Map");
 
 goog.require("imageApp.view.ObjectViewFactory");
-
+goog.require("imageApp.handlers.HandlerImage");
 
 
 goog.scope(function() {
@@ -34,13 +34,13 @@ goog.scope(function() {
 		},
 
 		/**
-		 * @return {number}
+		 * @return {*}
 		 */
 		getKeySelectedObject: function () {
 			var keys = this._objectsView.getKeys();
 			for (var i = 0; i < keys.length; ++i)
 			{
-				if (this._objectsView[keys[i]].isSelected())
+				if (this._objectsView.get(keys[i]).isSelected())
 				{
 					return keys[i];
 				}
@@ -49,11 +49,11 @@ goog.scope(function() {
 		},
 
 
-		deselectObjects: function () {
+		_deselectObjects: function () {
 			var keys = this._objectsView.getKeys();
 			for (var i = 0; i < keys.length; ++i)
 			{
-				this._objectsView[keys[i]].setVisibleBorder(false);
+				this._objectsView.get(keys[i]).setVisibleBorder(false);
 			}
 		},
 
@@ -146,6 +146,7 @@ goog.scope(function() {
 				var view = imageApp.view.ObjectViewFactory.createObject(model);
 				model.registerObserver(view);
 				this._canvas.appendChild(view.getDOMElement());
+				new imageApp.handlers.HandlerImage(model, view);
 				this._objectsView.set(goog.getUid(model), view);
 			}, this), false);
 
@@ -157,6 +158,8 @@ goog.scope(function() {
 				this._canvas.removeChild(view.getDOMElement());
 				this._objectsView.remove(goog.getUid(model));
 			}, this), false);
+			
+			document.addEventListener("deselectObjects", goog.bind(this._deselectObjects, this), false);
 		}
 	});
 });

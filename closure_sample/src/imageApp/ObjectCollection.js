@@ -41,7 +41,7 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @param {number} key
+		 * @param {*} key
 		 * @return {imageApp.model.Object}
 		 */
 		getObjectOnKey: function(key){

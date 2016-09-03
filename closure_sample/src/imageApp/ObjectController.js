@@ -1,17 +1,18 @@
 goog.provide("imageApp.ObjectController");
 
 
-goog.require("imageApp.command.MoveCommand");
+
 goog.require("imageApp.command.AddImageCommand");
 goog.require("imageApp.command.DeleteCommand");
-goog.require("imageApp.command.ResizeCommand");
 goog.require("imageApp.command.AddTextAreaCommand");
+goog.require("imageApp.command.MoveCommand");
+goog.require("imageApp.command.ResizeCommand");
 
 goog.scope(function() {
 	var MoveCommand = imageApp.command.MoveCommand;
+	var ResizeCommand = imageApp.command.ResizeCommand;
 	var AddImageCommand = imageApp.command.AddImageCommand;
 	var DeleteCommand = imageApp.command.DeleteCommand;
-	var ResizeCommand = imageApp.command.ResizeCommand;
 	var AddTextAreaCommand = imageApp.command.AddTextAreaCommand;
 
 	/**
@@ -37,6 +38,9 @@ goog.scope(function() {
 			this._history = history;
 			/** @private {imageApp.ObjectCollection} */
 			this._objectCollection = collection;
+
+			this._addMoveListener();
+			this._addResizeListener();
 		},
 
 		addTextArea: function () {
@@ -54,6 +58,26 @@ goog.scope(function() {
 			var img = new Image(0, 0);
 			img.src = path;
 			img.onload = goog.bind(this._onLoadImage, this, img);
+		},
+
+		/**
+		 * @private
+		 */
+		_addResizeListener: function () {
+			document.addEventListener("resize", goog.bind(function(event) {
+				var command = new ResizeCommand(event.detail.model, event.detail.frame);
+				this._history.recordAction(command);
+			}, this), false);
+		},
+
+		/**
+		 * @private
+		 */
+		_addMoveListener: function () {
+			document.addEventListener("move", goog.bind(function(event) {
+				var command = new MoveCommand(event.detail.model, event.detail.pos);
+				this._history.recordAction(command);
+			}, this), false);
 		},
 
 		/**
