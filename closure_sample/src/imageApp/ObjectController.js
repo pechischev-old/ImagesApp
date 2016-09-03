@@ -15,43 +15,34 @@ goog.scope(function() {
 	var AddTextAreaCommand = imageApp.command.AddTextAreaCommand;
 
 	/**
-	 * @param {imageApp.AppModel} models
+	 * @param {imageApp.AppModel} model
+	 * @param {imageApp.AppView} view
 	 * @param {imageApp.command.History} history
 	 * @param {imageApp.ObjectCollection} collection
 	 * @constructor
 	 */
 	imageApp.ObjectController = goog.defineClass(null, {
 		/**
-		 * @param {imageApp.AppModel} models
+		 * @param {imageApp.AppModel} model
+		 * @param {imageApp.AppView} view
 		 * @param {imageApp.command.History} history
 		 * @param {imageApp.ObjectCollection} collection
 		 */
-		constructor: function(models, history, collection) {
+		constructor: function(model, view, history, collection) {
 			/** @private {imageApp.AppModel} */
-			this._object = models;
+			this._model = model;
+			/** @private {imageApp.AppView} */
+			this._view = view;
 			/** @private {imageApp.command.History} */
 			this._history = history;
 			/** @private {imageApp.ObjectCollection} */
 			this._objectCollection = collection;
-
-			document.addEventListener("append", goog.bind(function (event) {
-
-			 var imageModel = event.detail.model;
-			 this._objectCollection.appendObject(imageModel);
-			 //this._addHandlers(imageModel, imageView);
-
-			 }, this), false);
-			
-
-			 document.addEventListener("delete", goog.bind(function (event) {
-			 this._objectCollection.removeObject(event.detail.model);
-			 }, this), false);
 		},
 
 		addTextArea: function () {
-			var textAreaModel = this._object.createTextArea();
+			var textAreaModel = this._model.createTextArea();
 
-			var command = new AddTextAreaCommand(this._object, textAreaModel);
+			var command = new AddTextAreaCommand(this._objectCollection, textAreaModel);
 			this._history.recordAction(command);
 		},
 
@@ -70,24 +61,22 @@ goog.scope(function() {
 		 * @private
 		 */
 		_onLoadImage: function(elem) {
+			var imageModel = this._model.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight), elem.src);
 
-			var imageModel = this._object.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight), elem.src);
-
-			var command = new AddImageCommand(this._object, imageModel);
+			var command = new AddImageCommand(this._objectCollection, imageModel);
 			this._history.recordAction(command);
 
 			goog.style.setStyle(document.documentElement, "cursor", "default");
-
 		},
 
 		deleteObject: function() {
-			var object = this._objectCollection.getSelectingObject();
-			/*var index = this._objectsView.getIndexSelectingImage();
-			if (index !== null)
+			var key = this._view.getKeySelectedObject();
+			if (key !== null)
 			{
-				var command = new DeleteCommand(this._object, index);
+				var object = this._objectCollection.getObjectOnKey(key);
+				var command = new DeleteCommand(this._objectCollection, object);
 				this._history.recordAction(command);
-			}*/
+			}
 		}
 	});
 });

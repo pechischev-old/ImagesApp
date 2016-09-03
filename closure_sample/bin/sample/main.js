@@ -10,9 +10,9 @@ Sample.start = function()
 {
 	var model = new imageApp.AppModel();
 	var controller = new imageApp.AppController(model);
-	var idTimer = setInterval(function() {
+	/*var idTimer = setInterval(function() {
 		model.outputLog();
-	}, 0);
+	}, 0);*/
 
 };
 

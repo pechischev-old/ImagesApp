@@ -21,19 +21,19 @@ goog.scope(function () {
 	var AddTextAreaCommand = imageApp.command.AddTextAreaCommand;
 
 	/**
-	 * @param {imageApp.model.ObjectsModel} imagesModel
-	 * @param {imageApp.view.ImagesView} imagesView
+	 * @param {imageApp.AppModel} objectsModel
+	 * @param {imageApp.view.ImagesView} objectsView
 	 * @param {imageApp.command.History} history
 	 * @constructor
 	 */
 	imageApp.ImageController = goog.defineClass(null, {
 		/**
- 		 * @param {imageApp.model.ObjectsModel} objectsModel
+ 		 * @param {imageApp.AppModel} objectsModel
  		 * @param {imageApp.view.ImagesView} objectsView
 		 * @param {imageApp.command.History} history
 		 */
 		constructor: function (objectsModel, objectsView, history) {
-			/** @private {imageApp.model.ObjectsModel} */
+			/** @private {imageApp.AppModel} */
 			this._object = objectsModel;
 			/** @private {imageApp.view.ImagesView} */
 			this._objectsView = objectsView;
@@ -41,10 +41,10 @@ goog.scope(function () {
 			/** @private {imageApp.command.History} */
 			this._history = history;
 
-			document.addEventListener("append", goog.bind(function (event) {
+			/*document.addEventListener("append", goog.bind(function (event) {
 				
 				var imageModel = event.detail.model;
-				/** @type {imageApp.view.ObjectView} */
+				/** @type {imageApp.view.ObjectView} /
 				var imageView = new imageApp.view.ImageView(imageModel.getFrame(), imageModel.getPath());
 				imageModel.registerObserver(imageView);
 				this._objectsView.insertImageOnIndex(imageView, event.detail.index);
@@ -55,7 +55,7 @@ goog.scope(function () {
 			document.addEventListener("append text area", goog.bind(function (event) {
 
 				var model = event.detail.model;
-				/** @type {imageApp.view.ObjectView} */
+				/** @type {imageApp.view.ObjectView} /
 				var textAreaView = new imageApp.view.TextAreaView(model.getFrame());
 				model.registerObserver(textAreaView);
 				this._objectsView.insertImageOnIndex(textAreaView, event.detail.index);
@@ -63,7 +63,7 @@ goog.scope(function () {
 
 			document.addEventListener("delete", goog.bind(function (event) {
 				this._objectsView.removeImageOnIndex(event.detail.index);
-			}, this), false);
+			}, this), false);*/
 		},
 
 		addTextArea: function () {
@@ -254,7 +254,7 @@ goog.scope(function () {
 
 		},
 
-		deleteImage: function() {
+		deleteObject: function() {
 			var index = this._objectsView.getIndexSelectingImage();
 			if (index !== null)
 			{

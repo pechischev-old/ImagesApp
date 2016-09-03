@@ -2,9 +2,11 @@ goog.provide("imageApp.AppView");
 
 
 goog.require("goog.dom");
-goog.require("imageApp.view.ImagesView");
 goog.require("imageApp.view.Toolbar");
 goog.require("imageApp.view.InputForm");
+goog.require("goog.structs.Map");
+
+goog.require("imageApp.view.ObjectViewFactory");
 
 
 
@@ -26,16 +28,35 @@ goog.scope(function() {
 			fragment.appendChild(this._createCanvas());
 			document.body.appendChild(fragment);
 
-			/** @private {imageApp.view.ImagesView} */
-			this._objectsView = new imageApp.view.ImagesView(this._canvas);
+			/** @private {goog.structs.Map<*, imageApp.view.ObjectView>} */
+			this._objectsView = new goog.structs.Map();
+			this._initListener();
 		},
 
 		/**
-		 * @returns {imageApp.view.ImagesView}
+		 * @return {number}
 		 */
-		getImagesView: function () {
-			return this._objectsView;
+		getKeySelectedObject: function () {
+			var keys = this._objectsView.getKeys();
+			for (var i = 0; i < keys.length; ++i)
+			{
+				if (this._objectsView[keys[i]].isSelected())
+				{
+					return keys[i];
+				}
+			}
+			return null;
 		},
+
+
+		deselectObjects: function () {
+			var keys = this._objectsView.getKeys();
+			for (var i = 0; i < keys.length; ++i)
+			{
+				this._objectsView[keys[i]].setVisibleBorder(false);
+			}
+		},
+
 
 		/**
 		 * @param {Function} action
@@ -113,6 +134,29 @@ goog.scope(function() {
 			goog.style.setStyle(this._canvas, "width", CANVAS_SIZE.width + "px");
 			goog.style.setStyle(this._canvas, "height", CANVAS_SIZE.height  + "px");
 			return this._canvas;
+		},
+
+		/**
+		 * @private
+		 */
+		_initListener: function () {
+			document.addEventListener("append", goog.bind(function (event){
+				/** type {imageApp.model.Object} */
+				var model = event.detail;
+				var view = imageApp.view.ObjectViewFactory.createObject(model);
+				model.registerObserver(view);
+				this._canvas.appendChild(view.getDOMElement());
+				this._objectsView.set(goog.getUid(model), view);
+			}, this), false);
+
+			document.addEventListener("remove", goog.bind(function(event){
+				/** type {imageApp.model.Object} */
+				var model = event.detail;
+				var view = this._objectsView.get(goog.getUid(model));
+				model.removeObserver(view);
+				this._canvas.removeChild(view.getDOMElement());
+				this._objectsView.remove(goog.getUid(model));
+			}, this), false);
 		}
 	});
 });

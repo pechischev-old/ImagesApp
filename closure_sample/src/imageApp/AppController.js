@@ -31,7 +31,7 @@ goog.scope(function() {
 			/** @private {imageApp.ObjectCollection} */
 			this._collection = new imageApp.ObjectCollection(this._view.getCanvas());
 			/** @private {imageApp.ObjectController} */
-			this._objectCntr = new imageApp.ObjectController(this._model, this._history, this._collection);
+			this._objectCntr = new imageApp.ObjectController(this._model, this._view , this._history, this._collection);
 			this._addActions();
 		},
 
