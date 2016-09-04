@@ -16,8 +16,8 @@ goog.scope(function() {
 		 */
 		constructor: function(frame) {
 			goog.base(this, frame);
-			
 			this._init();
+
 		},
 
 
@@ -33,6 +33,7 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		getMinFrame: function (frame, oldPos) {
+
 			return frame;
 		},
 
@@ -43,6 +44,16 @@ goog.scope(function() {
 			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
 			var image = this._container.getElementsByTagName(goog.dom.TagName.TEXTAREA)[0];
 			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
+		},
+
+		/**
+		 * @param {!Element} elem
+		 * @param {!Element} hiddenDiv
+		 * @param {number} minHeight
+		 * @private
+		 */
+		_initResizeArea: function(elem, hiddenDiv, minHeight) {
+
 		},
 
 
@@ -58,11 +69,13 @@ goog.scope(function() {
 			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
 
 			var image = document.createElement(goog.dom.TagName.TEXTAREA);
-			image.setAttribute("name", "comment");
+			image.setAttribute("class", "noscroll");
 			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
 			this._container.appendChild(image);
+			
 
 			this._container.appendChild(this._initBorder());
+			
 		}
 	});
 });

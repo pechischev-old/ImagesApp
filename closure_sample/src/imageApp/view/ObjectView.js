@@ -81,6 +81,13 @@ goog.scope(function () {
 		},
 
 		/**
+		 * @returns {imageApp.view.Border}
+		 */
+		getBorder: function () {
+			return this._border;
+		},
+
+		/**
 		 * @return {!goog.math.Coordinate}
 		 */
 		getPos: function() {

@@ -35,18 +35,19 @@ goog.scope(function() {
 		},
 
 		activeBorder: function () {
-			goog.style.setStyle(this._border, "display", "block");
+			goog.style.setStyle(this._border, "opacity", "1");
+			document.dispatchEvent(new Event("activeCorner"));
 		},
 
 		deactiveBorder: function() {
-			goog.style.setStyle(this._border, "display", "none");
+			goog.style.setStyle(this._border, "opacity", "0");
+			document.dispatchEvent(new Event("deactiveCorner"));
 		},
 
 		/** 
 		 * @private
 		 */
 		_init: function() {
-			// TODO: создать отдельно 8 элементов и подписать обработчики (для ресайза)
 			/** @private {!Element} */
 			this._border = document.createElement(goog.dom.TagName.DIV);
 			this._border.setAttribute("class", "border");
@@ -61,7 +62,16 @@ goog.scope(function() {
 		createCorner:function(name) {
 			var div = document.createElement(goog.dom.TagName.DIV);
 			div.setAttribute("class", name);
+			goog.style.setStyle(div, "display", "none");
 			this._border.appendChild(div);
+
+			document.addEventListener("deactiveCorner", goog.bind(function(event) {
+				goog.style.setStyle(div, "display", "none");
+			}, this), false);
+
+			document.addEventListener("activeCorner", goog.bind(function(event) {
+				goog.style.setStyle(div, "display", "block");
+			}, this), false);
 			return div;
 		}
 	});

@@ -4,6 +4,8 @@ goog.require("imageApp.view.TextAreaView");
 goog.require("imageApp.view.ImageView");
 goog.require("imageApp.model.Object");
 
+goog.require("imageApp.handlers.Handler");
+
 goog.scope(function() {
 
 	/**
@@ -13,11 +15,16 @@ goog.scope(function() {
 	imageApp.view.ObjectViewFactory.createObject = function(object) {
 			if (object.getType() == "image")
 			{
-				return new imageApp.view.ImageView(object.getFrame(), object.getPath());
+				var image = new imageApp.view.ImageView(object.getFrame(), object.getPath());
+				imageApp.handlers.Handler.addHandlers(object, image, image.getDOMElement());
+				return image;
 			}
 			else if (object.getType() == "textarea")
 			{
-				return new imageApp.view.TextAreaView(object.getFrame());
+				var textArea = new imageApp.view.TextAreaView(object.getFrame());
+				
+				imageApp.handlers.Handler.addHandlers(object, textArea, textArea.getBorder().getDOMElement());
+				return textArea;
 			}
 			else
 			{
