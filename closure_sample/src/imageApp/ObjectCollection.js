@@ -24,6 +24,7 @@ goog.scope(function () {
 			var removeEvent = new CustomEvent("remove", {
 				detail: object
 			});
+			object.setRemoved(true);
 			this._objectsModel.remove(goog.getUid(object));
 			document.dispatchEvent(removeEvent);
 		},
@@ -36,6 +37,7 @@ goog.scope(function () {
 			var appendEvent = new CustomEvent("append", {
 				detail: object
 			});
+			object.setRemoved(false);
 			this._objectsModel.set(goog.getUid(object), object);
 			document.dispatchEvent(appendEvent);
 		},

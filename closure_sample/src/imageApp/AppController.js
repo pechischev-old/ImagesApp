@@ -35,13 +35,22 @@ goog.scope(function() {
 			this._collection = new imageApp.ObjectCollection();
 			/** @private {imageApp.ObjectController} */
 			this._objectCntr = new imageApp.ObjectController(this._model, this._view , this._history, this._collection);
-			this._addActions();
 
 			this._layout = new imageApp.layout.LayoutControl();
 	
 			this._layout.initHeaderLayout(this._initLayoutObject());
 			this._layout.initDescriptionLayout(this._initLayoutObject());
-			this._layout.update();
+			this._layout.setDefaultLayout();
+			this._addActions();
+
+			document.addEventListener("append media", goog.bind(function(){
+				this._layout.initMediaLayout(this._initLayoutObject());
+			}, this), false);
+
+			document.addEventListener("remove media", goog.bind(function(){
+				this._layout.removeMediaLayout();
+				
+			}, this), false);
 		},
 
 		/**
@@ -105,6 +114,8 @@ goog.scope(function() {
 			toolbar.appendButton(this._createButtonWithAction("Add image", goog.bind(this._inputProcessing, this)));
 			toolbar.appendButton(this._createButtonWithAction("Add text area", goog.bind(this._addTextArea, this)));
 			toolbar.appendButton(this._createButtonWithAction("Delete", goog.bind(this._deleteSelectingObject, this)));
+			toolbar.appendButton(this._createButtonWithAction("Default", goog.bind(this._layout.setDefaultLayout, this._layout)));
+			toolbar.appendButton(this._createButtonWithAction("Horizontal", goog.bind(this._layout.setHorizontalLayout, this._layout)));
 
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 
@@ -141,6 +152,7 @@ goog.scope(function() {
 		 */
 		_deleteSelectingObject:function() {
 			this._objectCntr.deleteObject();
+			document.dispatchEvent(new Event("remove media"));
 		},
 
 		/**

@@ -21,17 +21,15 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @returns {boolean}
-		 */
-		hasChange: function () {
-			return this._object.hasChange();
-		},
-
-		/**
 		 * @inheritDoc
 		 */
 		setFrame: function(frame) {
-			this._object.setFrame(frame);
+			document.dispatchEvent(new CustomEvent("resize", {
+				detail: {
+					model: this._object,
+					frame: frame
+				}
+			}));
 		},
 
 		/**

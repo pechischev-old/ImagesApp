@@ -24,6 +24,13 @@ goog.scope(function () {
 		},
 
 		/**
+		 * @returns {string}
+		 */
+		getTypeLayout: function () {
+			return this._typeLayout;
+		},
+
+		/**
 		 * @param {imageApp.model.Object} object
 		 */
 		initHeaderLayout: function(object) {
@@ -39,17 +46,82 @@ goog.scope(function () {
 			this._description = new imageApp.layout.Layout(object);
 		},
 
-		update: function () {
-			
-			var frame = this._header.getFrame();
-			frame.width = CANVAS_SIZE.width - 2 *BORDER;
-			this._header.setFrame(frame);
+		/**
+		 * @param {imageApp.model.Object} object
+		 */
+		initMediaLayout: function(object) {
+			/** @private {imageApp.layout.MediaLayout} */
+			this._media = new imageApp.layout.MediaLayout(object);
+		},
 
-			var nframe = this._description.getFrame();
-			nframe.width = CANVAS_SIZE.width - 2 *BORDER;
-			nframe.top = frame.height + nframe.top + INDENT;
+		/**
+		 * @private
+		 */
+		_choiceLayoutOnType: function () {
+			if (this._typeLayout == "default")
+			{
+				this.setDefaultLayout();
+			}
+			else if ( this._typeLayout == "horizontal")
+			{
+				this.setHorizontalLayout();
+			}
+		},
 
-			this._description.setFrame(nframe);
+		setDefaultLayout: function () {
+			this._typeLayout = "default";
+			var hFrame = this._header.getFrame();
+			var dFrame = this._description.getFrame();
+			if (this._media)
+			{
+				var mFrame = this._media.getFrame();
+
+				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width * 0.6 - BORDER, null));
+				this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width * 0.6 - BORDER, null));
+				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left + hFrame.width + INDENT, hFrame.top, CANVAS_SIZE.width * 0.4 - BORDER , null));
+				console.log(mFrame + " " + this._media.getFrame() );
+			}
+			else
+			{
+				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null));
+				this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null));
+			}
+		},
+		
+		setHorizontalLayout: function () {
+			this._typeLayout = "horizontal";
+			if (!this._media)
+			{
+				document.dispatchEvent(new Event("append media"));
+			}
+			var hFrame = this._header.getFrame();
+			var dFrame = this._description.getFrame();
+			var mFrame = this._media.getFrame();
+			this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null));
+			this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null));
+			this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left, dFrame.height + dFrame.top + INDENT,  CANVAS_SIZE.width - 2 * BORDER , null));
+		},
+
+		removeMediaLayout: function () {
+			this._media = null;
+			this._choiceLayoutOnType();
+		},
+
+		/**
+		 * @param {!goog.math.Rect} frame
+		 * @param {null|number} left
+		 * @param {null|number} top
+		 * @param {null|number} width
+		 * @param {null|number} height
+		 * @return {!goog.math.Rect}
+		 * @private
+		 */
+		_getChangedFrame: function (frame, left, top, width, height) {
+			frame.left = (left) ? left : frame.left;
+			frame.top = (top) ? top : frame.top;
+			frame.width = (width) ? width : frame.width;
+			frame.height = (height) ? height : frame.height;
+			return frame;
 		}
 	});
 });

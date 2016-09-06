@@ -21,7 +21,7 @@ goog.scope(function(){
 			this.setFrame(frame);
 
 			/** @private {boolean}*/
-			this._isChange = true;
+			this._isRemoved = false;
 
 			/** @private {boolean}*/
 			this._canRemove = true;
@@ -30,8 +30,15 @@ goog.scope(function(){
 		/**
 		 * @returns {boolean}
 		 */
-		hasChange: function () {
-			return this._isChange;
+		hasRemoved: function () {
+			return this._isRemoved;
+		},
+
+		/**
+		 * @param {boolean} isRemoved
+		 */
+		setRemoved: function (isRemoved) {
+			this._isRemoved = isRemoved;
 		},
 
 		/**
