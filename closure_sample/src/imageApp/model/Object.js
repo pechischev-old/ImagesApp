@@ -22,6 +22,16 @@ goog.scope(function(){
 
 			/** @private {boolean}*/
 			this._isChange = true;
+
+			/** @private {boolean}*/
+			this._canRemove = true;
+		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		hasChange: function () {
+			return this._isChange;
 		},
 
 		/**
@@ -47,6 +57,21 @@ goog.scope(function(){
 				item.update(thisPtr.getFrame());
 			});
 		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		isDeleted: function () {
+			return this._canRemove;
+		},
+
+		/**
+		 * @param {boolean} canRemove
+		 */
+		canRemove: function(canRemove) {
+			this._canRemove = canRemove;
+		},
+
 
 		/**
 		 * @param {!goog.math.Rect} frame

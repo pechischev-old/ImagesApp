@@ -8,6 +8,7 @@ goog.require("goog.events.KeyCodes");
 
 goog.require("imageApp.ObjectCollection");
 goog.require("imageApp.ObjectController");
+goog.require("imageApp.layout.LayoutControl");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
@@ -35,6 +36,22 @@ goog.scope(function() {
 			/** @private {imageApp.ObjectController} */
 			this._objectCntr = new imageApp.ObjectController(this._model, this._view , this._history, this._collection);
 			this._addActions();
+
+			this._layout = new imageApp.layout.LayoutControl();
+	
+			this._layout.initHeaderLayout(this._initLayoutObject());
+			this._layout.initDescriptionLayout(this._initLayoutObject());
+			this._layout.update();
+		},
+
+		/**
+		 * @returns {imageApp.model.Object}
+		 * @private
+		 */
+		_initLayoutObject: function () {
+			var textarea = this._model.createTextArea();
+			this._collection.appendObject(textarea);
+			return textarea;
 		},
 
 		/** 
@@ -104,7 +121,6 @@ goog.scope(function() {
 				{
 					this._redo();
 				}
-				//event.preventDefault();
 			}, this));
 		},
 

@@ -98,6 +98,10 @@ goog.scope(function() {
 			if (key !== null)
 			{
 				var object = this._objectCollection.getObjectOnKey(key);
+				if (!object.isDeleted())
+				{
+					return;
+				}
 				var command = new DeleteCommand(this._objectCollection, object);
 				this._history.recordAction(command);
 			}

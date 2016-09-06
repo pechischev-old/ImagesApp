@@ -31,7 +31,6 @@ goog.scope(function () {
 		 */
 		_doExecute: function() {
 			this._objectCollection.removeObject(this._object);
-			
 		},
 
 		/**
