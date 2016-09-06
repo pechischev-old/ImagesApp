@@ -22,13 +22,6 @@ goog.scope(function(){
 		 */
 		getType: function () {
 			return "textarea";
-		},
-
-		/**
-		 * @inheritDoc
-		 */
-		_appendProperties: function () {
-			return this.getType();
 		}
 	});
 });

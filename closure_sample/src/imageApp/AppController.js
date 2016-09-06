@@ -35,7 +35,7 @@ goog.scope(function() {
 			this._collection = new imageApp.ObjectCollection();
 			/** @private {imageApp.ObjectController} */
 			this._objectCntr = new imageApp.ObjectController(this._model, this._view , this._history, this._collection);
-
+			/** @private {imageApp.layout.LayoutControl} */
 			this._layout = new imageApp.layout.LayoutControl();
 	
 			this._layout.initHeaderLayout(this._initLayoutObject());
@@ -152,7 +152,6 @@ goog.scope(function() {
 		 */
 		_deleteSelectingObject:function() {
 			this._objectCntr.deleteObject();
-			document.dispatchEvent(new Event("remove media"));
 		},
 
 		/**

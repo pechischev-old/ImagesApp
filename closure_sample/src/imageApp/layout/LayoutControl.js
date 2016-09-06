@@ -7,16 +7,17 @@ goog.scope(function () {
 	const BORDER = 50;
 	const INDENT = 20;
 	const CANVAS_SIZE = new goog.math.Size(1000, 800);
+	
 	/**
-	 * @contructor
+	 * @constructor
 	 */
 	imageApp.layout.LayoutControl = goog.defineClass(null, {
 		constructor: function () {
-			/** @private {null} */
+			/** @private {?imageApp.layout.Layout} */
 			this._header = null;
-			/** @private {null} */
+			/** @private {?imageApp.layout.Layout} */
 			this._description = null;
-			/** @private {null} */
+			/** @private {?imageApp.layout.MediaLayout} */
 			this._media = null;
 			
 			/** @private {string} */
@@ -34,7 +35,6 @@ goog.scope(function () {
 		 * @param {imageApp.model.Object} object
 		 */
 		initHeaderLayout: function(object) {
-			/** @private {imageApp.layout.Layout} */
 			this._header = new imageApp.layout.Layout(object);
 		},
 
@@ -42,7 +42,6 @@ goog.scope(function () {
 		 * @param {imageApp.model.Object} object
 		 */
 		initDescriptionLayout: function(object) {
-			/** @private {imageApp.layout.Layout} */
 			this._description = new imageApp.layout.Layout(object);
 		},
 
@@ -50,7 +49,6 @@ goog.scope(function () {
 		 * @param {imageApp.model.Object} object
 		 */
 		initMediaLayout: function(object) {
-			/** @private {imageApp.layout.MediaLayout} */
 			this._media = new imageApp.layout.MediaLayout(object);
 		},
 
@@ -66,6 +64,7 @@ goog.scope(function () {
 			{
 				this.setHorizontalLayout();
 			}
+			
 		},
 
 		setDefaultLayout: function () {
@@ -79,7 +78,6 @@ goog.scope(function () {
 				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width * 0.6 - BORDER, null));
 				this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width * 0.6 - BORDER, null));
 				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left + hFrame.width + INDENT, hFrame.top, CANVAS_SIZE.width * 0.4 - BORDER , null));
-				console.log(mFrame + " " + this._media.getFrame() );
 			}
 			else
 			{

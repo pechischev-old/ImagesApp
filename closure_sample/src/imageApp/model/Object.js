@@ -86,7 +86,6 @@ goog.scope(function(){
 		setFrame: function(frame) {
 			/** @private {!goog.math.Rect} */
 			this._frame = frame;
-			this._isChange = true;
 			this.notifyObservers();
 		},
 
@@ -96,7 +95,6 @@ goog.scope(function(){
 		setPosition: function(pos) {
 			this._frame.left = pos.x;
 			this._frame.top = pos.y;
-			this._isChange = true;
 			this.notifyObservers();
 		},
 
@@ -112,29 +110,7 @@ goog.scope(function(){
 		 */
 		getFrame: function() {
 			return this._frame;
-		},
-
-		/**
-		 * @param {!number} number
-		 */
-		outLog: function(number) {
-			if (this._isChange)
-			{
-				var info = this._appendProperties();
-				console.log("#### : " + number);
-				console.log(info);
-				console.log("pos: " + this._frame.left + " " + this._frame.top);
-				console.log("size: " + this._frame.width + " " + this._frame.height);
-				this._isChange = false;
-			}
-		},
-
-		/**
-		 * @protected
-		 * @return {string}
-		 */
-		_appendProperties: function () {
-			
 		}
+
 	});
 });

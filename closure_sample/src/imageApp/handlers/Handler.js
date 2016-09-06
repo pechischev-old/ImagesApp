@@ -11,7 +11,7 @@ goog.scope(function () {
 	 * @param {imageApp.model.Object} model
 	 * @param {imageApp.view.ObjectView} view
 	 * @param {!Element} elem
-	 * @param {?function(*)=} action
+	 * @param {?function()=} action
 	 */
 	imageApp.handlers.Handler.addHandlers = function(model, view, elem, action) {
 

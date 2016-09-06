@@ -49,13 +49,6 @@ goog.scope(function(){
 		 */
 		getPath: function () {
 			return this._path;
-		},
-
-		/**
-		 * @inheritDoc
-		 */
-		_appendProperties: function () {
-			return this.getType();
 		}
 	});
 });
