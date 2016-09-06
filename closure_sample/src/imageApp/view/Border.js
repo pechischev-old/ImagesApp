@@ -62,6 +62,7 @@ goog.scope(function() {
 		createCorner:function(name) {
 			var div = document.createElement(goog.dom.TagName.DIV);
 			div.setAttribute("class", name);
+			div.classList.add("corner");
 			goog.style.setStyle(div, "display", "none");
 			this._border.appendChild(div);
 

@@ -23,6 +23,7 @@ goog.scope(function () {
 			{
 				return;
 			}
+			
 			if (action)
 			{
 				action();

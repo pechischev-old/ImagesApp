@@ -22,8 +22,10 @@ goog.scope(function() {
 			else if (object.getType() == "textarea")
 			{
 				var textArea = new imageApp.view.TextAreaView(object.getFrame());
-				
-				imageApp.handlers.Handler.addHandlers(object, textArea, textArea.getBorder().getDOMElement());
+
+				imageApp.handlers.Handler.addHandlers(object, textArea, textArea.getBorder().getDOMElement(), goog.bind(function () {
+					textArea.getDOMElement().getElementsByTagName(goog.dom.TagName.TEXTAREA)[0].focus();
+				}, textArea));
 				return textArea;
 			}
 			else
