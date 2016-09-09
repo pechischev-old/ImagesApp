@@ -73,6 +73,7 @@ goog.scope(function () {
 			var dFrame = this._description.getFrame();
 			if (this._media)
 			{
+
 				var mFrame = this._media.getFrame();
 
 				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width * 0.6 - BORDER, null));
@@ -100,9 +101,16 @@ goog.scope(function () {
 			this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left, dFrame.height + dFrame.top + INDENT,  CANVAS_SIZE.width - 2 * BORDER , null));
 		},
 
-		removeMediaLayout: function () {
+		_removeMediaLayout: function () {
 			this._media = null;
 			this._choiceLayoutOnType();
+		},
+		
+		checkRemoveMedia: function () {
+			if (this._media.hasRemoved())
+			{
+				this._removeMediaLayout();
+			}
 		},
 
 		/**

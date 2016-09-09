@@ -152,6 +152,7 @@ goog.scope(function() {
 		 */
 		_deleteSelectingObject:function() {
 			this._objectCntr.deleteObject();
+			this._layout.checkRemoveMedia();
 		},
 
 		/**
