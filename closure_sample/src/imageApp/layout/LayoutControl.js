@@ -107,7 +107,7 @@ goog.scope(function () {
 		},
 		
 		checkRemoveMedia: function () {
-			if (this._media.hasRemoved())
+			if (this._media && this._media.hasRemoved())
 			{
 				this._removeMediaLayout();
 			}

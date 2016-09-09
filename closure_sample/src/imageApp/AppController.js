@@ -109,13 +109,16 @@ goog.scope(function() {
 		 */
 		_addActions: function() {
 			var toolbar = this._view.getToolbar();
-			toolbar.appendButton(this._createButtonWithAction("Undo", goog.bind(this._undo, this)));
-			toolbar.appendButton(this._createButtonWithAction("Redo", goog.bind(this._redo, this)));
-			toolbar.appendButton(this._createButtonWithAction("Add image", goog.bind(this._inputProcessing, this)));
-			toolbar.appendButton(this._createButtonWithAction("Add text area", goog.bind(this._addTextArea, this)));
-			toolbar.appendButton(this._createButtonWithAction("Delete", goog.bind(this._deleteSelectingObject, this)));
-			toolbar.appendButton(this._createButtonWithAction("Default", goog.bind(this._layout.setDefaultLayout, this._layout)));
-			toolbar.appendButton(this._createButtonWithAction("Horizontal", goog.bind(this._layout.setHorizontalLayout, this._layout)));
+			toolbar.appendElement(this._createButtonWithAction("Undo", goog.bind(this._undo, this)));
+			toolbar.appendElement(this._createButtonWithAction("Redo", goog.bind(this._redo, this)));
+			toolbar.appendElement(this._createButtonWithAction("Add image", goog.bind(this._inputProcessing, this)));
+			toolbar.appendElement(this._createButtonWithAction("Add text area", goog.bind(this._addTextArea, this)));
+			toolbar.appendElement(this._createButtonWithAction("Delete", goog.bind(this._deleteSelectingObject, this)));
+
+			var comboBox = new imageApp.view.ComboBox();
+			comboBox.appendElement(this._createButtonWithAction("Default", goog.bind(this._layout.setDefaultLayout, this._layout)));
+			comboBox.appendElement(this._createButtonWithAction("Horizontal", goog.bind(this._layout.setHorizontalLayout, this._layout)));
+			toolbar.appendElement(comboBox);
 
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 
