@@ -33,7 +33,7 @@ goog.scope(function () {
 		/**
 		 * @private
 		 */
-		_down: function () {
+		_down: function () { // TODO: rename function
 			var ul = this._combobox.getElementsByTagName(goog.dom.TagName.UL)[0];
 			if (ul.style.display == "none")
 			{
