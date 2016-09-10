@@ -38,9 +38,9 @@ goog.scope(function() {
 			/** @private {imageApp.layout.LayoutControl} */
 			this._layout = new imageApp.layout.LayoutControl();
 	
-			this._layout.initHeaderLayout(this._initLayoutObject());
+			/*this._layout.initHeaderLayout(this._initLayoutObject());
 			this._layout.initDescriptionLayout(this._initLayoutObject());
-			this._layout.setDefaultLayout();
+			this._layout.setDefaultLayout();*/
 			this._addActions();
 
 			document.addEventListener("append media", goog.bind(function(){

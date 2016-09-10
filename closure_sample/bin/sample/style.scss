@@ -90,13 +90,20 @@ textarea {
   font-family: sans-serif;
   font-size: 25px;
   cursor: text;
+  word-wrap: break-word;
 }
 
 .noscroll {
   overflow: hidden;
 }
 
-
+.hidden {
+  visibility: hidden;
+  position: absolute;
+  font-family: sans-serif;
+  font-size: 25px;
+  word-wrap: break-word;
+}
 
 .border {
   top: 0;

@@ -27,7 +27,7 @@ goog.scope(function () {
 		 * @returns {!imageApp.model.TextArea}
 		 */
 		createTextArea: function() {
-			return new imageApp.model.TextArea(new goog.math.Rect(50, 50, 200, 50));
+			return new imageApp.model.TextArea(new goog.math.Rect(50, 50, 200, 30));
 		}
 
 	});

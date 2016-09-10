@@ -17,6 +17,7 @@ goog.scope(function() {
 			{
 				var image = new imageApp.view.ImageView(object.getFrame(), object.getPath());
 				imageApp.handlers.Handler.addHandlers(object, image, image.getDOMElement());
+
 				return image;
 			}
 			else if (object.getType() == "textarea")
@@ -26,6 +27,17 @@ goog.scope(function() {
 				imageApp.handlers.Handler.addHandlers(object, textArea, textArea.getBorder().getDOMElement(), goog.bind(function () {
 					textArea.getDOMElement().getElementsByTagName(goog.dom.TagName.TEXTAREA)[0].focus();
 				}, textArea));
+
+				document.addEventListener("auto-size textarea", function(event) {
+					/** @type {!goog.math.Rect} */
+					var newFrame = event.detail;
+					if (!goog.math.Rect.equals(object.getFrame(), newFrame))
+					{
+						object.setFrame(newFrame);
+						
+					}
+				}, false);
+
 				return textArea;
 			}
 			else

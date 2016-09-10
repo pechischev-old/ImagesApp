@@ -93,11 +93,12 @@ goog.scope(function () {
 
 			var hFrame = this._header.getFrame();
 			var dFrame = this._description.getFrame();
-			var mFrame = this._media.getFrame();
+
 			this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null));
 			this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null));
 			if (this._media)
 			{
+				var mFrame = this._media.getFrame();
 				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left, dFrame.height + dFrame.top + INDENT,  CANVAS_SIZE.width - 2 * BORDER , null));
 			}
 
