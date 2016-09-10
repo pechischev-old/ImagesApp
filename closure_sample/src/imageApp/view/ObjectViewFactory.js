@@ -28,15 +28,16 @@ goog.scope(function() {
 					textArea.getDOMElement().getElementsByTagName(goog.dom.TagName.TEXTAREA)[0].focus();
 				}, textArea));
 
-				document.addEventListener("auto-size textarea", function(event) {
+				document.addEventListener("auto-size textarea", goog.bind(function(event) {
 					/** @type {!goog.math.Rect} */
-					var newFrame = event.detail;
-					if (!goog.math.Rect.equals(object.getFrame(), newFrame))
+					var newFrame = event.detail.frame;
+					var view = event.detail.view;
+					if (!goog.math.Rect.equals(object.getFrame(), newFrame) && view == textArea)
 					{
 						object.setFrame(newFrame);
 						
 					}
-				}, false);
+				}, this), false);
 
 				return textArea;
 			}

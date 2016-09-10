@@ -56,9 +56,8 @@ goog.scope(function() {
 		 */
 		_initResizeArea: function(elem, hiddenDiv, minHeight) {
 			var text ='';
-			elem.value.replace(/[<>]/g, '_').split("\n").forEach( function(str, index) {
-				console.log(str.length + " = " + text.length + " ind " + index);
-				text = text +  str.replace(/\s\s/g, ' &nbsp;') + '&nbsp;</div>'+"\n";
+			elem.value.replace(/[<>]/g, '_').split("\n").forEach( function(str) {
+				text = text + '<div>' +  str.replace(/\s\s/g, ' &nbsp;') + '&nbsp;</div>'+"\n";
 			} );
 
 			hiddenDiv.innerHTML = text;
@@ -69,12 +68,16 @@ goog.scope(function() {
 				height = minHeight;
 				text = "";
 			}
-			this._frame.height = height;
+			var newFrame = this._frame.clone();
+			newFrame.height = height;
 			var event = new CustomEvent("auto-size textarea", {
-				detail : this._frame
+				detail : {
+					frame: newFrame,
+					view: this
+				}
 			});
 			document.dispatchEvent(event);
-			this.setFrame(this._frame);
+
 		},
 
 
