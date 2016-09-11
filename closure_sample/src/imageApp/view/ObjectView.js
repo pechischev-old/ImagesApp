@@ -37,7 +37,6 @@ goog.scope(function () {
 		 */
 		update: function(frame) {
 			this.setFrame(frame);
-			this._border.setFrame(frame);
 		},
 
 		/**
@@ -73,7 +72,7 @@ goog.scope(function () {
 
 		/**
 		 * @param {!goog.math.Rect} frame
-		 * @param {!goog.math.Coordinate} oldPos
+		 * @param {!goog.math.Coordinate=} oldPos
 		 * @return {!goog.math.Rect}
 		 */
 		getMinFrame: function(frame, oldPos) {
