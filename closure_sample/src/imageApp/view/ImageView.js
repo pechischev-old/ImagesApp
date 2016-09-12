@@ -64,14 +64,12 @@ goog.scope(function() {
 			this._container = document.createElement(goog.dom.TagName.DIV);
 			this._container.setAttribute("class", "capture");
 
-			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
-
 			var image = document.createElement(goog.dom.TagName.IMG);
 			image.setAttribute("src", this._path);
 			image.setAttribute("alt", "текст");
-			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
 			this._container.appendChild(image);
-			
+
+			this._reloadStyleSize();
 			this._container.appendChild(this._initBorder());
 		}
 	});

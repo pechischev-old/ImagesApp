@@ -35,9 +35,8 @@ goog.scope(function() {
 					if (!goog.math.Rect.equals(object.getFrame(), newFrame) && view == textArea)
 					{
 						object.setFrame(newFrame);
-						
 					}
-				}, this), false);
+				}, object), false);
 
 				return textArea;
 			}

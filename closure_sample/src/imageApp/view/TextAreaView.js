@@ -17,9 +17,7 @@ goog.scope(function() {
 		constructor: function(frame) {
 			goog.base(this, frame);
 			this._init();
-
 		},
-
 
 		/**
 		 * @inheritDoc
@@ -72,14 +70,12 @@ goog.scope(function() {
 			}
 			var newFrame = this._frame.clone();
 			newFrame.height = height;
-			var event = new CustomEvent("auto-size textarea", {
+			document.dispatchEvent(new CustomEvent("auto-size textarea", {
 				detail : {
 					frame: newFrame,
 					view: this
 				}
-			});
-			document.dispatchEvent(event);
-
+			}));
 		},
 
 
@@ -87,24 +83,20 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		_init: function() {
-
 			/** @private {!Element} */
 			this._container = document.createElement(goog.dom.TagName.DIV);
 			this._container.setAttribute("class", "textarea");
-
-			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
+			
 			var textArea = document.createElement(goog.dom.TagName.TEXTAREA);
 			textArea.setAttribute("class", "noscroll");
-			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), textArea);
 			this._container.appendChild(textArea);
 
 			/** @private {!Element} */
 			this._hiddenDiv = document.createElement(goog.dom.TagName.DIV);
 			this._hiddenDiv.setAttribute("class", "hidden");
-
-			goog.style.setStyle(this._hiddenDiv, "width", this._frame.width + "px");
 			this._container.appendChild(this._hiddenDiv);
-
+			
+			this._reloadStyleSize();
 			this._container.appendChild(this._initBorder());
 
 			goog.events.listen(textArea, goog.events.EventType.KEYDOWN, goog.bind(this._initResizeArea, this, textArea, this._hiddenDiv, 30));
