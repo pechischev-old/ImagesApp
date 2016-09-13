@@ -113,7 +113,7 @@ goog.scope(function() {
 
 			goog.events.listen(this._textArea, goog.events.EventType.KEYDOWN, goog.bind(this._initResizeArea, this, 30));
 
-			goog.events.listen(this._textArea, goog.events.EventType.BLUR, goog.bind(function() {
+			goog.events.listen(this._textArea, goog.events.EventType.CHANGE, goog.bind(function() {
 				document.dispatchEvent(new CustomEvent("input text", {
 					detail: this
 				}));

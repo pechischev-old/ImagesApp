@@ -38,9 +38,9 @@ goog.scope(function() {
 			/** @private {imageApp.layout.LayoutControl} */
 			this._layout = new imageApp.layout.LayoutControl();
 	
-			/*this._layout.initHeaderLayout(this._initLayoutObject("Добро пожаловать"));
-			this._layout.initDescriptionLayout(this._initLayoutObject("Введите свои вопросы"));
-			this._layout.setDefaultLayout();*/
+			this._layout.initHeaderLayout(this._initLayoutObject("Заголовок"));
+			this._layout.initDescriptionLayout(this._initLayoutObject("Описание"));
+			this._layout.setDefaultLayout();
 			this._addActions();
 
 			document.addEventListener("append media", goog.bind(function(){
