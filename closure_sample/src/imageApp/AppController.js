@@ -2,7 +2,7 @@ goog.provide("imageApp.AppController");
 
 goog.require("imageApp.AppModel");
 goog.require("imageApp.AppView");
-//goog.require("imageApp.ImageController");
+
 goog.require("imageApp.command.History");
 goog.require("goog.events.KeyCodes");
 
@@ -10,11 +10,15 @@ goog.require("imageApp.ObjectCollection");
 goog.require("imageApp.ObjectController");
 goog.require("imageApp.layout.LayoutControl");
 
+goog.require("imageApp.command.SelectTypeLayout");
+goog.require("imageApp.command.ResetLayout");
+
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 
 goog.scope(function() {
-
+	var SelectTypeLayout = imageApp.command.SelectTypeLayout;
+	var ResetLayout = imageApp.command.ResetLayout;
 	/** 
 	 * @param {imageApp.AppModel} model
 	 * @constructor
@@ -40,11 +44,12 @@ goog.scope(function() {
 	
 			this._layout.initHeaderLayout(this._initLayoutObject("Заголовок"));
 			this._layout.initDescriptionLayout(this._initLayoutObject("Описание"));
-			this._layout.setDefaultLayout();
+			this._layout.setTypeLayout("default");
 			this._addActions();
 
+			
 			document.addEventListener("append media", goog.bind(function(){
-				this._layout.initMediaLayout(this._initLayoutObject());
+				this._layout.initMediaLayout(this._initLayoutObject("Media"));
 			}, this), false);
 		},
 
@@ -59,6 +64,23 @@ goog.scope(function() {
 			this._collection.appendObject(textarea);
 			textarea.setText(text);
 			return textarea;
+		},
+
+		/**
+		 * @private
+		 */
+		_resetLayout: function() {
+			var action = new ResetLayout(this._layout, this._layout.getLastType());
+			this._history.recordAction(action);
+		},
+
+		/**
+		 * @param {string} type
+		 * @private
+		 */
+		_setTypeLayout: function(type) {
+			var action = new SelectTypeLayout(this._layout, type);
+			this._history.recordAction(action);
 		},
 
 		/** 
@@ -114,11 +136,11 @@ goog.scope(function() {
 			toolbar.appendElement(this._createButtonWithAction("Delete", goog.bind(this._deleteSelectingObject, this)));
 
 			var comboBox = new imageApp.view.ComboBox();
-			comboBox.appendElement(this._createButtonWithAction("Default", goog.bind(this._layout.setDefaultLayout, this._layout)));
-			comboBox.appendElement(this._createButtonWithAction("Horizontal", goog.bind(this._layout.setHorizontalLayout, this._layout)));
+			comboBox.appendElement(this._createButtonWithAction("Default", goog.bind(this._setTypeLayout, this, "default")));
+			comboBox.appendElement(this._createButtonWithAction("Horizontal", goog.bind(this._setTypeLayout, this, "horizontal")));
 			toolbar.appendElement(comboBox);
 			toolbar.appendElement(this._createButtonWithAction("Add media", goog.bind(this._layout.appendMediaLayout, this._layout)));
-			toolbar.appendElement(this._createButtonWithAction("Reset layout", function () { }));
+			toolbar.appendElement(this._createButtonWithAction("Reset layout", goog.bind(this._resetLayout, this)));
 
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 

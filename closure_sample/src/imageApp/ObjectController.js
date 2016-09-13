@@ -85,7 +85,7 @@ goog.scope(function() {
 
 		_addTextListener: function () {
 			document.addEventListener("append text", goog.bind(function(event) {
-				/** @type {imageApp.model.TextArea} */
+				/** @type {!imageApp.model.TextArea} */
 				var object = this._objectCollection.getObjectOnKey(event.detail.id);
 				var text = event.detail.text;
 				if (text != object.getText()) {

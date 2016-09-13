@@ -19,9 +19,28 @@ goog.scope(function () {
 			this._description = null;
 			/** @private {?imageApp.layout.MediaLayout} */
 			this._media = null;
-			
+
 			/** @private {string} */
-			this._typeLayout = "default";
+			this._typeLayout = "custom";
+			/** @private {string} */
+			this._lastTypeLayout = "";
+
+		},
+
+		/**
+		 * @returns {string}
+		 */
+		getLastType: function () {
+			return this._lastTypeLayout;
+		},
+
+		/**
+		 * @param {string} type
+		 */
+		setTypeLayout: function (type) {
+			this._lastTypeLayout = this._typeLayout;
+			this._typeLayout = type;
+			this._choiceLayoutOnType();
 		},
 
 		/**
@@ -59,23 +78,23 @@ goog.scope(function () {
 		_choiceLayoutOnType: function () {
 			if (this._typeLayout == "default")
 			{
-				this.setDefaultLayout();
+				this._setDefaultLayout();
 			}
 			else if ( this._typeLayout == "horizontal")
 			{
-				this.setHorizontalLayout();
+				this._setHorizontalLayout();
 			}
 			
 		},
 
-		setDefaultLayout: function () {
+		_setDefaultLayout: function () {
 			this._typeLayout = "default";
-			var hFrame = this._header.getFrame();
-			var dFrame = this._description.getFrame();
+			var hFrame = this._header.getFrame().clone();
+			var dFrame = this._description.getFrame().clone();
 			if (this._media)
 			{
 
-				var mFrame = this._media.getFrame();
+				var mFrame = this._media.getFrame().clone();
 
 				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width * 0.6 - BORDER, null));
 				this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width * 0.6 - BORDER, null));
@@ -88,17 +107,17 @@ goog.scope(function () {
 			}
 		},
 		
-		setHorizontalLayout: function () {
+		_setHorizontalLayout: function () {
 			this._typeLayout = "horizontal";
 
-			var hFrame = this._header.getFrame();
-			var dFrame = this._description.getFrame();
+			var hFrame = this._header.getFrame().clone();
+			var dFrame = this._description.getFrame().clone();
 
 			this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null));
 			this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null));
 			if (this._media)
 			{
-				var mFrame = this._media.getFrame();
+				var mFrame = this._media.getFrame().clone();
 				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left, dFrame.height + dFrame.top + INDENT,  CANVAS_SIZE.width - 2 * BORDER , null));
 			}
 
