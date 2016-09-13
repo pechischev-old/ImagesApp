@@ -49,6 +49,22 @@ goog.scope(function() {
 			return null;
 		},
 
+		/**
+		 * @param {imageApp.view.ObjectView} objectView
+		 * @return {*}
+		 * @private
+		 */
+		_getKeyOnObject: function(objectView) {
+			var keys = this._objectsView.getKeys();
+			for (var i = 0; i < keys.length; ++i)
+			{
+				if (this._objectsView.get(keys[i]) === objectView)
+				{
+					return keys[i];
+				}
+			}
+			return null;
+		},
 
 		_deselectObjects: function () {
 			var keys = this._objectsView.getKeys();
@@ -158,8 +174,28 @@ goog.scope(function() {
 				this._canvas.removeChild(view.getDOMElement());
 				this._objectsView.remove(goog.getUid(model));
 			}, this), false);
-			
+
 			document.addEventListener("deselectObjects", goog.bind(this._deselectObjects, this), false);
+
+			document.addEventListener("input text", goog.bind(function(event){
+				/** @type {imageApp.view.TextAreaView} */
+				var view = event.detail;
+				var key = this._getKeyOnObject(view);
+				if (key) {
+					document.dispatchEvent(new CustomEvent("append text", {
+						detail: {
+							id: key,
+							text: view.getText()
+						}
+					}))
+				}
+			}, this), false);
+
+			document.addEventListener("change text", goog.bind(function(event) {
+				/** @type {imageApp.view.TextAreaView} */
+				var view = this._objectsView.get(event.detail.id);
+				view.setText(event.detail.text);
+			}, this), false);
 
 			goog.events.listen(this._canvas, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
 				if (event.defaultPrevented)

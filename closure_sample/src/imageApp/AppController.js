@@ -38,9 +38,9 @@ goog.scope(function() {
 			/** @private {imageApp.layout.LayoutControl} */
 			this._layout = new imageApp.layout.LayoutControl();
 	
-			this._layout.initHeaderLayout(this._initLayoutObject());
-			this._layout.initDescriptionLayout(this._initLayoutObject());
-			this._layout.setDefaultLayout();
+			/*this._layout.initHeaderLayout(this._initLayoutObject("Добро пожаловать"));
+			this._layout.initDescriptionLayout(this._initLayoutObject("Введите свои вопросы"));
+			this._layout.setDefaultLayout();*/
 			this._addActions();
 
 			document.addEventListener("append media", goog.bind(function(){
@@ -49,12 +49,15 @@ goog.scope(function() {
 		},
 
 		/**
+		 * @param {string} text
 		 * @returns {imageApp.model.Object}
 		 * @private
 		 */
-		_initLayoutObject: function () {
+		_initLayoutObject: function (text) {
+			/** @type {imageApp.model.TextArea} */
 			var textarea = this._model.createTextArea();
 			this._collection.appendObject(textarea);
+			textarea.setText(text);
 			return textarea;
 		},
 
@@ -126,10 +129,12 @@ goog.scope(function() {
 				}
 				else if (event.ctrlKey && event.keyCode == goog.events.KeyCodes.Z)
 				{
+					event.preventDefault();
 					this._undo();
 				}
 				else if (event.ctrlKey && event.keyCode == goog.events.KeyCodes.Y)
 				{
+					event.preventDefault();
 					this._redo();
 				}
 			}, this));

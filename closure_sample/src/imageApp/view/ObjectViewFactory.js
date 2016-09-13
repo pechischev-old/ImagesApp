@@ -9,7 +9,7 @@ goog.require("imageApp.handlers.Handler");
 goog.scope(function() {
 
 	/**
-	 * @param {imageApp.model.Image|imageApp.model.Object} object
+	 * @param {imageApp.model.Image|imageApp.model.TextArea} object
 	 * @return {imageApp.view.ObjectView}
 	 */
 	imageApp.view.ObjectViewFactory.createObject = function(object) {
@@ -37,7 +37,7 @@ goog.scope(function() {
 						object.setFrame(newFrame);
 					}
 				}, object), false);
-
+				textArea.setText(object.getText());
 				return textArea;
 			}
 			else

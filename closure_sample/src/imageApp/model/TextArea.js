@@ -15,6 +15,28 @@ goog.scope(function(){
 		 */
 		constructor: function(frame) {
 			goog.base(this, frame);
+			/** @private {string} */
+			this._text = "";
+		},
+
+		/**
+		 * @param {string} text
+		 */
+		setText: function(text) {
+			this._text = text;
+			document.dispatchEvent(new CustomEvent("change text", {
+				detail: {
+					id: goog.getUid(this),
+					text: this._text
+				}
+			}));
+		},
+
+		/**
+		 * @return {string}
+		 */
+		getText: function() {
+			return this._text;
 		},
 
 		/**

@@ -37,33 +37,45 @@ goog.scope(function() {
 		},
 
 		/**
+		 * @param {string} text
+		 */
+		setText: function(text) {
+			this._textArea.value = text;
+			this._initResizeArea(30);
+		},
+
+		/**
+		 * @return {string}
+		 */
+		getText: function () {
+			return this._textArea.value;
+		},
+
+		/**
 		 * @inheritDoc
 		 */
 		_reloadStyleSize: function() {
 			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
-			var textArea = this._container.getElementsByTagName(goog.dom.TagName.TEXTAREA)[0];
 
-			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), textArea);
+			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), this._textArea);
 			goog.style.setStyle(this._hiddenDiv, "width", this._frame.width + "px");
-			this._initResizeArea(textArea, this._hiddenDiv, 30);
+			this._initResizeArea(30);
 		},
 
 		/**
-		 * @param {!Element} elem
-		 * @param {!Element} hiddenDiv
 		 * @param {number} minHeight
 		 * @private
 		 */
-		_initResizeArea: function(elem, hiddenDiv, minHeight) {
+		_initResizeArea: function(minHeight) {
 			var text ='';
-			elem.value.replace(/[<>]/g, '_').split("\n").forEach( function(str) {
-				text = text + '<div>' +  str.replace(/\s\s/g, ' &nbsp;') + '&nbsp;</div>'+"\n";
+			this._textArea.value.replace(/[<>]/g, '_').split("\n").forEach( function(str) {
+				text += '<div>' +  str.replace(/\s\s/g, ' &nbsp;') + '&nbsp;</div>'+"\n";
 			} );
 
-			hiddenDiv.innerHTML = text;
-			var height = Math.max(minHeight, hiddenDiv.offsetHeight + 27);
+			this._hiddenDiv.innerHTML = text;
+			var height = Math.max(minHeight, this._hiddenDiv.offsetHeight + 27);
 
-			if (elem.value == "")
+			if (this._textArea.value == "")
 			{
 				height = minHeight;
 				text = "";
@@ -86,10 +98,10 @@ goog.scope(function() {
 			/** @private {!Element} */
 			this._container = document.createElement(goog.dom.TagName.DIV);
 			this._container.setAttribute("class", "textarea");
-			
-			var textArea = document.createElement(goog.dom.TagName.TEXTAREA);
-			textArea.setAttribute("class", "noscroll");
-			this._container.appendChild(textArea);
+			/** @private {!Element} */
+			this._textArea = document.createElement(goog.dom.TagName.TEXTAREA);
+			this._textArea.setAttribute("class", "noscroll");
+			this._container.appendChild(this._textArea);
 
 			/** @private {!Element} */
 			this._hiddenDiv = document.createElement(goog.dom.TagName.DIV);
@@ -99,7 +111,13 @@ goog.scope(function() {
 			this._reloadStyleSize();
 			this._container.appendChild(this._initBorder());
 
-			goog.events.listen(textArea, goog.events.EventType.KEYDOWN, goog.bind(this._initResizeArea, this, textArea, this._hiddenDiv, 30));
+			goog.events.listen(this._textArea, goog.events.EventType.KEYDOWN, goog.bind(this._initResizeArea, this, 30));
+
+			goog.events.listen(this._textArea, goog.events.EventType.BLUR, goog.bind(function() {
+				document.dispatchEvent(new CustomEvent("input text", {
+					detail: this
+				}));
+			}, this));
 		}
 	});
 });
