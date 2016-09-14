@@ -36,12 +36,25 @@ goog.scope(function() {
 
 		activeBorder: function () {
 			goog.style.setStyle(this._border, "opacity", "1");
-			document.dispatchEvent(new Event("activeCorner"));
+			this._setVisibilityCorners("block");
 		},
 
 		deactiveBorder: function() {
 			goog.style.setStyle(this._border, "opacity", "0");
-			document.dispatchEvent(new Event("deactiveCorner"));
+			this._setVisibilityCorners("none");
+		},
+
+		/**
+		 * @param {string} type
+		 * @private
+		 */
+		_setVisibilityCorners: function(type) {
+			var elems = this._border.childNodes;
+			elems = Array.prototype.slice.call(elems); 
+
+			elems.forEach(function(elem) {
+				goog.style.setStyle(elem, "display", type);
+			}, type);
 		},
 
 		/** 
@@ -65,14 +78,7 @@ goog.scope(function() {
 			div.classList.add("corner");
 			goog.style.setStyle(div, "display", "none");
 			this._border.appendChild(div);
-
-			document.addEventListener("deactiveCorner", goog.bind(function(event) {
-				goog.style.setStyle(div, "display", "none");
-			}, this), false);
-
-			document.addEventListener("activeCorner", goog.bind(function(event) {
-				goog.style.setStyle(div, "display", "block");
-			}, this), false);
+			
 			return div;
 		}
 	});
