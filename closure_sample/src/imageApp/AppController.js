@@ -12,6 +12,7 @@ goog.require("imageApp.layout.LayoutControl");
 
 goog.require("imageApp.command.SelectTypeLayout");
 goog.require("imageApp.command.ResetLayout");
+goog.require("imageApp.command.AddMediaCommand");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
@@ -19,6 +20,8 @@ goog.require("goog.events.EventType");
 goog.scope(function() {
 	var SelectTypeLayout = imageApp.command.SelectTypeLayout;
 	var ResetLayout = imageApp.command.ResetLayout;
+	var AddMediaCommand = imageApp.command.AddMediaCommand;
+	
 	/** 
 	 * @param {imageApp.AppModel} model
 	 * @constructor
@@ -48,9 +51,7 @@ goog.scope(function() {
 			this._addActions();
 
 			
-			document.addEventListener("append media", goog.bind(function(){
-				this._layout.initMediaLayout(this._initLayoutObject("Media"));
-			}, this), false);
+			
 		},
 
 		/**
@@ -138,6 +139,7 @@ goog.scope(function() {
 			var comboBox = new imageApp.view.ComboBox();
 			comboBox.appendElement(this._createButtonWithAction("Default", goog.bind(this._setTypeLayout, this, "default")));
 			comboBox.appendElement(this._createButtonWithAction("Horizontal", goog.bind(this._setTypeLayout, this, "horizontal")));
+			comboBox.appendElement(this._createButtonWithAction("Custom", goog.bind(this._setTypeLayout, this, "custom")));
 			toolbar.appendElement(comboBox);
 			toolbar.appendElement(this._createButtonWithAction("Add media", goog.bind(this._layout.appendMediaLayout, this._layout)));
 			toolbar.appendElement(this._createButtonWithAction("Reset layout", goog.bind(this._resetLayout, this)));
@@ -160,6 +162,12 @@ goog.scope(function() {
 					this._redo();
 				}
 			}, this));
+
+			document.addEventListener("append media", goog.bind(function(){
+				var textarea = this._model.createTextArea("Медиа");
+				var action = new AddMediaCommand(this._layout, this._collection, textarea);
+				this._history.recordAction(action);
+			}, this), false);
 		},
 
 		/**
@@ -179,7 +187,7 @@ goog.scope(function() {
 		 */
 		_deleteSelectingObject:function() {
 			this._objectCntr.deleteObject();
-			this._layout.checkRemoveMedia();
+			this._layout.removeMedia();
 		},
 
 		/**

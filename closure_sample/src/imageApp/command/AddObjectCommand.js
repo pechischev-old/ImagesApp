@@ -1,4 +1,4 @@
-goog.provide("imageApp.command.AddImageCommand");
+goog.provide("imageApp.command.AddObjectCommand");
 
 goog.require("imageApp.command.AbstractAction");
 
@@ -12,7 +12,7 @@ goog.scope(function() {
  	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
-	imageApp.command.AddImageCommand = goog.defineClass(imageApp.command.AbstractAction, {
+	imageApp.command.AddObjectCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
 		 * @param {imageApp.ObjectCollection} collection
 		 * @param {!imageApp.model.Image} lastModel

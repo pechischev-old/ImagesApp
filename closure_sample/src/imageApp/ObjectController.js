@@ -2,9 +2,8 @@ goog.provide("imageApp.ObjectController");
 
 
 
-goog.require("imageApp.command.AddImageCommand");
+goog.require("imageApp.command.AddObjectCommand");
 goog.require("imageApp.command.DeleteCommand");
-goog.require("imageApp.command.AddTextAreaCommand");
 goog.require("imageApp.command.MoveCommand");
 goog.require("imageApp.command.ResizeCommand");
 goog.require("imageApp.command.AppendTextCommand");
@@ -12,9 +11,8 @@ goog.require("imageApp.command.AppendTextCommand");
 goog.scope(function() {
 	var MoveCommand = imageApp.command.MoveCommand;
 	var ResizeCommand = imageApp.command.ResizeCommand;
-	var AddImageCommand = imageApp.command.AddImageCommand;
+	var AddObjectCommand = imageApp.command.AddObjectCommand;
 	var DeleteCommand = imageApp.command.DeleteCommand;
-	var AddTextAreaCommand = imageApp.command.AddTextAreaCommand;
 	var AppendTextCommand = imageApp.command.AppendTextCommand;
 
 	/**
@@ -49,7 +47,7 @@ goog.scope(function() {
 		addTextArea: function () {
 			var textAreaModel = this._model.createTextArea();
 
-			var command = new AddTextAreaCommand(this._objectCollection, textAreaModel);
+			var command = new AddObjectCommand(this._objectCollection, textAreaModel);
 			this._history.recordAction(command);
 		},
 
@@ -102,7 +100,7 @@ goog.scope(function() {
 		_onLoadImage: function(elem) {
 			var imageModel = this._model.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight), elem.src);
 
-			var command = new AddImageCommand(this._objectCollection, imageModel);
+			var command = new AddObjectCommand(this._objectCollection, imageModel);
 			this._history.recordAction(command);
 
 			goog.style.setStyle(document.documentElement, "cursor", "default");

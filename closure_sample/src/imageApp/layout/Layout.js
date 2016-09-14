@@ -18,18 +18,33 @@ goog.scope(function () {
 			/** @private {imageApp.model.Object} */
 			this._object = object;
 			this._object.canRemove(false);
+			document.addEventListener("object changed", goog.bind(function(event) {
+				var object = event.detail;
+				if (object == this._object)
+				{
+					document.dispatchEvent(new Event("layout changed"));
+				}
+			}, this));
+		},
+
+		/**
+		 * @returns {imageApp.model.Object}
+		 */
+		getObject: function () {
+			return this._object;
 		},
 
 		/**
 		 * @inheritDoc
 		 */
 		setFrame: function(frame) {
-			document.dispatchEvent(new CustomEvent("resize", {
+			/*document.dispatchEvent(new CustomEvent("resize", {
 				detail: {
 					model: this._object,
 					frame: frame
 				}
-			}));
+			}));*/
+			this._object.setFrame(frame);
 		},
 
 		/**

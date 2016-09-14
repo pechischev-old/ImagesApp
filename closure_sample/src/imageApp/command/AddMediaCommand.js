@@ -1,4 +1,4 @@
-goog.provide("imageApp.command.AddTextAreaCommand");
+goog.provide("imageApp.command.AddMediaCommand");
 
 goog.require("imageApp.command.AbstractAction");
 
@@ -7,18 +7,23 @@ goog.require("imageApp.ObjectCollection");
 goog.scope(function() {
 
 	/**
+	 * @param {imageApp.layout.LayoutControl} layoutControl
 	 * @param {imageApp.ObjectCollection} collection
 	 * @param {imageApp.model.TextArea} lastModel
 	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
-	imageApp.command.AddTextAreaCommand = goog.defineClass(imageApp.command.AbstractAction, {
+	imageApp.command.AddMediaCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
+		 * @param {imageApp.layout.LayoutControl} layoutControl
 		 * @param {imageApp.ObjectCollection} collection
-		 * @param {!imageApp.model.TextArea} lastModel
+		 * @param {imageApp.model.TextArea} lastModel
 		 */
-		constructor: function (collection, lastModel) {
+		constructor: function (layoutControl, collection, lastModel) {
 			goog.base(this);
+			/** @private {imageApp.layout.LayoutControl} */
+			this._layoutControl = layoutControl;
+
 			/** @private {imageApp.ObjectCollection} */
 			this._objectCollection = collection;
 
@@ -31,6 +36,7 @@ goog.scope(function() {
 		 */
 		_doExecute: function() {
 			this._objectCollection.appendObject(this._lastModel);
+			this._layoutControl.initMediaLayout(this._lastModel);
 		},
 
 		/**
@@ -38,6 +44,7 @@ goog.scope(function() {
 		 */
 		_doUnexecute: function () {
 			this._objectCollection.removeObject(this._lastModel);
+			this._layoutControl.removeMedia();
 		}
 	});
 });

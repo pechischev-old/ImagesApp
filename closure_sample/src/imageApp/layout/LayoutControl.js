@@ -25,6 +25,7 @@ goog.scope(function () {
 			/** @private {string} */
 			this._lastTypeLayout = "";
 
+			document.addEventListener("layout changed", goog.bind(this._choiceLayoutOnType, this));
 		},
 
 		/**
@@ -84,7 +85,10 @@ goog.scope(function () {
 			{
 				this._setHorizontalLayout();
 			}
-			
+			else
+			{
+				return;
+			}
 		},
 
 		_setDefaultLayout: function () {
@@ -130,15 +134,12 @@ goog.scope(function () {
 			}
 		},
 
-		_removeMediaLayout: function () {
-			this._media = null;
-			this._choiceLayoutOnType();
-		},
-		
-		checkRemoveMedia: function () {
+
+		removeMedia: function () {
 			if (this._media && this._media.hasRemoved())
 			{
-				this._removeMediaLayout();
+				this._media = null;
+				this._choiceLayoutOnType();
 			}
 		},
 

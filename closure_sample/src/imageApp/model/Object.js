@@ -18,7 +18,8 @@ goog.scope(function(){
 		constructor: function(frame) {
 			/** @private {Array<imageApp.observer.IObserver>}*/
 			this._observers = [];
-			this.setFrame(frame);
+			/** @private {!goog.math.Rect} */
+			this._frame = frame;
 
 			/** @private {boolean}*/
 			this._isRemoved = false;
@@ -84,15 +85,20 @@ goog.scope(function(){
 		 * @param {!goog.math.Rect} frame
 		 */
 		setFrame: function(frame) {
-			/** @private {!goog.math.Rect} */
-			this._frame = frame;
-			this.notifyObservers();
+			if (!goog.math.Rect.equals(this._frame, frame)) {
+				this._frame = frame;
+				this.notifyObservers();
+				document.dispatchEvent(new CustomEvent("object changed", {
+					detail: this
+				}));
+			}
 		},
 
 		/**
 		 * @param {!goog.math.Coordinate} pos
 		 */
 		setPosition: function(pos) {
+
 			this._frame.left = pos.x;
 			this._frame.top = pos.y;
 			this.notifyObservers();
