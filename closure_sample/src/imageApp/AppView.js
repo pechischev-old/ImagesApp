@@ -158,16 +158,36 @@ goog.scope(function() {
 		 */
 		_initListener: function () {
 			document.addEventListener("append", goog.bind(function (event){
-				/** type {imageApp.model.Object} */
+				/** @type {imageApp.model.Object} */
 				var model = event.detail;
 				var view = imageApp.view.ObjectViewFactory.createObject(model);
 				model.registerObserver(view);
-				this._canvas.appendChild(view.getDOMElement());
+				var key = goog.getUid(model);
+				/** @type {?Element} */
+				var prevElement = null;
+				/*if (key > 1)
+				{
+					++key;
+					var keys = this._objectsView.getKeys();
+					var index = undefined;
+					keys.forEach(function(elem, i) {
+						if (elem == key)
+						{
+							index = i;
+							return;
+						}
+					}, key, index);
+					prevElement = (index) ? this._canvas.children[index] : prevElement;
+
+				}*/
+
+				this._canvas.insertBefore(view.getDOMElement(), prevElement);
+
 				this._objectsView.set(goog.getUid(model), view);
 			}, this), false);
 
 			document.addEventListener("remove", goog.bind(function(event){
-				/** type {imageApp.model.Object} */
+				/** @type {imageApp.model.Object} */
 				var model = event.detail;
 				var view = this._objectsView.get(goog.getUid(model));
 				model.removeObserver(view);
