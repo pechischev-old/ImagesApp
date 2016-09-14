@@ -45,7 +45,7 @@ goog.scope(function() {
 		},
 
 		addTextArea: function () {
-			var textAreaModel = this._model.createTextArea();
+			var textAreaModel = this._model.createTextArea("");
 
 			var command = new AddObjectCommand(this._objectCollection, textAreaModel);
 			this._history.recordAction(command);

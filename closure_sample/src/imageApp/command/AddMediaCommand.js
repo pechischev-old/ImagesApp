@@ -9,7 +9,7 @@ goog.scope(function() {
 	/**
 	 * @param {imageApp.layout.LayoutControl} layoutControl
 	 * @param {imageApp.ObjectCollection} collection
-	 * @param {imageApp.model.TextArea} lastModel
+	 * @param {!imageApp.model.TextArea} lastModel
 	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
@@ -17,7 +17,7 @@ goog.scope(function() {
 		/**
 		 * @param {imageApp.layout.LayoutControl} layoutControl
 		 * @param {imageApp.ObjectCollection} collection
-		 * @param {imageApp.model.TextArea} lastModel
+		 * @param {!imageApp.model.TextArea} lastModel
 		 */
 		constructor: function (layoutControl, collection, lastModel) {
 			goog.base(this);

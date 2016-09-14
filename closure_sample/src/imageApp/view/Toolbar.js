@@ -1,7 +1,6 @@
 goog.provide("imageApp.view.Toolbar");
 
-goog.require("imageApp.view.Button");
-goog.require("imageApp.view.ComboBox");
+
 goog.require("imageApp.view.Node");
 
 goog.scope(function() {

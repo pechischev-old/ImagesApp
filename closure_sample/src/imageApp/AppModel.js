@@ -24,7 +24,7 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @param {string=} text
+		 * @param {string} text
 		 * @returns {!imageApp.model.TextArea}]
 		 */
 		createTextArea: function(text) {

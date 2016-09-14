@@ -33,7 +33,6 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		_doExecute: function() {
-			console.log(this._newType);
 			this._layoutControl.setTypeLayout(this._newType);
 		},
 
@@ -41,7 +40,6 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		_doUnexecute: function () {
-			console.log(this._oldType);
 			this._layoutControl.setTypeLayout(this._oldType);
 		}
 	});

@@ -14,6 +14,9 @@ goog.require("imageApp.command.SelectTypeLayout");
 goog.require("imageApp.command.ResetLayout");
 goog.require("imageApp.command.AddMediaCommand");
 
+goog.require("imageApp.view.Button");
+goog.require("imageApp.view.ComboBox");
+
 goog.require("goog.events");
 goog.require("goog.events.EventType");
 
@@ -61,9 +64,8 @@ goog.scope(function() {
 		 */
 		_initLayoutObject: function (text) {
 			/** @type {imageApp.model.TextArea} */
-			var textarea = this._model.createTextArea();
+			var textarea = this._model.createTextArea(text);
 			this._collection.appendObject(textarea);
-			textarea.setText(text);
 			return textarea;
 		},
 

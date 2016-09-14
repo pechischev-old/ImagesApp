@@ -2,7 +2,6 @@ goog.provide("imageApp.view.ObjectViewFactory");
 
 goog.require("imageApp.view.TextAreaView");
 goog.require("imageApp.view.ImageView");
-goog.require("imageApp.model.Object");
 
 goog.require("imageApp.handlers.Handler");
 

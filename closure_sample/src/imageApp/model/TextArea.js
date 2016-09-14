@@ -6,7 +6,7 @@ goog.scope(function(){
 
 	/**
 	 * @param {!goog.math.Rect} frame
-	 * @param {string} text
+	 * @param {string=} text
 	 * @extends {imageApp.model.Object}
 	 * @constructor
 	 */
