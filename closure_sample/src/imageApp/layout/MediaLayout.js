@@ -2,6 +2,7 @@ goog.provide("imageApp.layout.MediaLayout");
 
 goog.require("imageApp.layout.ILayout");
 goog.require("imageApp.model.Object");
+goog.require("imageApp.events.EventType");
 
 goog.scope(function () {
 
@@ -17,11 +18,11 @@ goog.scope(function () {
 		constructor: function(object) {
 			/** @private {imageApp.model.Object} */
 			this._object = object;
-			document.addEventListener("object changed", goog.bind(function(event) {
+			document.addEventListener(imageApp.events.EventType.OBJECT_CHANGED, goog.bind(function(event) {
 				var object = event.detail;
 				if (object == this._object)
 				{
-					document.dispatchEvent(new Event("layout changed"));
+					document.dispatchEvent(new Event(imageApp.events.EventType.LAYOUT_CHANGED));
 				}
 			}, this));
 		},

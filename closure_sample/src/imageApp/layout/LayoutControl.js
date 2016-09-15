@@ -25,7 +25,7 @@ goog.scope(function () {
 			/** @private {string} */
 			this._lastTypeLayout = "";
 
-			document.addEventListener("layout changed", goog.bind(this._choiceLayoutOnType, this));
+			document.addEventListener(imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(this._choiceLayoutOnType, this));
 		},
 
 		/**
@@ -130,7 +130,7 @@ goog.scope(function () {
 		appendMediaLayout: function () {
 			if (!this._media)
 			{
-				document.dispatchEvent(new Event("append media"));
+				document.dispatchEvent(new Event(imageApp.events.EventType.APPEND_MEDIA));
 			}
 		},
 

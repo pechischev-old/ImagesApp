@@ -8,6 +8,8 @@ goog.require("imageApp.command.MoveCommand");
 goog.require("imageApp.command.ResizeCommand");
 goog.require("imageApp.command.AppendTextCommand");
 
+goog.require("imageApp.events.EventType");
+
 goog.scope(function() {
 	var MoveCommand = imageApp.command.MoveCommand;
 	var ResizeCommand = imageApp.command.ResizeCommand;
@@ -65,7 +67,7 @@ goog.scope(function() {
 		 * @private
 		 */
 		_addResizeListener: function () {
-			document.addEventListener("resize", goog.bind(function(event) {
+			document.addEventListener(imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
 				var command = new ResizeCommand(event.detail.model, event.detail.frame);
 				this._history.recordAction(command);
 			}, this), false);
@@ -75,14 +77,14 @@ goog.scope(function() {
 		 * @private
 		 */
 		_addMoveListener: function () {
-			document.addEventListener("move", goog.bind(function(event) {
+			document.addEventListener(imageApp.events.EventType.MOVE_OBJECT, goog.bind(function(event) {
 				var command = new MoveCommand(event.detail.model, event.detail.pos);
 				this._history.recordAction(command);
 			}, this), false);
 		},
 
 		_addTextListener: function () {
-			document.addEventListener("append text", goog.bind(function(event) {
+			document.addEventListener(imageApp.events.EventType.APPEND_TEXT, goog.bind(function(event) {
 				/** @type {!imageApp.model.TextArea} */
 				var object = this._objectCollection.getObjectOnKey(event.detail.id);
 				var text = event.detail.text;

@@ -2,6 +2,7 @@ goog.provide("imageApp.model.Object");
 
 goog.require("goog.math.Rect");
 goog.require("imageApp.observer.IObserver");
+goog.require("imageApp.events.EventType");
 
 
 goog.scope(function(){
@@ -88,7 +89,7 @@ goog.scope(function(){
 			if (!goog.math.Rect.equals(this._frame, frame)) {
 				this._frame = frame;
 				this.notifyObservers();
-				document.dispatchEvent(new CustomEvent("object changed", {
+				document.dispatchEvent(new CustomEvent(imageApp.events.EventType.OBJECT_CHANGED, {
 					detail: this
 				}));
 			}

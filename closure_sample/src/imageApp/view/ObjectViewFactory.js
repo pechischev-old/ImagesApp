@@ -27,7 +27,7 @@ goog.scope(function() {
 					textArea.getDOMElement().getElementsByTagName(goog.dom.TagName.TEXTAREA)[0].focus();
 				}, textArea));
 
-				document.addEventListener("auto-size textarea", goog.bind(function(event) {
+				document.addEventListener(imageApp.events.EventType.AUTOSIZE_TEXTAREA, goog.bind(function(event) {
 					/** @type {!goog.math.Rect} */
 					var newFrame = event.detail.frame;
 					var view = event.detail.view;

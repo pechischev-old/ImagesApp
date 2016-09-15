@@ -2,6 +2,7 @@ goog.provide("imageApp.view.TextAreaView");
 
 goog.require("goog.dom");
 goog.require("imageApp.view.ObjectView");
+goog.require("imageApp.events.EventType");
 
 goog.scope(function() {
 	const MIN_WIDTH = 50;
@@ -82,7 +83,7 @@ goog.scope(function() {
 			}
 			var newFrame = this._frame.clone();
 			newFrame.height = height;
-			document.dispatchEvent(new CustomEvent("auto-size textarea", {
+			document.dispatchEvent(new CustomEvent(imageApp.events.EventType.AUTOSIZE_TEXTAREA, {
 				detail : {
 					frame: newFrame,
 					view: this
@@ -114,7 +115,7 @@ goog.scope(function() {
 			goog.events.listen(this._textArea, goog.events.EventType.KEYDOWN, goog.bind(this._initResizeArea, this, 30));
 
 			goog.events.listen(this._textArea, goog.events.EventType.CHANGE, goog.bind(function() {
-				document.dispatchEvent(new CustomEvent("input text", {
+				document.dispatchEvent(new CustomEvent(imageApp.events.EventType.INPUT_TEXT, {
 					detail: this
 				}));
 			}, this));

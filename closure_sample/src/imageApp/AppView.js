@@ -10,6 +10,7 @@ goog.require("imageApp.view.ObjectViewFactory");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
+goog.require("imageApp.events.EventType");
 
 goog.scope(function() {
 	/** @const {string} */
@@ -157,7 +158,7 @@ goog.scope(function() {
 		 * @private
 		 */
 		_initListener: function () {
-			document.addEventListener("append", goog.bind(function (event){
+			document.addEventListener(imageApp.events.EventType.APPEND_OBJECT, goog.bind(function (event){
 				/** @type {imageApp.model.Object} */
 				var model = event.detail;
 				var view = imageApp.view.ObjectViewFactory.createObject(model);
@@ -186,7 +187,7 @@ goog.scope(function() {
 				this._objectsView.set(goog.getUid(model), view);
 			}, this), false);
 
-			document.addEventListener("remove", goog.bind(function(event){
+			document.addEventListener(imageApp.events.EventType.REMOVE_OBJECT, goog.bind(function(event){
 				/** @type {imageApp.model.Object} */
 				var model = event.detail;
 				var view = this._objectsView.get(goog.getUid(model));
@@ -195,14 +196,14 @@ goog.scope(function() {
 				this._objectsView.remove(goog.getUid(model));
 			}, this), false);
 
-			document.addEventListener("deselectObjects", goog.bind(this._deselectObjects, this), false);
+			document.addEventListener(imageApp.events.EventType.DESELECT_OBJECT, goog.bind(this._deselectObjects, this), false);
 
 			document.addEventListener("input text", goog.bind(function(event){
 				/** @type {imageApp.view.TextAreaView} */
 				var view = event.detail;
 				var key = this._getKeyOnObject(view);
 				if (key) {
-					document.dispatchEvent(new CustomEvent("append text", {
+					document.dispatchEvent(new CustomEvent(imageApp.events.EventType.APPEND_TEXT, {
 						detail: {
 							id: key,
 							text: view.getText()
@@ -211,7 +212,7 @@ goog.scope(function() {
 				}
 			}, this), false);
 
-			document.addEventListener("change text", goog.bind(function(event) {
+			document.addEventListener(imageApp.events.EventType.TEXT_CHANGED, goog.bind(function(event) {
 				/** @type {imageApp.view.TextAreaView} */
 				var view = this._objectsView.get(event.detail.id);
 				view.setText(event.detail.text);

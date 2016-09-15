@@ -26,7 +26,7 @@ goog.scope(function(){
 		 */
 		setText: function(text) {
 			this._text = text;
-			document.dispatchEvent(new CustomEvent("change text", {
+			document.dispatchEvent(new CustomEvent(imageApp.events.EventType.TEXT_CHANGED, {
 				detail: {
 					id: goog.getUid(this),
 					text: this._text

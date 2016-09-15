@@ -3,6 +3,7 @@ goog.provide("imageApp.handlers.Handler");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
+goog.require("imageApp.events.EventType");
 
 
 goog.scope(function () {
@@ -16,7 +17,7 @@ goog.scope(function () {
 	imageApp.handlers.Handler.addHandlers = function(model, view, elem, action) {
 
 		goog.events.listen(elem, goog.events.EventType.MOUSEDOWN, function(event) {
-			document.dispatchEvent(new Event("deselectObjects"));
+			document.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
 
 			view.setVisibleBorder(true);
 			if (event.defaultPrevented || event.which > 1 || !view.isSelected())
@@ -105,7 +106,7 @@ goog.scope(function () {
 			var newPos = view.getPos();
 			if (!goog.math.Coordinate.equals(newPos, oldPos))
 			{
-				var event = new CustomEvent("move", {
+				var event = new CustomEvent(imageApp.events.EventType.MOVE_OBJECT, {
 					detail: {
 						model: object,
 						pos: newPos
@@ -149,7 +150,7 @@ goog.scope(function () {
 				var newFrame = view.getFrame();
 				if (!goog.math.Rect.equals(newFrame, oldFrame))
 				{
-					document.dispatchEvent(new CustomEvent("resize", {
+					document.dispatchEvent(new CustomEvent(imageApp.events.EventType.RESIZE_OBJECT, {
 						detail: {
 							model: object,
 							frame: newFrame

@@ -19,6 +19,7 @@ goog.require("imageApp.view.ComboBox");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
+goog.require("imageApp.events.EventType");
 
 goog.scope(function() {
 	var SelectTypeLayout = imageApp.command.SelectTypeLayout;
@@ -165,7 +166,7 @@ goog.scope(function() {
 				}
 			}, this));
 
-			document.addEventListener("append media", goog.bind(function(){
+			document.addEventListener(imageApp.events.EventType.APPEND_MEDIA, goog.bind(function(){
 				var textarea = this._model.createTextArea("Медиа");
 				var action = new AddMediaCommand(this._layout, this._collection, textarea);
 				this._history.recordAction(action);
