@@ -167,9 +167,9 @@ goog.scope(function() {
 
 				var keyNextElement = undefined;
 				this._objectsView.getKeys().forEach(function(key) {
-					if (keyCurrentElement < key) {
+					if (keyCurrentElement < key && !keyNextElement) {
 						keyNextElement = key;
-						return;
+						//return;
 					}
 				});
 				/** @type {?Element} */
