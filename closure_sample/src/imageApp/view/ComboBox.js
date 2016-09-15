@@ -19,10 +19,10 @@ goog.scope(function () {
 			this._combobox.setAttribute("class", "droplink");
 
 			var button = new imageApp.view.Button("Layout");
-			button.setAction(goog.bind(this._down, this));
+
 			var ul = document.createElement(goog.dom.TagName.UL);
 			this._setVisibilityBox(ul, "none");
-
+			button.setAction(goog.bind(this._setVisibilityBox, this, ul, "block"));
 			this._combobox.appendChild(button.getDOMElement());
 			this._combobox.appendChild(ul);
 
@@ -36,21 +36,6 @@ goog.scope(function () {
 		 */
 		_setVisibilityBox: function (elem, style) {
 			goog.style.setStyle(elem, "display", style);
-		},
-
-		/**
-		 * @private
-		 */
-		_down: function () { // TODO: rename function
-			var ul = this._combobox.getElementsByTagName(goog.dom.TagName.UL)[0];
-			if (ul.style.display == "none")
-			{
-				this._setVisibilityBox(ul, "block");
-			}
-			else
-			{
-				this._setVisibilityBox(ul, "none");
-			}
 		},
 
 		/**

@@ -84,6 +84,9 @@ input {
   position: absolute;
 
 }
+textarea :active {
+  border: 0;
+}
 
 textarea {
   outline: none;

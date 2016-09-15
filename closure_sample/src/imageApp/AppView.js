@@ -163,26 +163,19 @@ goog.scope(function() {
 				var model = event.detail;
 				var view = imageApp.view.ObjectViewFactory.createObject(model);
 				model.registerObserver(view);
-				var key = goog.getUid(model);
+				var keyCurrentElement = goog.getUid(model);
+
+				var keyNextElement = undefined;
+				this._objectsView.getKeys().forEach(function(key) {
+					if (keyCurrentElement < key) {
+						keyNextElement = key;
+						return;
+					}
+				});
 				/** @type {?Element} */
-				var prevElement = null;
-				/*if (key > 1)
-				{
-					++key;
-					var keys = this._objectsView.getKeys();
-					var index = undefined;
-					keys.forEach(function(elem, i) {
-						if (elem == key)
-						{
-							index = i;
-							return;
-						}
-					}, key, index);
-					prevElement = (index) ? this._canvas.children[index] : prevElement;
+				var nextElement = (keyNextElement) ? this._objectsView.get(keyNextElement).getDOMElement() : null;
 
-				}*/
-
-				this._canvas.insertBefore(view.getDOMElement(), prevElement);
+				this._canvas.insertBefore(view.getDOMElement(), nextElement);
 
 				this._objectsView.set(goog.getUid(model), view);
 			}, this), false);
