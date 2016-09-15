@@ -68,18 +68,17 @@ goog.scope(function() {
 		 * @private
 		 */
 		_initResizeArea: function(minHeight) {
-			var text ='';
+			var text = '';
 			this._textArea.value.replace(/[<>]/g, '_').split("\n").forEach( function(str) {
 				text += '<div>' +  str.replace(/\s\s/g, ' &nbsp;') + '&nbsp;</div>'+"\n";
-			} );
+			}, text);
 
 			this._hiddenDiv.innerHTML = text;
-			var height = Math.max(minHeight, this._hiddenDiv.offsetHeight + 27);
+			var height = Math.max(minHeight, this._hiddenDiv.offsetHeight);
 
 			if (this._textArea.value == "")
 			{
 				height = minHeight;
-				text = "";
 			}
 			var newFrame = this._frame.clone();
 			newFrame.height = height;
@@ -107,12 +106,14 @@ goog.scope(function() {
 			/** @private {!Element} */
 			this._hiddenDiv = document.createElement(goog.dom.TagName.DIV);
 			this._hiddenDiv.setAttribute("class", "hidden");
+			this._hiddenDiv.innerHTML = "";
 			this._container.appendChild(this._hiddenDiv);
 			
 			this._reloadStyleSize();
 			this._container.appendChild(this._initBorder());
 
-			goog.events.listen(this._textArea, goog.events.EventType.KEYDOWN, goog.bind(this._initResizeArea, this, 30));
+
+			goog.events.listen(this._textArea, goog.events.EventType.INPUT, goog.bind(this._initResizeArea, this, 30));
 
 			goog.events.listen(this._textArea, goog.events.EventType.CHANGE, goog.bind(function() {
 				document.dispatchEvent(new CustomEvent(imageApp.events.EventType.INPUT_TEXT, {

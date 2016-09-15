@@ -21,13 +21,21 @@ goog.scope(function () {
 			var button = new imageApp.view.Button("Layout");
 			button.setAction(goog.bind(this._down, this));
 			var ul = document.createElement(goog.dom.TagName.UL);
-			goog.style.setStyle(ul, "display", "none");
+			this._setVisibilityBox(ul, "none");
 
 			this._combobox.appendChild(button.getDOMElement());
 			this._combobox.appendChild(ul);
 
-			/** @private {Array<imageApp.view.Button>} */
-			this._buttons = [];
+			goog.events.listen(document.body, goog.events.EventType.MOUSEUP, goog.bind(this._setVisibilityBox, this, ul, "none"));
+		},
+
+		/**
+		 * @param {string} style
+		 * @param {!Element} elem
+		 * @private
+		 */
+		_setVisibilityBox: function (elem, style) {
+			goog.style.setStyle(elem, "display", style);
 		},
 
 		/**
@@ -37,11 +45,11 @@ goog.scope(function () {
 			var ul = this._combobox.getElementsByTagName(goog.dom.TagName.UL)[0];
 			if (ul.style.display == "none")
 			{
-				goog.style.setStyle(ul, "display", "block");
+				this._setVisibilityBox(ul, "block");
 			}
 			else
 			{
-				goog.style.setStyle(ul, "display", "none");
+				this._setVisibilityBox(ul, "none");
 			}
 		},
 
@@ -49,7 +57,6 @@ goog.scope(function () {
 		 * @param {imageApp.view.Button} btn
 		 */
 		appendElement: function(btn) {
-			this._buttons.push(btn);
 			var ul = this._combobox.getElementsByTagName(goog.dom.TagName.UL)[0];
 			var li = document.createElement(goog.dom.TagName.LI);
 			li.appendChild(btn.getDOMElement());
