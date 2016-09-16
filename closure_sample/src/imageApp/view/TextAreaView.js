@@ -80,11 +80,11 @@ goog.scope(function() {
 			{
 				height = minHeight;
 			}
-			var newFrame = this._frame.clone();
-			newFrame.height = height;
+			var newSize = this._frame.getSize().clone();
+			newSize.height = height;
 			document.dispatchEvent(new CustomEvent(imageApp.events.EventType.AUTOSIZE_TEXTAREA, {
 				detail : {
-					frame: newFrame,
+					size: newSize,
 					view: this
 				}
 			}));

@@ -169,7 +169,6 @@ goog.scope(function() {
 				this._objectsView.getKeys().forEach(function(key) {
 					if (keyCurrentElement < key && !keyNextElement) {
 						keyNextElement = key;
-						//return;
 					}
 				});
 				/** @type {?Element} */

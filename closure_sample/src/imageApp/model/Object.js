@@ -106,6 +106,15 @@ goog.scope(function(){
 		},
 
 		/**
+		 * @param {!goog.math.Size} size
+		 */
+		setSize: function(size) {
+			this._frame.width = size.width;
+			this._frame.height = size.height;
+			this.notifyObservers();
+		},
+
+		/**
 		 * @return {string}
 		 */
 		getType: function () {
