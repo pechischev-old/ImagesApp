@@ -32,6 +32,7 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		getMinFrame: function (frame, oldPos) {
+			frame.top = oldPos.y;
 			frame.height = this._frame.height;
 			frame.width = Math.max(MIN_WIDTH, frame.width);
 			return frame;

@@ -18,6 +18,8 @@ goog.scope(function () {
 		MOVE_OBJECT: "move object",
 		OBJECT_CHANGED: "object changed",
 		REMOVE_OBJECT: "remove object",
-		RESIZE_OBJECT: "resize object"
+		RESIZE_OBJECT: "resize object",
+		OBJECT_TRANSFORMED: "object transformed",
+		CHANGE_TYPE_LAYOUT: "change the type of layout"
 	};
 });

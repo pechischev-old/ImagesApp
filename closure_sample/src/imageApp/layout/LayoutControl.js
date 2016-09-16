@@ -21,9 +21,9 @@ goog.scope(function () {
 			this._media = null;
 
 			/** @private {string} */
-			this._typeLayout = "custom";
+			this._typeLayout = "default";
 			/** @private {string} */
-			this._lastTypeLayout = "";
+			this._lastTypeLayout = "default";
 
 			document.addEventListener(imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(this._choiceLayoutOnType, this));
 		},
@@ -39,9 +39,13 @@ goog.scope(function () {
 		 * @param {string} type
 		 */
 		setTypeLayout: function (type) {
-			this._lastTypeLayout = this._typeLayout;
-			this._typeLayout = type;
-			this._choiceLayoutOnType();
+			if (type != this._typeLayout)
+			{
+				console.log("current type layout: " + type );
+				this._lastTypeLayout = this._typeLayout;
+				this._typeLayout = type;
+				this._choiceLayoutOnType();
+			}
 		},
 
 		/**

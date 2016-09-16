@@ -71,6 +71,7 @@ input {
   position: absolute; }
 
 textarea {
+  padding: 0;
   outline: none;
   resize: none;
   font-family: sans-serif;

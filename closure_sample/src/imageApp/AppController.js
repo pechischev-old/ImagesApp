@@ -53,9 +53,6 @@ goog.scope(function() {
 			this._layout.initDescriptionLayout(this._initLayoutObject("Описание"));
 			this._layout.setTypeLayout("default");
 			this._addActions();
-
-			
-			
 		},
 
 		/**
@@ -145,7 +142,7 @@ goog.scope(function() {
 			comboBox.appendElement(this._createButtonWithAction("Custom", goog.bind(this._setTypeLayout, this, "custom")));
 			toolbar.appendElement(comboBox);
 			toolbar.appendElement(this._createButtonWithAction("Add media", goog.bind(this._layout.appendMediaLayout, this._layout)));
-			toolbar.appendElement(this._createButtonWithAction("Reset layout", goog.bind(this._resetLayout, this)));
+			//toolbar.appendElement(this._createButtonWithAction("Reset layout", goog.bind(this._resetLayout, this)));
 
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 
