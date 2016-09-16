@@ -70,9 +70,6 @@ input {
 .textarea {
   position: absolute; }
 
-textarea :active {
-  border: 0; }
-
 textarea {
   outline: none;
   resize: none;

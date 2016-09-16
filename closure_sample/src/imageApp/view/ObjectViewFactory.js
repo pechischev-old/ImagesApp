@@ -29,11 +29,13 @@ goog.scope(function() {
 
 				document.addEventListener(imageApp.events.EventType.AUTOSIZE_TEXTAREA, goog.bind(function(event) {
 					/** @type {!goog.math.Rect} */
-					var newSize = event.detail.size;
+					var height = event.detail.height;
+					var newFrame = object.getFrame().clone();
+					newFrame.height = height;
 					var view = event.detail.view;
-					if (!goog.math.Size.equals(object.getFrame().getSize(), newSize) && view == textArea)
+					if (!goog.math.Rect.equals(object.getFrame(), newFrame) && view == textArea)
 					{
-						object.setSize(newSize);
+						object.setFrame(newFrame);
 					}
 				}, object), false);
 				textArea.setText(object.getText());
