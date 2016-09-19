@@ -33,24 +33,12 @@ goog.scope(function() {
 			return this._container;
 		},
 
-		/**
-		 * @inheritDoc
-		 */
-		getMinFrame: function(frame, oldPos) {
-			frame.left = (frame.width < MIN_SIZE.width) ? oldPos.x : frame.left;
-			frame.top = (frame.height < MIN_SIZE.height) ? oldPos.y : frame.top;
-			frame.width = (frame.width < MIN_SIZE.width) ? MIN_SIZE.width : frame.width;
-			frame.height = (frame.height < MIN_SIZE.height) ? MIN_SIZE.height : frame.height;
-			return frame;
-		},
-
-
 		/** 
 		 * @inheritDoc 
 		 */
 		_reloadStyleSize: function() {
-			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
 			var image = this._container.getElementsByTagName(goog.dom.TagName.IMG)[0];
+			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), image);
 			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
 		},
 		
@@ -59,7 +47,6 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		_init: function() {
-
 			/** @private {!Element} */
 			this._container = document.createElement(goog.dom.TagName.DIV);
 			this._container.setAttribute("class", "capture");

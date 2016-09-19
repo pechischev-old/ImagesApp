@@ -27,17 +27,6 @@ goog.scope(function() {
 			return this._container;
 		},
 
-
-		/**
-		 * @inheritDoc
-		 */
-		getMinFrame: function (frame, oldPos) {
-			frame.top = oldPos.y;
-			frame.height = this._frame.height;
-			frame.width = Math.max(MIN_WIDTH, frame.width);
-			return frame;
-		},
-
 		/**
 		 * @param {string} text
 		 */
@@ -57,7 +46,7 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		_reloadStyleSize: function() {
-			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
+			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._textArea);
 
 			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), this._textArea);
 			goog.style.setStyle(this._hiddenDiv, "width", this._frame.width + "px");
