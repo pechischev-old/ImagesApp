@@ -74,14 +74,14 @@ input {
   z-index: 5000;
 }
 
-img
+.container
 {
-  position: absolute;
+  display: block;
 }
 
 .capture
 {
-  display: block;
+  position: absolute;
   cursor: move;
 }
 
@@ -91,14 +91,13 @@ img
 }
 
 textarea {
-  position: absolute;
   padding: 0;
   outline: none;
   resize: none;
-  font-family: sans-serif;
-  font-size: 25px;
   cursor: text;
   word-wrap: break-word;
+  font-family: sans-serif;
+  font-size: 25px;
 }
 
 .noscroll {
@@ -107,10 +106,9 @@ textarea {
 
 .hidden {
   visibility: hidden;
-  position: absolute;
+  word-wrap: break-word;
   font-family: sans-serif;
   font-size: 25px;
-  word-wrap: break-word;
 }
 
 .border {

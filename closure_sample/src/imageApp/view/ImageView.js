@@ -30,7 +30,7 @@ goog.scope(function() {
 		 * @inheritDoc 
 		 */
 		getDOMElement: function(){
-			return this._container;
+			return this._object;
 		},
 
 		/** 
@@ -38,7 +38,7 @@ goog.scope(function() {
 		 */
 		_reloadStyleSize: function() {
 			var image = this._container.getElementsByTagName(goog.dom.TagName.IMG)[0];
-			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), image);
+			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
 			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), image);
 		},
 		
@@ -48,16 +48,18 @@ goog.scope(function() {
 		 */
 		_init: function() {
 			/** @private {!Element} */
+			this._object = document.createElement(goog.dom.TagName.DIV);
+			this._object.setAttribute("class", "container");
+			/** @private {!Element} */
 			this._container = document.createElement(goog.dom.TagName.DIV);
 			this._container.setAttribute("class", "capture");
-
 			var image = document.createElement(goog.dom.TagName.IMG);
 			image.setAttribute("src", this._path);
 			image.setAttribute("alt", "текст");
 			this._container.appendChild(image);
-
+			this._object.appendChild(this._container);
 			this._reloadStyleSize();
-			this._container.appendChild(this._initBorder());
+			this._object.appendChild(this._initBorder());
 		}
 	});
 });

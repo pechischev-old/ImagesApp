@@ -28,23 +28,24 @@ goog.scope(function() {
 
 		/**
 		 * @param {function(!goog.math.Rect)} handler
+		 * @param {imageApp.view.IObject=} object
 		 */
-		addListener: function (handler) {
+		addListener: function (handler, object) {
 			var pos = this.getFrame().getTopLeft();
-
-			imageApp.handlers.AddResizeListener(this._top, this, function(frame, shift){
+			var movableObject = (object) ? object : this;
+			imageApp.handlers.AddResizeListener(this._top, movableObject, function(frame, shift){
 				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
 			}, handler);
 
-			imageApp.handlers.AddResizeListener(this._bottom, this, function(frame, shift){
+			imageApp.handlers.AddResizeListener(this._bottom, movableObject, function(frame, shift){
 				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
 			}, handler);
 
-			imageApp.handlers.AddResizeListener(this._left, this, function(frame, shift){
+			imageApp.handlers.AddResizeListener(this._left, movableObject, function(frame, shift){
 				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
 			}, handler);
 
-			imageApp.handlers.AddResizeListener(this._right, this, function(frame, shift){
+			imageApp.handlers.AddResizeListener(this._right, movableObject, function(frame, shift){
 				return new goog.math.Rect(frame.left - shift.x, frame.top- shift.y, frame.width, frame.height );
 			}, handler);
 

@@ -24,7 +24,7 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		getDOMElement: function(){
-			return this._container;
+			return this._object;
 		},
 
 		/**
@@ -46,7 +46,7 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		_reloadStyleSize: function() {
-			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._textArea);
+			this._setStyleElementPosition(new goog.math.Coordinate(this._frame.left, this._frame.top), this._container);
 
 			this._setStyleElementSize(new goog.math.Size(this._frame.width, this._frame.height), this._textArea);
 			goog.style.setStyle(this._hiddenDiv, "width", this._frame.width + "px");
@@ -86,12 +86,18 @@ goog.scope(function() {
 		 */
 		_init: function() {
 			/** @private {!Element} */
+			this._object = document.createElement(goog.dom.TagName.DIV);
+			this._object.setAttribute("class", "container");
+
+			/** @private {!Element} */
 			this._container = document.createElement(goog.dom.TagName.DIV);
 			this._container.setAttribute("class", "textarea");
 			/** @private {!Element} */
 			this._textArea = document.createElement(goog.dom.TagName.TEXTAREA);
 			this._textArea.setAttribute("class", "noscroll");
+
 			this._container.appendChild(this._textArea);
+			this._object.appendChild(this._container);
 
 			/** @private {!Element} */
 			this._hiddenDiv = document.createElement(goog.dom.TagName.DIV);
@@ -100,7 +106,7 @@ goog.scope(function() {
 			this._container.appendChild(this._hiddenDiv);
 			
 			this._reloadStyleSize();
-			this._container.appendChild(this._initBorder());
+			this._object.appendChild(this._initBorder());
 
 
 			goog.events.listen(this._textArea, goog.events.EventType.INPUT, goog.bind(this._initResizeArea, this, 30));

@@ -14,6 +14,8 @@ goog.scope(function() {
 	imageApp.view.ObjectViewFactory.createObject = function(object) {
 		/** @type {!imageApp.view.ObjectView} */
 		var view;
+		/**  @type {?imageApp.view.IObject} */
+		var movableObject = undefined;
 		if (object.getType() == "image")
 		{
 			var imageObject = /** @type {!imageApp.model.Image} */ (object);
@@ -27,6 +29,7 @@ goog.scope(function() {
 					}
 				}));
 			});
+			movableObject = image;
 
 
 			view = /** @type {!imageApp.view.ImageView} */ (image);
@@ -70,7 +73,7 @@ goog.scope(function() {
 					frame: newFrame
 				}
 			}));
-		});
+		}, movableObject);
 		return view;
 	};
 });
