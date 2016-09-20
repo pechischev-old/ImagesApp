@@ -8,6 +8,7 @@ goog.require("imageApp.view.IObject");
 goog.require("imageApp.handlers.AddResizeListener");
 
 goog.scope(function() {
+	const MIN_SIZE_FRAME = new goog.math.Size(25, 18);
 
 	/**
 	 * @param {goog.math.Rect} frame
@@ -93,10 +94,10 @@ goog.scope(function() {
 		 * @return {!goog.math.Rect}
 		 */
 		_getMinFrame: function (frame, oldPos) {
-			/*frame.left = (frame.width < 50) ? oldPos.x : frame.left;
-			frame.top = (frame.height < 50) ? oldPos.y : frame.top;
-			frame.width = (frame.width < 50) ? 50 : frame.width;
-			frame.height = (frame.height < 50) ? 50 : frame.height;*/
+			frame.left = (frame.width < MIN_SIZE_FRAME.width) ? this._frame.left : frame.left;
+			frame.top = (frame.height < MIN_SIZE_FRAME.height) ? this._frame.top : frame.top;
+			frame.width = (frame.width < MIN_SIZE_FRAME.width) ? MIN_SIZE_FRAME.width : frame.width;
+			frame.height = (frame.height < MIN_SIZE_FRAME.height) ? MIN_SIZE_FRAME.height : frame.height;
 			return frame;
 		},
 

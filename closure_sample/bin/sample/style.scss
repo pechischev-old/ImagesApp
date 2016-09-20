@@ -115,6 +115,7 @@ textarea {
 
 .border {
   position: absolute;
+  pointer-events: none;
 }
 
 .border[style*="opacity: 1"]

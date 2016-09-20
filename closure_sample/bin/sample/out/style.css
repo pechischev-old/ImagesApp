@@ -93,7 +93,8 @@ textarea {
   word-wrap: break-word; }
 
 .border {
-  position: absolute; }
+  position: absolute;
+  pointer-events: none; }
 
 .border[style*="opacity: 1"] {
   z-index: 2000; }

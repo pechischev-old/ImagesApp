@@ -21,7 +21,7 @@ goog.scope(function () {
 			this._media = null;
 
 			/** @private {string} */
-			this._typeLayout = "default";
+			this._typeLayout = "";
 			/** @private {string} */
 			this._lastTypeLayout = "default";
 
