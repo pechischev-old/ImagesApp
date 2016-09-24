@@ -8,15 +8,17 @@ goog.scope(function() {
 	const MIN_WIDTH = 50;
 	/**
 	 * @param {!goog.math.Rect} frame
+	 * @param {!imageApp.model.Object} object
 	 * @extends {imageApp.view.ObjectView}
 	 * @constructor
 	 */
 	imageApp.view.TextAreaView = goog.defineClass(imageApp.view.ObjectView, {
 		/**
 		 * @param {!goog.math.Rect} frame
+		 * @param {!imageApp.model.Object} object
 		 */
-		constructor: function(frame) {
-			goog.base(this, frame);
+		constructor: function(frame, object) {
+			goog.base(this, frame, object);
 			this._init();
 		},
 

@@ -9,6 +9,7 @@ goog.scope(function() {
 	
 	/**
 	 * @param {!goog.math.Rect} frame
+	 * @param {!imageApp.model.Object} object
 	 * @param {string} path
 	 * @extends {imageApp.view.ObjectView}
 	 * @constructor
@@ -16,10 +17,11 @@ goog.scope(function() {
 	imageApp.view.ImageView = goog.defineClass(imageApp.view.ObjectView, {
 		/**
 		 * @param {!goog.math.Rect} frame
+		 * @param {!imageApp.model.Object} object
 		 * @param {string} path
 		 */
-		constructor: function(frame, path) {
-			goog.base(this, frame);
+		constructor: function(frame, object, path) {
+			goog.base(this, frame, object);
 			/** @private {string} */
 			this._path = path;
 			this._init();

@@ -15,11 +15,14 @@ goog.scope(function () {
 	imageApp.view.ObjectView = goog.defineClass(imageApp.view.Node, {
 		/**
 		 * @param {!goog.math.Rect} frame
+		 * @param {!imageApp.model.Object} object
 		 */
-		constructor: function(frame) {
+		constructor: function(frame, object) {
 			goog.base(this);
 			/** @protected {!goog.math.Rect} */
 			this._frame = frame;
+			/** @protected {!imageApp.model.Object} */
+			this._model = object;
 		},
 
 		/**
@@ -60,7 +63,7 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @returns {imageApp.view.Border}
+		 * @returns {imageApp.view.Frame}
 		 */
 		getBorder: function () {
 			return this._border;

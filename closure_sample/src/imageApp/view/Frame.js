@@ -5,7 +5,7 @@ goog.require("goog.dom");
 goog.require("goog.math.Rect");
 goog.require("imageApp.view.Node");
 goog.require("imageApp.view.IObject");
-goog.require("imageApp.handlers.AddResizeListener");
+goog.require("imageApp.handlers.Handler");
 
 goog.scope(function() {
 	const MIN_SIZE_FRAME = new goog.math.Size(25, 18);
@@ -33,57 +33,57 @@ goog.scope(function() {
 		addListener: function (handler, object) {
 			var pos = this.getFrame().getTopLeft();
 			var movableObject = (object) ? object : this;
-			imageApp.handlers.AddResizeListener(this._top, movableObject, function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._top, movableObject, function(frame, shift){
 				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
 			}, handler);
 
-			imageApp.handlers.AddResizeListener(this._bottom, movableObject, function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._bottom, movableObject, function(frame, shift){
 				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
 			}, handler);
 
-			imageApp.handlers.AddResizeListener(this._left, movableObject, function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._left, movableObject, function(frame, shift){
 				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
 			}, handler);
 
-			imageApp.handlers.AddResizeListener(this._right, movableObject, function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._right, movableObject, function(frame, shift){
 				return new goog.math.Rect(frame.left - shift.x, frame.top- shift.y, frame.width, frame.height );
 			}, handler);
 
-			imageApp.handlers.AddResizeListener(this._NWCorner, this, goog.bind(function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._NWCorner, this, goog.bind(function(frame, shift){
 				return this._getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width + shift.x, frame.height + shift.y), pos);
 			}, this), handler);
 
-			imageApp.handlers.AddResizeListener(this._NECorner, this, goog.bind(function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._NECorner, this, goog.bind(function(frame, shift){
 				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width - shift.x, frame.height + shift.y), pos);
 			}, this), handler);
 
-			imageApp.handlers.AddResizeListener(this._SWCorner, this, goog.bind(function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._SWCorner, this, goog.bind(function(frame, shift){
 				return this._getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top , frame.width + shift.x, frame.height - shift.y), pos);
 			}, this), handler);
 
-			imageApp.handlers.AddResizeListener(this._SECorner, this, goog.bind(function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._SECorner, this, goog.bind(function(frame, shift){
 				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height - shift.y), pos);
 			}, this), handler);
 
-			imageApp.handlers.AddResizeListener(this._ECorner, this, goog.bind(function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._ECorner, this, goog.bind(function(frame, shift){
 				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height), pos);
 			}, this), handler);
 
-			imageApp.handlers.AddResizeListener(this._WCorner, this, goog.bind(function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._WCorner, this, goog.bind(function(frame, shift){
 				return this._getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top, frame.width + shift.x, frame.height), pos);
 			}, this), handler);
 
-			imageApp.handlers.AddResizeListener(this._NCorner, this, goog.bind(function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._NCorner, this, goog.bind(function(frame, shift){
 				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width , frame.height + shift.y), pos);
 			}, this), handler);
 
-			imageApp.handlers.AddResizeListener(this._SCorner, this, goog.bind(function(frame, shift){
+			imageApp.handlers.Handler.addResizeListener(this._SCorner, this, goog.bind(function(frame, shift){
 				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width, frame.height - shift.y), pos);
 			}, this), handler);
 		},
 
 		/**
-		 * @inheriDoc
+		 * @inheritDoc
 		 */
 		getFrame: function() {
 			return this._frame;
@@ -103,14 +103,14 @@ goog.scope(function() {
 		},
 
 		/**
-		 * @inheriDoc
+		 * @inheritDoc
 		 */
 		isSelected: function () {
 			return this._isSelected;
 		},
 
 		/**
-		 * @inheriDoc
+		 * @inheritDoc
 		 */
 		setFrame: function(frame) {
 			this._frame = frame;

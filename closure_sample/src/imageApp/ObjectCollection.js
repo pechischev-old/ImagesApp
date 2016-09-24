@@ -5,16 +5,19 @@ goog.require("imageApp.model.Object");
 goog.require("goog.structs.Map");
 
 goog.require("imageApp.events.EventType");
+goog.require("goog.events.EventTarget");
 
 
 goog.scope(function () {
 
 	/**
+	 * @extends {goog.events.EventTarget}
 	 * @constructor
 	 */
 	imageApp.ObjectCollection = goog.defineClass(null, {
 
 		constructor: function() {
+			goog.events.EventTarget.call(this);
 			/** @private {goog.structs.Map<number, imageApp.model.Object>} */
 			this._objectsModel = new goog.structs.Map();
 		},

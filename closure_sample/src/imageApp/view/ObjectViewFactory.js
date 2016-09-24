@@ -3,7 +3,7 @@ goog.provide("imageApp.view.ObjectViewFactory");
 goog.require("imageApp.view.TextAreaView");
 goog.require("imageApp.view.ImageView");
 
-goog.require("imageApp.handlers.AddMoveListener");
+goog.require("imageApp.handlers.Handler");
 
 goog.scope(function() {
 
@@ -12,16 +12,16 @@ goog.scope(function() {
 	 * @return {!imageApp.view.ObjectView}
 	 */
 	imageApp.view.ObjectViewFactory.createObject = function(object) {
-		/** @type {!imageApp.view.ObjectView} */
+		/** @type {?imageApp.view.ObjectView} */
 		var view;
 		/**  @type {?imageApp.view.IObject} */
 		var movableObject = undefined;
 		if (object.getType() == "image")
 		{
 			var imageObject = /** @type {!imageApp.model.Image} */ (object);
-			var image = new imageApp.view.ImageView(imageObject.getFrame(), imageObject.getPath());
+			var image = new imageApp.view.ImageView(imageObject.getFrame(), object, imageObject.getPath());
 
-			imageApp.handlers.AddMoveListener(image.getDOMElement(), image, function(newPos) {
+			imageApp.handlers.Handler.addMoveListener(image.getDOMElement(), image, function(newPos) {
 				document.dispatchEvent(new CustomEvent(imageApp.events.EventType.MOVE_OBJECT, {
 					detail: {
 						model: imageObject,
@@ -37,7 +37,7 @@ goog.scope(function() {
 		else if (object.getType() == "textarea")
 		{
 			var textAreaObject = /** @type {!imageApp.model.TextArea} */ (object);
-			var textArea = new imageApp.view.TextAreaView(textAreaObject.getFrame());
+			var textArea = new imageApp.view.TextAreaView(textAreaObject.getFrame(), object);
 
 			goog.events.listen(textArea.getDOMElement(), goog.events.EventType.MOUSEDOWN, function (event) {
 				document.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
@@ -57,8 +57,8 @@ goog.scope(function() {
 				{
 					object.setFrame(newFrame);
 				}
-			}, object), false);
-			textArea.setText(object.getText());
+			}, textAreaObject), false);
+			textArea.setText(textAreaObject.getText());
 			view = /** @type {!imageApp.view.TextAreaView} */ (textArea);
 		}
 		else

@@ -3,6 +3,7 @@ goog.provide("imageApp.model.Object");
 goog.require("goog.math.Rect");
 goog.require("imageApp.observer.IObserver");
 goog.require("imageApp.events.EventType");
+goog.require("goog.events.EventTarget");
 
 
 goog.scope(function(){
@@ -10,6 +11,7 @@ goog.scope(function(){
 	/**
 	 * @implements {imageApp.observer.IObservable}
 	 * @param {!goog.math.Rect} frame
+	 * @extends {goog.events.EventTarget}
 	 * @constructor
 	 */
 	imageApp.model.Object = goog.defineClass(null, {
@@ -17,6 +19,7 @@ goog.scope(function(){
 		 * @param {!goog.math.Rect} frame
 		 */
 		constructor: function(frame) {
+			goog.events.EventTarget.call(this);
 			/** @private {Array<imageApp.observer.IObserver>}*/
 			this._observers = [];
 			/** @private {!goog.math.Rect} */

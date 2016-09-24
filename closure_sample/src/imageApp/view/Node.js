@@ -1,16 +1,19 @@
 goog.provide("imageApp.view.Node");
 
 goog.require("imageApp.view.IDOMElement");
+goog.require("goog.events.EventTarget");
 goog.require("goog.style");
 
 goog.scope(function() {
 
 	/**
 	 * @implements {imageApp.view.IDOMElement}
+	 * @extends {goog.events.EventTarget}
 	 * @constructor
 	 */
 	imageApp.view.Node = goog.defineClass(null, {
 		constructor: function () {
+			goog.events.EventTarget.call(this);
 		},
 
 		/**

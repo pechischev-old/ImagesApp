@@ -10,6 +10,7 @@ goog.require("imageApp.view.ObjectViewFactory");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
+goog.require("goog.events.EventTarget");
 goog.require("imageApp.events.EventType");
 
 goog.scope(function() {
@@ -20,9 +21,12 @@ goog.scope(function() {
 
 	/**
 	 * @constructor
+	 * @extends {goog.events.EventTarget}
 	 */
 	imageApp.AppView = goog.defineClass(null, {
 		constructor: function() {
+			goog.events.EventTarget.call(this);
+
 			var fragment = document.createDocumentFragment();
 			fragment.appendChild(this._createToolbar());
 			fragment.appendChild(this._createInputForm());
@@ -33,6 +37,7 @@ goog.scope(function() {
 			/** @private {goog.structs.Map<*, imageApp.view.ObjectView>} */
 			this._objectsView = new goog.structs.Map();
 			this._initListener();
+
 		},
 
 		/**
@@ -187,7 +192,7 @@ goog.scope(function() {
 				this._canvas.removeChild(view.getDOMElement());
 				this._objectsView.remove(goog.getUid(model));
 			}, this), false);
-
+			
 			document.addEventListener(imageApp.events.EventType.DESELECT_OBJECT, goog.bind(this._deselectObjects, this), false);
 
 			document.addEventListener("input text", goog.bind(function(event){
@@ -219,4 +224,5 @@ goog.scope(function() {
 			}, this));
 		}
 	});
+
 });
