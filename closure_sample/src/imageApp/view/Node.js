@@ -11,9 +11,9 @@ goog.scope(function() {
 	 * @extends {goog.events.EventTarget}
 	 * @constructor
 	 */
-	imageApp.view.Node = goog.defineClass(null, {
+	imageApp.view.Node = goog.defineClass(goog.events.EventTarget, {
 		constructor: function () {
-			goog.events.EventTarget.call(this);
+			goog.base(this);
 		},
 
 		/**

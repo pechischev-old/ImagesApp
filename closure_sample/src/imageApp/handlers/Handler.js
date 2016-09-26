@@ -24,7 +24,8 @@ goog.scope(function () {
 		addMoveListener: function(elem, view, callback) {
 
 			goog.events.listen(elem, goog.events.EventType.MOUSEDOWN, function (event) {
-				document.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
+				//document.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
+				view.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
 
 				view.setVisibleBorder(true);
 				if (event.defaultPrevented || event.which > 1 || !view.isSelected()) {

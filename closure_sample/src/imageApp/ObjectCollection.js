@@ -14,10 +14,10 @@ goog.scope(function () {
 	 * @extends {goog.events.EventTarget}
 	 * @constructor
 	 */
-	imageApp.ObjectCollection = goog.defineClass(null, {
+	imageApp.ObjectCollection = goog.defineClass(goog.events.EventTarget, {
 
 		constructor: function() {
-			goog.events.EventTarget.call(this);
+			goog.base(this);
 			/** @private {goog.structs.Map<number, imageApp.model.Object>} */
 			this._objectsModel = new goog.structs.Map();
 		},
@@ -31,7 +31,7 @@ goog.scope(function () {
 			});
 			object.setRemoved(true);
 			this._objectsModel.remove(goog.getUid(object));
-			document.dispatchEvent(removeEvent);
+			this.dispatchEvent(removeEvent);
 		},
 
 
@@ -44,7 +44,7 @@ goog.scope(function () {
 			});
 			object.setRemoved(false);
 			this._objectsModel.set(goog.getUid(object), object);
-			document.dispatchEvent(appendEvent);
+			this.dispatchEvent(appendEvent);
 		},
 
 		/**

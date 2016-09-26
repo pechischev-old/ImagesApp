@@ -23,9 +23,9 @@ goog.scope(function() {
 	 * @constructor
 	 * @extends {goog.events.EventTarget}
 	 */
-	imageApp.AppView = goog.defineClass(null, {
+	imageApp.AppView = goog.defineClass(goog.events.EventTarget, {
 		constructor: function() {
-			goog.events.EventTarget.call(this);
+			goog.base(this);
 
 			var fragment = document.createDocumentFragment();
 			fragment.appendChild(this._createToolbar());
@@ -37,7 +37,6 @@ goog.scope(function() {
 			/** @private {goog.structs.Map<*, imageApp.view.ObjectView>} */
 			this._objectsView = new goog.structs.Map();
 			this._initListener();
-
 		},
 
 		/**
@@ -79,7 +78,6 @@ goog.scope(function() {
 				this._objectsView.get(keys[i]).setVisibleBorder(false);
 			}
 		},
-
 
 		/**
 		 * @param {Function} action
@@ -163,11 +161,12 @@ goog.scope(function() {
 		 * @private
 		 */
 		_initListener: function () {
-			document.addEventListener(imageApp.events.EventType.APPEND_OBJECT, goog.bind(function (event){
+			goog.events.listen(this, imageApp.events.EventType.APPEND_OBJECT, goog.bind(function (event){
 				/** @type {imageApp.model.Object} */
 				var model = event.detail;
 				var view = imageApp.view.ObjectViewFactory.createObject(model);
 				model.registerObserver(view);
+				view.setParentEventTarget(this);
 				var keyCurrentElement = goog.getUid(model);
 
 				var keyNextElement = undefined;
@@ -184,7 +183,7 @@ goog.scope(function() {
 				this._objectsView.set(goog.getUid(model), view);
 			}, this), false);
 
-			document.addEventListener(imageApp.events.EventType.REMOVE_OBJECT, goog.bind(function(event){
+			goog.events.listen(this, imageApp.events.EventType.REMOVE_OBJECT, goog.bind(function (event){
 				/** @type {imageApp.model.Object} */
 				var model = event.detail;
 				var view = this._objectsView.get(goog.getUid(model));
@@ -192,28 +191,8 @@ goog.scope(function() {
 				this._canvas.removeChild(view.getDOMElement());
 				this._objectsView.remove(goog.getUid(model));
 			}, this), false);
-			
-			document.addEventListener(imageApp.events.EventType.DESELECT_OBJECT, goog.bind(this._deselectObjects, this), false);
 
-			document.addEventListener("input text", goog.bind(function(event){
-				/** @type {imageApp.view.TextAreaView} */
-				var view = event.detail;
-				var key = this._getKeyOnObject(view);
-				if (key) {
-					document.dispatchEvent(new CustomEvent(imageApp.events.EventType.APPEND_TEXT, {
-						detail: {
-							id: key,
-							text: view.getText()
-						}
-					}))
-				}
-			}, this), false);
-
-			document.addEventListener(imageApp.events.EventType.TEXT_CHANGED, goog.bind(function(event) {
-				/** @type {imageApp.view.TextAreaView} */
-				var view = this._objectsView.get(event.detail.id);
-				view.setText(event.detail.text);
-			}, this), false);
+			goog.events.listen(this, imageApp.events.EventType.DESELECT_OBJECT, goog.bind(this._deselectObjects, this));
 
 			goog.events.listen(this._canvas, goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
 				if (event.defaultPrevented)

@@ -20,6 +20,13 @@ goog.scope(function() {
 		constructor: function(frame, object) {
 			goog.base(this, frame, object);
 			this._init();
+
+			goog.events.listen(object, imageApp.events.EventType.TEXT_CHANGED, function(event) {
+				this.setText(event.detail);
+			}, false, this);
+
+
+
 		},
 
 		/**
@@ -72,13 +79,9 @@ goog.scope(function() {
 			{
 				height = minHeight;
 			}
-			var newFrame = this._frame.clone();
-			newFrame.height = height;
-			document.dispatchEvent(new CustomEvent(imageApp.events.EventType.AUTOSIZE_TEXTAREA, {
-				detail : {
-					height: height,
-					view: this
-				}
+
+			this._model.dispatchEvent(new CustomEvent(imageApp.events.EventType.AUTOSIZE_TEXTAREA, {
+				detail : height
 			}));
 		},
 
@@ -114,9 +117,16 @@ goog.scope(function() {
 			goog.events.listen(this._textArea, goog.events.EventType.INPUT, goog.bind(this._initResizeArea, this, 30));
 
 			goog.events.listen(this._textArea, goog.events.EventType.CHANGE, goog.bind(function() {
-				document.dispatchEvent(new CustomEvent(imageApp.events.EventType.INPUT_TEXT, {
-					detail: this
-				}));
+				var object = /** @type {!imageApp.model.TextArea} */ (this._model);
+				if (this.getText() != object.getText())
+				{
+					this.dispatchEvent(new CustomEvent(imageApp.events.EventType.APPEND_TEXT, {
+						detail: {
+							text: this.getText(),
+							model: this._model
+						}
+					}))
+				}
 			}, this));
 		}
 	});

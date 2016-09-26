@@ -7,6 +7,7 @@ goog.require("imageApp.command.DeleteCommand");
 goog.require("imageApp.command.MoveCommand");
 goog.require("imageApp.command.ResizeCommand");
 goog.require("imageApp.command.AppendTextCommand");
+goog.require("imageApp.events.Event");
 
 goog.require("imageApp.events.EventType");
 
@@ -44,6 +45,7 @@ goog.scope(function() {
 			this._addMoveListener();
 			this._addResizeListener();
 			this._addTextListener();
+			this._addAppendListener();
 		},
 
 		addTextArea: function () {
@@ -66,33 +68,41 @@ goog.scope(function() {
 		/**
 		 * @private
 		 */
+		_addAppendListener: function () {
+			goog.events.listen(this._objectCollection, imageApp.events.EventType.APPEND_OBJECT, goog.bind(function (event) {
+				var appendEvent = new CustomEvent(imageApp.events.EventType.APPEND_OBJECT, { detail : event.detail});
+				this._view.dispatchEvent(appendEvent);
+			}, this));
+		},
+
+		/**
+		 * @private
+		 */
 		_addResizeListener: function () {
-			document.addEventListener(imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
+			goog.events.listen(document, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
 				var command = new ResizeCommand(event.detail.model, event.detail.frame);
 				this._history.recordAction(command);
-			}, this), false);
+			}, this));
 		},
 
 		/**
 		 * @private
 		 */
 		_addMoveListener: function () {
-			document.addEventListener(imageApp.events.EventType.MOVE_OBJECT, goog.bind(function(event) {
+			goog.events.listen(document, imageApp.events.EventType.MOVE_OBJECT, goog.bind(function(event) {
 				var command = new MoveCommand(event.detail.model, event.detail.pos);
 				this._history.recordAction(command);
-			}, this), false);
+			}, this));
 		},
 
 		_addTextListener: function () {
-			document.addEventListener(imageApp.events.EventType.APPEND_TEXT, goog.bind(function(event) {
-				/** @type {!imageApp.model.TextArea} */
-				var object = this._objectCollection.getObjectOnKey(event.detail.id);
+			goog.events.listen(this._view, imageApp.events.EventType.APPEND_TEXT, goog.bind(function (event) {
 				var text = event.detail.text;
-				if (text != object.getText()) {
-					var command = new AppendTextCommand(object, text);
-					this._history.recordAction(command);
-				}
-			}, this), false);
+				var command = new AppendTextCommand(event.detail.model, text);
+				this._history.recordAction(command);
+			}, this));
+			
+
 		},
 
 		/**

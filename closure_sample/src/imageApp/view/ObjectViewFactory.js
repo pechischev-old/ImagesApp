@@ -21,14 +21,14 @@ goog.scope(function() {
 			var imageObject = /** @type {!imageApp.model.Image} */ (object);
 			var image = new imageApp.view.ImageView(imageObject.getFrame(), object, imageObject.getPath());
 
-			imageApp.handlers.Handler.addMoveListener(image.getDOMElement(), image, function(newPos) {
+			/*imageApp.handlers.Handler.addMoveListener(image.getDOMElement(), image, function(newPos) {
 				document.dispatchEvent(new CustomEvent(imageApp.events.EventType.MOVE_OBJECT, {
 					detail: {
 						model: imageObject,
 						pos: newPos
 					}
 				}));
-			});
+			});*/
 			movableObject = image;
 
 
@@ -40,24 +40,14 @@ goog.scope(function() {
 			var textArea = new imageApp.view.TextAreaView(textAreaObject.getFrame(), object);
 
 			goog.events.listen(textArea.getDOMElement(), goog.events.EventType.MOUSEDOWN, function (event) {
-				document.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
+				textArea.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
+				//document.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
 				textArea.setVisibleBorder(true);
 				textArea.getDOMElement().getElementsByTagName(goog.dom.TagName.TEXTAREA)[0].focus();
 				//textArea.getDOMElement().getElementsByTagName(goog.dom.TagName.TEXTAREA)[0].select();
 				event.preventDefault();
 			});
 
-			document.addEventListener(imageApp.events.EventType.AUTOSIZE_TEXTAREA, goog.bind(function(event) {
-				/** @type {number} */
-				var height = event.detail.height;
-				var newFrame = object.getFrame().clone();
-				newFrame.height = height;
-				var view = event.detail.view;
-				if (!goog.math.Rect.equals(object.getFrame(), newFrame) && view == textArea)
-				{
-					object.setFrame(newFrame);
-				}
-			}, textAreaObject), false);
 			textArea.setText(textAreaObject.getText());
 			view = /** @type {!imageApp.view.TextAreaView} */ (textArea);
 		}
@@ -66,14 +56,14 @@ goog.scope(function() {
 			throw new Error("unknown type");
 		}
 
-		view.getBorder().addListener(function(newFrame) {
+		/*view.getBorder().addListener(function(newFrame) {
 			document.dispatchEvent(new CustomEvent(imageApp.events.EventType.RESIZE_OBJECT, {
 				detail: {
 					model: object,
 					frame: newFrame
 				}
 			}));
-		}, movableObject);
+		}, movableObject);*/
 		return view;
 	};
 });

@@ -14,12 +14,12 @@ goog.scope(function(){
 	 * @extends {goog.events.EventTarget}
 	 * @constructor
 	 */
-	imageApp.model.Object = goog.defineClass(null, {
+	imageApp.model.Object = goog.defineClass(goog.events.EventTarget, {
 		/**
 		 * @param {!goog.math.Rect} frame
 		 */
 		constructor: function(frame) {
-			goog.events.EventTarget.call(this);
+			goog.base(this);
 			/** @private {Array<imageApp.observer.IObserver>}*/
 			this._observers = [];
 			/** @private {!goog.math.Rect} */

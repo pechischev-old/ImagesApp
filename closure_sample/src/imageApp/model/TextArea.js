@@ -19,6 +19,15 @@ goog.scope(function(){
 			goog.base(this, frame);
 			/** @private {string} */
 			this._text = (text) ? text : "";
+			
+			goog.events.listen(this, imageApp.events.EventType.AUTOSIZE_TEXTAREA, function (event) {
+				var newFrame = this._frame.clone();
+				newFrame.height = event.detail;
+				if (!goog.math.Rect.equals(this._frame, newFrame))
+				{
+					this.setFrame(newFrame);
+				}
+			}, false, this);
 		},
 
 		/**
@@ -26,12 +35,9 @@ goog.scope(function(){
 		 */
 		setText: function(text) {
 			this._text = text;
-			document.dispatchEvent(new CustomEvent(imageApp.events.EventType.TEXT_CHANGED, {
-				detail: {
-					id: goog.getUid(this),
-					text: this._text
-				}
-			}));
+			this.dispatchEvent(new CustomEvent(imageApp.events.EventType.TEXT_CHANGED, {
+				detail: this._text }));
+			
 		},
 
 		/**
