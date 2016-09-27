@@ -4,14 +4,12 @@ goog.provide("imageApp.ObjectController");
 
 goog.require("imageApp.command.AddObjectCommand");
 goog.require("imageApp.command.DeleteCommand");
-goog.require("imageApp.command.MoveCommand");
 goog.require("imageApp.command.ResizeCommand");
 goog.require("imageApp.command.AppendTextCommand");
 
 goog.require("imageApp.events.EventType");
 
 goog.scope(function() {
-	var MoveCommand = imageApp.command.MoveCommand;
 	var ResizeCommand = imageApp.command.ResizeCommand;
 	var AddObjectCommand = imageApp.command.AddObjectCommand;
 	var DeleteCommand = imageApp.command.DeleteCommand;
@@ -40,16 +38,15 @@ goog.scope(function() {
 			this._history = history;
 			/** @private {imageApp.ObjectCollection} */
 			this._objectCollection = collection;
-
-			this._addMoveListener();
+			
 			this._addResizeListener();
 			this._addTextListener();
 			this._addAppendListener();
+			this._addDeleteListener();
 		},
 
 		addTextArea: function () {
 			var textAreaModel = this._model.createTextArea("");
-
 			var command = new AddObjectCommand(this._objectCollection, textAreaModel);
 			this._history.recordAction(command);
 		},
@@ -77,19 +74,19 @@ goog.scope(function() {
 		/**
 		 * @private
 		 */
-		_addResizeListener: function () {
-			goog.events.listen(document, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
-				var command = new ResizeCommand(event.detail.model, event.detail.frame);
-				this._history.recordAction(command);
+		_addDeleteListener: function () {
+			goog.events.listen(this._objectCollection, imageApp.events.EventType.REMOVE_OBJECT, goog.bind(function (event) {
+				var appendEvent = new CustomEvent(imageApp.events.EventType.REMOVE_OBJECT, { detail : event.detail});
+				this._view.dispatchEvent(appendEvent);
 			}, this));
 		},
 
 		/**
 		 * @private
 		 */
-		_addMoveListener: function () {
-			goog.events.listen(document, imageApp.events.EventType.MOVE_OBJECT, goog.bind(function(event) {
-				var command = new MoveCommand(event.detail.model, event.detail.pos);
+		_addResizeListener: function () {
+			goog.events.listen(this._view, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
+				var command = new ResizeCommand(event.detail.model, event.detail.frame);
 				this._history.recordAction(command);
 			}, this));
 		},
@@ -100,8 +97,6 @@ goog.scope(function() {
 				var command = new AppendTextCommand(event.detail.model, text);
 				this._history.recordAction(command);
 			}, this));
-			
-
 		},
 
 		/**

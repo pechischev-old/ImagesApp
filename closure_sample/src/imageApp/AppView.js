@@ -199,7 +199,9 @@ goog.scope(function() {
 				{
 					return false;
 				}
-				this._deselectObjects();
+				if (event.target == this._canvas) {
+					this._deselectObjects();
+				}
 			}, this));
 		}
 	});

@@ -17,6 +17,9 @@ goog.scope(function() {
 	 * @extends {imageApp.view.Node}
 	 */
 	imageApp.view.Frame = goog.defineClass(imageApp.view.Node, {
+		/**
+		 * @param {goog.math.Rect} frame
+		 */
 		constructor: function (frame) {
 			goog.base(this);
 			/** @private {!goog.math.Rect} */
@@ -160,18 +163,20 @@ goog.scope(function() {
 			/** @type {!goog.math.Rect} */
 			var oldFrame = this._frame;
 			var startPos =  new goog.math.Coordinate(event.screenX, event.screenY);
-
+			
 			var calculateFrame = function(event) {
 				var newFrame = handler(oldFrame, goog.math.Coordinate.difference(startPos, new goog.math.Coordinate(event.screenX, event.screenY)));
 				ptr.setFrame(newFrame);
 			};
 
 			var callback = goog.bind(function() {
-				/*var newFrame = this.getFrame();
-				if (!goog.math.Rect.equals(newFrame,oldFrame))
+
+				var newFrame = ptr.getFrame();
+				if (!goog.math.Rect.equals(newFrame, oldFrame))
 				{
-					document.dispatchEvent(new CustomEvent(imageApp.events.EventType.RESIZE_OBJECT, {detail : newFrame}));
-				}*/
+					this.dispatchEvent(new CustomEvent(imageApp.events.EventType.RESIZE_OBJECT, {detail : newFrame }));
+
+				}
 			}, this);
 
 			imageApp.handlers.Listener.addMouseMoveListener(ptr, calculateFrame, callback);

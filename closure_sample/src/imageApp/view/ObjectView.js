@@ -26,6 +26,13 @@ goog.scope(function () {
 		},
 
 		addListener: function () {
+			goog.events.listen(this._border, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function (event) {
+				this.dispatchEvent(new CustomEvent(imageApp.events.EventType.RESIZE_OBJECT, { detail : {
+					frame: event.detail,
+					model: this._model
+				}}));
+			}, this));
+			
 			goog.events.listen(this.getDOMElement(), goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
 				this.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
 
@@ -36,7 +43,6 @@ goog.scope(function () {
 
 				this._appendHandlers(event);
 
-				event.preventDefault();
 			}, this), true);
 		},
 
@@ -114,7 +120,8 @@ goog.scope(function () {
 		 */
 		_initBorder: function () {
 			/** @protected {imageApp.view.Frame} */
-			this._border = new imageApp.view.Frame(this._frame);
+			this._border = new imageApp.view.Frame(this._frame, this._model);
+			//this._border.setParentEventTarget(this);
 			return this._border.getDOMElement();
 		},
 
