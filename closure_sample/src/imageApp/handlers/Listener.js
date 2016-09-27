@@ -8,12 +8,11 @@ goog.scope(function () {
 
 
 	/**
-	 * @param {!imageApp.view.IObject} view
 	 * @param {!function(...)} handler
 	 * @param {function(...)=}callback
 	 */
-	imageApp.handlers.Listener.addMouseMoveListener = function (view, handler, callback) {
-		var keyMouseMove =  goog.events.listen(document, goog.events.EventType.MOUSEMOVE, handler);
+	imageApp.handlers.Listener.addMouseMoveListener = function (handler, callback) {
+		var keyMouseMove = goog.events.listen(document, goog.events.EventType.MOUSEMOVE, handler);
 		var keyMouseUp = goog.events.listen(document, goog.events.EventType.MOUSEUP, function () {
 			if (callback)
 			{

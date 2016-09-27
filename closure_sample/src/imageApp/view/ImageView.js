@@ -63,13 +63,42 @@ goog.scope(function() {
 			this._object.appendChild(this._initBorder());
 		},
 
+		_appendMoveListener: function (event) {
+			if (event.defaultPrevented) return;
+
+			var oldFrame = this._frame;
+			var startPos =  new goog.math.Coordinate(event.screenX, event.screenY);
+
+			var calculateFrame = goog.bind(function(event) {
+				var shift = goog.math.Coordinate.difference(startPos, new goog.math.Coordinate(event.screenX, event.screenY));
+				var newFrame = new goog.math.Rect(oldFrame.left - shift.x, oldFrame.top - shift.y, oldFrame.width, oldFrame.height);
+				this.setFrame(newFrame);
+			}, this);
+
+			var callback = goog.bind(function() {
+				var newPos = this.getFrame().getTopLeft();
+				if (!goog.math.Coordinate.equals(newPos, oldFrame.getTopLeft()))
+				{
+					this.dispatchEvent(new CustomEvent(imageApp.events.EventType.MOVE_OBJECT, {
+						detail : {
+							pos: newPos,
+							model: this._model
+						}
+					}));
+				}
+			}, this);
+
+			imageApp.handlers.Listener.addMouseMoveListener(calculateFrame, callback);
+		},
+
 		/**
 		 * @inheritDoc
 		 */
 		_appendHandlers: function(event) {
-			
 			this._border.addResizeListeners(event);
 			this._border.addMoveListeners(event, this);
+			this._appendMoveListener(event);
+			event.preventDefault();
 		}
 	});
 });

@@ -132,13 +132,8 @@ goog.scope(function() {
 		 * @inheritDoc
 		 */
 		_appendHandlers: function(event) {
-			this._textArea.focus();
 			this._border.addResizeListeners(event);
 			this._border.addMoveListeners(event);
-
-			/*imageApp.handlers.Listener.addMouseMoveListener(this, goog.bind(function() {
-				this._textArea.select();
-			}, this));*/
 		}
 	});
 });

@@ -42,6 +42,7 @@ goog.scope(function () {
 				}
 
 				this._appendHandlers(event);
+				
 
 			}, this), true);
 		},
@@ -121,7 +122,6 @@ goog.scope(function () {
 		_initBorder: function () {
 			/** @protected {imageApp.view.Frame} */
 			this._border = new imageApp.view.Frame(this._frame, this._model);
-			//this._border.setParentEventTarget(this);
 			return this._border.getDOMElement();
 		},
 

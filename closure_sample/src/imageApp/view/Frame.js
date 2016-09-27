@@ -30,62 +30,6 @@ goog.scope(function() {
 		},
 
 		/**
-		 * @param {function(!goog.math.Rect)} handler
-		 * @param {imageApp.view.IObject=} object
-		 */
-		addListener: function (handler, object) {
-			/*var pos = this.getFrame().getTopLeft();
-			var movableObject = (object) ? object : this;
-			imageApp.handlers.Handler.addMouseMoveListener(this._top, movableObject, function(frame, shift){
-				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
-			}, handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._bottom, movableObject, function(frame, shift){
-				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
-			}, handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._left, movableObject, function(frame, shift){
-				return new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width, frame.height);
-			}, handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._right, movableObject, function(frame, shift){
-				return new goog.math.Rect(frame.left - shift.x, frame.top- shift.y, frame.width, frame.height );
-			}, handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._NWCorner, this, goog.bind(function(frame, shift){
-				return this._getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top - shift.y, frame.width + shift.x, frame.height + shift.y), pos);
-			}, this), handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._NECorner, this, goog.bind(function(frame, shift){
-				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width - shift.x, frame.height + shift.y), pos);
-			}, this), handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._SWCorner, this, goog.bind(function(frame, shift){
-				return this._getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top , frame.width + shift.x, frame.height - shift.y), pos);
-			}, this), handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._SECorner, this, goog.bind(function(frame, shift){
-				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height - shift.y), pos);
-			}, this), handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._ECorner, this, goog.bind(function(frame, shift){
-				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width - shift.x, frame.height), pos);
-			}, this), handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._WCorner, this, goog.bind(function(frame, shift){
-				return this._getMinFrame(new goog.math.Rect(frame.left - shift.x, frame.top, frame.width + shift.x, frame.height), pos);
-			}, this), handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._NCorner, this, goog.bind(function(frame, shift){
-				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top - shift.y, frame.width , frame.height + shift.y), pos);
-			}, this), handler);
-
-			imageApp.handlers.Handler.addMouseMoveListener(this._SCorner, this, goog.bind(function(frame, shift){
-				return this._getMinFrame(new goog.math.Rect(frame.left, frame.top, frame.width, frame.height - shift.y), pos);
-			}, this), handler);*/
-		},
-
-		/**
 		 * @param {Event} event
 		 * @param {!imageApp.view.IObject=} object
 		 */
@@ -163,14 +107,13 @@ goog.scope(function() {
 			/** @type {!goog.math.Rect} */
 			var oldFrame = this._frame;
 			var startPos =  new goog.math.Coordinate(event.screenX, event.screenY);
-			
+
 			var calculateFrame = function(event) {
 				var newFrame = handler(oldFrame, goog.math.Coordinate.difference(startPos, new goog.math.Coordinate(event.screenX, event.screenY)));
 				ptr.setFrame(newFrame);
 			};
 
 			var callback = goog.bind(function() {
-
 				var newFrame = ptr.getFrame();
 				if (!goog.math.Rect.equals(newFrame, oldFrame))
 				{
@@ -179,7 +122,9 @@ goog.scope(function() {
 				}
 			}, this);
 
-			imageApp.handlers.Listener.addMouseMoveListener(ptr, calculateFrame, callback);
+			imageApp.handlers.Listener.addMouseMoveListener(calculateFrame, callback);
+
+			event.preventDefault();
 		},
 
 		/**
