@@ -25,6 +25,21 @@ goog.scope(function () {
 			this._model = object;
 		},
 
+		addListener: function () {
+			goog.events.listen(this.getDOMElement(), goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {
+				this.dispatchEvent(new Event(imageApp.events.EventType.DESELECT_OBJECT));
+
+				this.setVisibleBorder(true);
+				if (event.defaultPrevented || event.which > 1 || !this.isSelected()) {
+					return;
+				}
+
+				this._appendHandlers(event);
+
+				event.preventDefault();
+			}, this), true);
+		},
+
 		/**
 		 * @return {boolean}
 		 */
@@ -101,6 +116,14 @@ goog.scope(function () {
 			/** @protected {imageApp.view.Frame} */
 			this._border = new imageApp.view.Frame(this._frame);
 			return this._border.getDOMElement();
+		},
+
+		/**
+		 * @param {Event} event
+		 * @protected
+		 */
+		_appendHandlers: function(event) {
+
 		}
 	});
 });

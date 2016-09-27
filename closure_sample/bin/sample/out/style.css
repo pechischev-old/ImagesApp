@@ -89,7 +89,8 @@ textarea {
   word-wrap: break-word;
   font-family: sans-serif;
   font-size: 25px;
-  pointer-events: none; }
+  pointer-events: none;
+  position: absolute; }
 
 .border {
   position: absolute;

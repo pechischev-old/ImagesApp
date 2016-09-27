@@ -4,8 +4,6 @@ goog.provide("imageApp.view.ImageView");
 goog.require("imageApp.view.ObjectView");
 
 goog.scope(function() {
-	/** @const {!goog.math.Size} */
-	const MIN_SIZE = new goog.math.Size(100, 100);
 	
 	/**
 	 * @param {!goog.math.Rect} frame
@@ -25,6 +23,7 @@ goog.scope(function() {
 			/** @private {string} */
 			this._path = path;
 			this._init();
+			this.addListener();
 		},
 		
 
@@ -62,6 +61,15 @@ goog.scope(function() {
 			this._object.appendChild(this._container);
 			this._reloadStyleSize();
 			this._object.appendChild(this._initBorder());
+		},
+
+		/**
+		 * @inheritDoc
+		 */
+		_appendHandlers: function(event) {
+			
+			this._border.addResizeListeners(event);
+			this._border.addMoveListeners(event, this);
 		}
 	});
 });
