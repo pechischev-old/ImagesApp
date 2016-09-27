@@ -7,7 +7,6 @@ goog.require("imageApp.command.DeleteCommand");
 goog.require("imageApp.command.MoveCommand");
 goog.require("imageApp.command.ResizeCommand");
 goog.require("imageApp.command.AppendTextCommand");
-goog.require("imageApp.events.Event");
 
 goog.require("imageApp.events.EventType");
 

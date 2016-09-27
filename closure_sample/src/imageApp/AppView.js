@@ -162,7 +162,7 @@ goog.scope(function() {
 		 */
 		_initListener: function () {
 			goog.events.listen(this, imageApp.events.EventType.APPEND_OBJECT, goog.bind(function (event){
-				/** @type {imageApp.model.Object} */
+				/** @type {!imageApp.model.Object} */
 				var model = event.detail;
 				var view = imageApp.view.ObjectViewFactory.createObject(model);
 				model.registerObserver(view);

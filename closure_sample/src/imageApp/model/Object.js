@@ -22,7 +22,7 @@ goog.scope(function(){
 			goog.base(this);
 			/** @private {Array<imageApp.observer.IObserver>}*/
 			this._observers = [];
-			/** @private {!goog.math.Rect} */
+			/** @protected {!goog.math.Rect} */
 			this._frame = frame;
 
 			/** @private {boolean}*/

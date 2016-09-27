@@ -19,7 +19,7 @@ goog.scope(function() {
 	imageApp.view.Frame = goog.defineClass(imageApp.view.Node, {
 		constructor: function (frame) {
 			goog.base(this);
-			/** @private {goog.math.Rect} */
+			/** @private {!goog.math.Rect} */
 			this._frame = frame;
 			/** @private {boolean} */
 			this._isSelected = false;
@@ -84,7 +84,7 @@ goog.scope(function() {
 
 		/**
 		 * @param {Event} event
-		 * @param {imageApp.view.IObject=} object
+		 * @param {!imageApp.view.IObject=} object
 		 */
 		addMoveListeners: function (event, object) {
 			this._appendResizeListener(event, this._top, function(frame, shift){
@@ -157,7 +157,7 @@ goog.scope(function() {
 			}
 
 			var ptr = (object) ? object : this;
-
+			/** @type {!goog.math.Rect} */
 			var oldFrame = this._frame;
 			var startPos =  new goog.math.Coordinate(event.screenX, event.screenY);
 

@@ -1,9 +1,7 @@
 goog.provide("imageApp.handlers.Listener");
 
-
 goog.require("goog.events");
 goog.require("goog.events.EventType");
-goog.require("imageApp.events.EventType");
 
 
 goog.scope(function () {
