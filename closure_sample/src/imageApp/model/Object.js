@@ -92,9 +92,7 @@ goog.scope(function(){
 			if (!goog.math.Rect.equals(this._frame, frame)) {
 				this._frame = frame;
 				this.notifyObservers();
-				document.dispatchEvent(new CustomEvent(imageApp.events.EventType.OBJECT_CHANGED, {
-					detail: this
-				}));
+				this.dispatchEvent(new Event(imageApp.events.EventType.OBJECT_CHANGED));
 			}
 		},
 

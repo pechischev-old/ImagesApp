@@ -8,23 +8,15 @@ goog.require("goog.events.KeyCodes");
 
 goog.require("imageApp.ObjectCollection");
 goog.require("imageApp.ObjectController");
-goog.require("imageApp.layout.LayoutControl");
-
-goog.require("imageApp.command.SelectTypeLayout");
-goog.require("imageApp.command.ResetLayout");
-goog.require("imageApp.command.AddMediaCommand");
+goog.require("imageApp.layout.LayoutController");
 
 goog.require("imageApp.view.Button");
 goog.require("imageApp.view.ComboBox");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
-goog.require("imageApp.events.EventType");
 
 goog.scope(function() {
-	var SelectTypeLayout = imageApp.command.SelectTypeLayout;
-	var ResetLayout = imageApp.command.ResetLayout;
-	var AddMediaCommand = imageApp.command.AddMediaCommand;
 	
 	/** 
 	 * @param {imageApp.AppModel} model
@@ -46,43 +38,12 @@ goog.scope(function() {
 			this._collection = new imageApp.ObjectCollection();
 			/** @private {imageApp.ObjectController} */
 			this._objectCntr = new imageApp.ObjectController(this._model, this._view , this._history, this._collection);
-			/** @private {imageApp.layout.LayoutControl} */
-			this._layout = new imageApp.layout.LayoutControl();
-	
-			this._layout.initHeaderLayout(this._initLayoutObject("Заголовок"));
-			this._layout.initDescriptionLayout(this._initLayoutObject("Описание"));
-			this._layout.setTypeLayout("default");
+			/** @private {imageApp.layout.LayoutController} */
+			this._layout = new imageApp.layout.LayoutController(this._model, this._history, this._collection);
+
 			this._addActions();
 		},
 
-		/**
-		 * @param {string} text
-		 * @returns {imageApp.model.Object}
-		 * @private
-		 */
-		_initLayoutObject: function (text) {
-			/** @type {imageApp.model.TextArea} */
-			var textarea = this._model.createTextArea(text);
-			this._collection.appendObject(textarea);
-			return textarea;
-		},
-
-		/**
-		 * @private
-		 */
-		_resetLayout: function() {
-			var action = new ResetLayout(this._layout, this._layout.getLastType());
-			this._history.recordAction(action);
-		},
-
-		/**
-		 * @param {string} type
-		 * @private
-		 */
-		_setTypeLayout: function(type) {
-			var action = new SelectTypeLayout(this._layout, type);
-			this._history.recordAction(action);
-		},
 
 		/** 
 		 * @private 
@@ -137,12 +98,12 @@ goog.scope(function() {
 			toolbar.appendElement(this._createButtonWithAction("Delete", goog.bind(this._deleteSelectingObject, this)));
 
 			var comboBox = new imageApp.view.ComboBox();
-			comboBox.appendElement(this._createButtonWithAction("Default", goog.bind(this._setTypeLayout, this, "default")));
-			comboBox.appendElement(this._createButtonWithAction("Horizontal", goog.bind(this._setTypeLayout, this, "horizontal")));
-			comboBox.appendElement(this._createButtonWithAction("Custom", goog.bind(this._setTypeLayout, this, "custom")));
+			comboBox.appendElement(this._createButtonWithAction("Default", goog.bind(this._layout.selectTypeLayout, this._layout, "default")));
+			comboBox.appendElement(this._createButtonWithAction("Horizontal", goog.bind(this._layout.selectTypeLayout, this._layout, "horizontal")));
+			//comboBox.appendElement(this._createButtonWithAction("Custom", goog.bind(this._layout.selectTypeLayout, this._layout, "custom")));
 			toolbar.appendElement(comboBox);
-			toolbar.appendElement(this._createButtonWithAction("Add media", goog.bind(this._layout.appendMediaLayout, this._layout)));
-			//toolbar.appendElement(this._createButtonWithAction("Reset layout", goog.bind(this._resetLayout, this)));
+			//toolbar.appendElement(this._createButtonWithAction("Add media", goog.bind(this._layout.appendMediaLayout, this._layout)));
+			toolbar.appendElement(this._createButtonWithAction("Reset layout", goog.bind(this._layout.resetLayout, this._layout)));
 
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 
@@ -161,13 +122,13 @@ goog.scope(function() {
 					event.preventDefault();
 					this._redo();
 				}
+				else if (event.altKey && event.keyCode == goog.events.KeyCodes.E)
+				{
+					event.preventDefault();
+					console.log(this._history);
+				}
 			}, this));
 
-			document.addEventListener(imageApp.events.EventType.APPEND_MEDIA, goog.bind(function(){
-				var textarea = this._model.createTextArea("Медиа");
-				var action = new AddMediaCommand(this._layout, this._collection, textarea);
-				this._history.recordAction(action);
-			}, this), false);
 		},
 
 		/**
@@ -187,7 +148,6 @@ goog.scope(function() {
 		 */
 		_deleteSelectingObject:function() {
 			this._objectCntr.deleteObject();
-			this._layout.removeMedia();
 		},
 
 		/**

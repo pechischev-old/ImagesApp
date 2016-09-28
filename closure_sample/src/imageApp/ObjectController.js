@@ -89,7 +89,9 @@ goog.scope(function() {
 		 */
 		_addResizeListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
-				var command = new ResizeCommand(event.detail.model, event.detail.frame);
+				var object = /** @type {imageApp.model.Object}*/(event.detail.model);
+				object.dispatchEvent(new Event(imageApp.events.EventType.WAS_RESIZE));
+				var command = new ResizeCommand(object, event.detail.frame);
 				this._history.recordAction(command);
 			}, this));
 		},
@@ -99,7 +101,9 @@ goog.scope(function() {
 		 */
 		_addMoveListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.MOVE_OBJECT, goog.bind(function(event) {
-				var command = new MoveCommand(event.detail.model, event.detail.pos);
+				var object = /** @type {imageApp.model.Object}*/(event.detail.model);
+				object.dispatchEvent(new Event(imageApp.events.EventType.WAS_RESIZE));
+				var command = new MoveCommand(object, event.detail.pos);
 				this._history.recordAction(command);
 			}, this));
 		},

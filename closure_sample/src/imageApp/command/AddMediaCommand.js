@@ -7,7 +7,7 @@ goog.require("imageApp.ObjectCollection");
 goog.scope(function() {
 
 	/**
-	 * @param {imageApp.layout.LayoutControl} layoutControl
+	 * @param {imageApp.layout.LayoutController} layoutControl
 	 * @param {imageApp.ObjectCollection} collection
 	 * @param {!imageApp.model.TextArea} lastModel
 	 * @extends {imageApp.command.AbstractAction}
@@ -15,14 +15,14 @@ goog.scope(function() {
 	 */
 	imageApp.command.AddMediaCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
-		 * @param {imageApp.layout.LayoutControl} layoutControl
+		 * @param {imageApp.layout.LayoutController} layoutControl
 		 * @param {imageApp.ObjectCollection} collection
 		 * @param {!imageApp.model.TextArea} lastModel
 		 */
 		constructor: function (layoutControl, collection, lastModel) {
 			goog.base(this);
-			/** @private {imageApp.layout.LayoutControl} */
-			this._layoutControl = layoutControl;
+			/** @private {imageApp.layout.LayoutController} */
+			this._layoutController = layoutControl;
 
 			/** @private {imageApp.ObjectCollection} */
 			this._objectCollection = collection;
@@ -36,7 +36,7 @@ goog.scope(function() {
 		 */
 		_doExecute: function() {
 			this._objectCollection.appendObject(this._lastModel);
-			this._layoutControl.initMediaLayout(this._lastModel);
+			this._layoutController.initMediaLayout(this._lastModel);
 		},
 
 		/**
@@ -44,7 +44,7 @@ goog.scope(function() {
 		 */
 		_doUnexecute: function () {
 			this._objectCollection.removeObject(this._lastModel);
-			this._layoutControl.removeMedia();
+			this._layoutController.removeMedia();
 		}
 	});
 });

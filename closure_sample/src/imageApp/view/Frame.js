@@ -11,14 +11,14 @@ goog.scope(function() {
 	const MIN_SIZE_FRAME = new goog.math.Size(25, 18);
 
 	/**
-	 * @param {goog.math.Rect} frame
+	 * @param {!goog.math.Rect} frame
 	 * @constructor
 	 * @implements {imageApp.view.IObject}
 	 * @extends {imageApp.view.Node}
 	 */
 	imageApp.view.Frame = goog.defineClass(imageApp.view.Node, {
 		/**
-		 * @param {goog.math.Rect} frame
+		 * @param {!goog.math.Rect} frame
 		 */
 		constructor: function (frame) {
 			goog.base(this);
@@ -31,7 +31,7 @@ goog.scope(function() {
 
 		/**
 		 * @param {Event} event
-		 * @param {!imageApp.view.IObject=} object
+		 * @param {?imageApp.view.IObject=} object
 		 */
 		addMoveListeners: function (event, object) {
 			this._appendResizeListener(event, this._top, function(frame, shift){

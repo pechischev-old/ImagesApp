@@ -121,7 +121,7 @@ goog.scope(function () {
 		 */
 		_initBorder: function () {
 			/** @protected {imageApp.view.Frame} */
-			this._border = new imageApp.view.Frame(this._frame, this._model);
+			this._border = new imageApp.view.Frame(this._frame);
 			return this._border.getDOMElement();
 		},
 

@@ -9,22 +9,23 @@ goog.scope(function () {
 	/**
 	 * @param {imageApp.model.Object} object
 	 * @implements {imageApp.layout.ILayout}
+	 * @extends {goog.events.EventTarget}
 	 * @constructor
 	 */
-	imageApp.layout.Layout = goog.defineClass(null, {
+	imageApp.layout.Layout = goog.defineClass(goog.events.EventTarget, {
 		/**
 		 * @param {imageApp.model.Object}  object
 		 */
 		constructor: function(object) {
+			goog.base(this);
 			/** @private {imageApp.model.Object} */
 			this._object = object;
 			this._object.canRemove(false);
-			document.addEventListener(imageApp.events.EventType.OBJECT_CHANGED, goog.bind(function(event) {
-				var object = event.detail;
-				if (object == this._object)
-				{
-					document.dispatchEvent(new Event(imageApp.events.EventType.LAYOUT_CHANGED));
-				}
+			goog.events.listen(this._object, imageApp.events.EventType.OBJECT_CHANGED, goog.bind(function(event) {
+				this.dispatchEvent(new Event(imageApp.events.EventType.LAYOUT_CHANGED));
+			}, this));
+			goog.events.listen(this._object, imageApp.events.EventType.WAS_RESIZE, goog.bind(function(event) {
+				this.dispatchEvent(new Event(imageApp.events.EventType.OFF_AUTOALIGN));
 			}, this));
 		},
 
@@ -39,12 +40,6 @@ goog.scope(function () {
 		 * @inheritDoc
 		 */
 		setFrame: function(frame) {
-			/*document.dispatchEvent(new CustomEvent("resize", {
-				detail: {
-					model: this._object,
-					frame: frame
-				}
-			}));*/
 			this._object.setFrame(frame);
 		},
 
