@@ -8,6 +8,7 @@ goog.scope(function() {
 	/**
 	 * @param {imageApp.layout.LayoutController} layoutController
 	 * @param {boolean} isAlign
+	 * @param {boolean} isNewAlign
 	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
@@ -21,21 +22,21 @@ goog.scope(function() {
 			/** @private {imageApp.layout.LayoutController} */
 			this._layoutController = layoutController;
 			/** @private {boolean} */
-			this._oldIsAlign = isAlign;
+			this._newIsAlign = isAlign;
 		},
 
 		/**
 		 * @inheritDoc
 		 */
 		_doExecute: function() {
-			this._layoutController.setAutoAlignment(true);
+			this._layoutController.setAutoAlignment(this._newIsAlign);
 		},
 
 		/**
 		 * @inheritDoc
 		 */
 		_doUnexecute: function () {
-			this._layoutController.setAutoAlignment(this._oldIsAlign);
+			this._layoutController.setAutoAlignment(!this._newIsAlign);
 		}
 	});
 });

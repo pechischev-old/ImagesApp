@@ -5,13 +5,19 @@ goog.require("imageApp.layout.Layout");
 goog.require("goog.events.EventTarget");
 goog.require("imageApp.command.SelectTypeLayout");
 goog.require("imageApp.command.ResetLayout");
+goog.require("imageApp.command.AddMediaCommand");
+goog.require("imageApp.command.RemoveMediaCommand");
 
 goog.scope(function () {
 	var SelectTypeLayout = imageApp.command.SelectTypeLayout;
+	var AddMediaCommand = imageApp.command.AddMediaCommand;
+	var RemoveMediaCommand = imageApp.command.RemoveMediaCommand;
 
 	const BORDER = 50;
 	const INDENT = 20;
 	const CANVAS_SIZE = new goog.math.Size(1000, 800);
+	/** @const {!goog.math.Size} */
+	const MAX_SIZE = new goog.math.Size(512, 256);
 	/**
 	 * @param {imageApp.AppModel} model
 	 * @param {imageApp.command.History} history
@@ -51,17 +57,60 @@ goog.scope(function () {
 
 			goog.events.listen(this, imageApp.events.EventType.OFF_AUTOALIGN,  goog.bind(function () {
 				//this.selectTypeLayout("custom");
-				this._isAutoAlignment = false;
+				this.resetLayout(false);
 			}, this));
 		},
 
-		resetLayout: function () {
-			console.log(this._isAutoAlignment);
-			if (this._isAutoAlignment)
+		/**
+		 * @returns {boolean}
+		 */
+		hasAddedMedia: function () {
+			return this._media != null;
+		},
+
+		/**
+		 * @param {!imageApp.model.Object} object
+		 */
+		appendMedia: function (object) {
+			if (!this._media)
+			{
+				var action = new imageApp.command.AddMediaCommand(this, this._collection, object);
+				this._history.recordAction(action);
+			}
+		},
+		
+		removeMedia: function () {
+			if (this._media)
+			{
+				var action = new imageApp.command.RemoveMediaCommand(this, this._collection, this._media.getObject());
+				this._history.recordAction(action);
+			}
+		},
+
+		removeMediaLayout: function () {
+			this._media = null;
+			this._updateLayout();
+		},
+
+		/**
+		 * @param {!imageApp.model.Object} object
+		 */
+		initMediaLayout: function (object) {
+			this._media = new imageApp.layout.Layout(object);
+			this._media.setParentEventTarget(this);
+			this._updateLayout();
+		},
+
+		/**
+		 * @param {boolean} isAlign
+		 */
+		resetLayout: function (isAlign) {
+			//console.log(this._isAutoAlignment);
+			if (isAlign == this._isAutoAlignment)
 			{
 				return;
 			}
-			var action = new imageApp.command.ResetLayout(this, this._isAutoAlignment);
+			var action = new imageApp.command.ResetLayout(this, isAlign);
 			this._history.recordAction(action);
 		},
 
@@ -69,6 +118,7 @@ goog.scope(function () {
 		 * @param {boolean} canAutoAlignment
 		 */
 		setAutoAlignment: function (canAutoAlignment) {
+			console.log("auto align " +  canAutoAlignment);
 			this._isAutoAlignment = canAutoAlignment;
 			this._updateLayout();
 		},
@@ -108,7 +158,6 @@ goog.scope(function () {
 		_updateLayout: function () {
 			if (!this._isAutoAlignment)
 			{
-				console.log("auto align off");
 				return;
 			}
 			if (this._typeLayout == "default")
@@ -129,10 +178,12 @@ goog.scope(function () {
 			{
 
 				var mFrame = this._media.getFrame().clone();
+				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
+				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
+				this._media.setFrame(this._getChangedFrame(mFrame, CANVAS_SIZE.width - BORDER - size.width , BORDER, size.width , size.height));
 
-				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width * 0.6 - BORDER, null));
-				this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width * 0.6 - BORDER, null));
-				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left + hFrame.width + INDENT, hFrame.top, CANVAS_SIZE.width * 0.4 - BORDER , null));
+				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER,  mFrame.left - BORDER - INDENT, null));
+				this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, mFrame.left - BORDER - INDENT, null));
 			}
 			else
 			{
@@ -150,10 +201,25 @@ goog.scope(function () {
 			if (this._media)
 			{
 				var mFrame = this._media.getFrame().clone();
-				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left, dFrame.height + dFrame.top + INDENT,  CANVAS_SIZE.width - 2 * BORDER , null));
+				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
+				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
+				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left + CANVAS_SIZE.width / 2 - size.width / 2, dFrame.height + dFrame.top + INDENT, size.width, size.height));
 			}
 		},
 
+		/**
+		 * @param {!goog.math.Size} size
+		 * @return {!goog.math.Size}
+		 * @private
+		 */
+		_getCalculatingAppropriateSize: function(size) {
+			var width = size.width;
+			var height = size.height;
+			var coeff = ( width > height) ? width / MAX_SIZE.width : height / MAX_SIZE.height;
+			width = (width > MAX_SIZE.width) ? width / coeff : width;
+			height = (height > MAX_SIZE.height) ? height / coeff : height;
+			return new goog.math.Size(width, height);
+		},
 
 		/**
 		 * @param {!goog.math.Rect} frame

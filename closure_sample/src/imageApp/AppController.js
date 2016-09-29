@@ -15,18 +15,22 @@ goog.require("imageApp.view.ComboBox");
 
 goog.require("goog.events");
 goog.require("goog.events.EventType");
+goog.require("goog.events.EventTarget");
+
 
 goog.scope(function() {
 	
 	/** 
 	 * @param {imageApp.AppModel} model
-	 * @constructor
+	 * @constructor]
+	 * @extends {goog.events.EventTarget}
 	 */
-	imageApp.AppController = goog.defineClass(null, {
+	imageApp.AppController = goog.defineClass(goog.events.EventTarget, {
 		/**
 		 * @param {imageApp.AppModel} model
 		 */
 		constructor: function(model) {
+			goog.base(this);
 			/** @private {imageApp.command.History} */
 			this._history = new imageApp.command.History();
 			/** @private {imageApp.AppModel} */
@@ -41,9 +45,10 @@ goog.scope(function() {
 			/** @private {imageApp.layout.LayoutController} */
 			this._layout = new imageApp.layout.LayoutController(this._model, this._history, this._collection);
 
+			/** @private {boolean} */
+			this._isAppendMedia = false;
 			this._addActions();
 		},
-
 
 		/** 
 		 * @private 
@@ -62,7 +67,23 @@ goog.scope(function() {
 		 * @private 
 		 */
 		_addImage: function(path) {
-			this._objectCntr.addImage(path);
+			goog.style.setStyle(document.documentElement, "cursor", "progress");
+			var img = new Image(0, 0);
+			img.src = path;
+			img.onload = goog.bind(function () {
+				var image = this._model.createImage(new goog.math.Size(img.naturalWidth, img.naturalHeight), img.src);
+				if (this._isAppendMedia)
+				{
+					this._isAppendMedia = false;
+					this._layout.appendMedia(image);
+				}
+				else
+				{
+					this._objectCntr.addImage(image);
+				}
+				goog.style.setStyle(document.documentElement, "cursor", "default");
+			}, this);
+
 		},
 
 		/**
@@ -100,10 +121,16 @@ goog.scope(function() {
 			var comboBox = new imageApp.view.ComboBox();
 			comboBox.appendElement(this._createButtonWithAction("Default", goog.bind(this._layout.selectTypeLayout, this._layout, "default")));
 			comboBox.appendElement(this._createButtonWithAction("Horizontal", goog.bind(this._layout.selectTypeLayout, this._layout, "horizontal")));
-			//comboBox.appendElement(this._createButtonWithAction("Custom", goog.bind(this._layout.selectTypeLayout, this._layout, "custom")));
 			toolbar.appendElement(comboBox);
-			//toolbar.appendElement(this._createButtonWithAction("Add media", goog.bind(this._layout.appendMediaLayout, this._layout)));
-			toolbar.appendElement(this._createButtonWithAction("Reset layout", goog.bind(this._layout.resetLayout, this._layout)));
+			toolbar.appendElement(this._createButtonWithAction("Add media", goog.bind(function () {
+				if (!this._layout.hasAddedMedia())
+				{
+					this._isAppendMedia = true;
+					this._inputProcessing();
+				}
+			}, this)));
+			toolbar.appendElement(this._createButtonWithAction("Remove media", goog.bind(this._layout.removeMedia, this._layout)));
+			toolbar.appendElement(this._createButtonWithAction("Reset layout", goog.bind(this._layout.resetLayout, this._layout, true)));
 
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 

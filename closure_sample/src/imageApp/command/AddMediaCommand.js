@@ -44,7 +44,7 @@ goog.scope(function() {
 		 */
 		_doUnexecute: function () {
 			this._objectCollection.removeObject(this._lastModel);
-			this._layoutController.removeMedia();
+			this._layoutController.removeMediaLayout();
 		}
 	});
 });

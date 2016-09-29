@@ -55,13 +55,11 @@ goog.scope(function() {
 		},
 
 		/**
-		 * @param {string} path
+		 * @param {!imageApp.model.Object} object
 		 */
-		addImage: function(path) {
-			goog.style.setStyle(document.documentElement, "cursor", "progress");
-			var img = new Image(0, 0);
-			img.src = path;
-			img.onload = goog.bind(this._onLoadImage, this, img);
+		addImage: function(object) {
+			var command = new AddObjectCommand(this._objectCollection, object);
+			this._history.recordAction(command);
 		},
 
 		/**
@@ -114,19 +112,6 @@ goog.scope(function() {
 				var command = new AppendTextCommand(event.detail.model, text);
 				this._history.recordAction(command);
 			}, this));
-		},
-
-		/**
-		 * @param {Image} elem
-		 * @private
-		 */
-		_onLoadImage: function(elem) {
-			var imageModel = this._model.createImage(new goog.math.Size(elem.naturalWidth, elem.naturalHeight), elem.src);
-
-			var command = new AddObjectCommand(this._objectCollection, imageModel);
-			this._history.recordAction(command);
-
-			goog.style.setStyle(document.documentElement, "cursor", "default");
 		},
 
 		deleteObject: function() {
