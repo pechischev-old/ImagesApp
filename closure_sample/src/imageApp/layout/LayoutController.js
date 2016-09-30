@@ -93,7 +93,7 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @param {!imageApp.model.Object} object
+		 * @param {imageApp.model.Object} object
 		 */
 		initMediaLayout: function (object) {
 			this._media = new imageApp.layout.Layout(object);
@@ -127,9 +127,10 @@ goog.scope(function () {
 		 * @param {string} type
 		 */
 		selectTypeLayout: function (type) {
+			this._isAutoAlignment = true;
+			this._updateLayout();
 			if (type != this._typeLayout)
 			{
-				this._isAutoAlignment = true;
 				console.log("current type layout: " + type );
 				var action = new SelectTypeLayout(this, type);
 				this._history.recordAction(action);

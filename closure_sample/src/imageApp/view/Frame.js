@@ -31,7 +31,7 @@ goog.scope(function() {
 
 		/**
 		 * @param {Event} event
-		 * @param {?imageApp.view.IObject=} object
+		 * @param {!imageApp.view.IObject=} object
 		 */
 		addMoveListeners: function (event, object) {
 			this._appendResizeListener(event, this._top, function(frame, shift){

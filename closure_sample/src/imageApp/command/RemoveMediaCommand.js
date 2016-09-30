@@ -9,7 +9,7 @@ goog.scope(function() {
 	/**
 	 * @param {imageApp.layout.LayoutController} layoutControl
 	 * @param {imageApp.ObjectCollection} collection
-	 * @param {!imageApp.model.TextArea} lastModel
+	 * @param {!imageApp.model.Object} lastModel
 	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
@@ -17,7 +17,7 @@ goog.scope(function() {
 		/**
 		 * @param {imageApp.layout.LayoutController} layoutControl
 		 * @param {imageApp.ObjectCollection} collection
-		 * @param {!imageApp.model.TextArea} lastModel
+		 * @param {imageApp.model.Object} lastModel
 		 */
 		constructor: function (layoutControl, collection, lastModel) {
 			goog.base(this);
@@ -27,7 +27,7 @@ goog.scope(function() {
 			/** @private {imageApp.ObjectCollection} */
 			this._objectCollection = collection;
 
-			/** @private {!imageApp.model.TextArea} */
+			/** @private {imageApp.model.Object} */
 			this._lastModel = lastModel;
 		},
 

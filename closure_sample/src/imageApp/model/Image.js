@@ -5,7 +5,7 @@ goog.require("imageApp.model.Object");
 goog.scope(function(){
 	/** @const {!goog.math.Size} */
 	const MAX_SIZE = new goog.math.Size(512, 256);
-	
+	const MIN_SIZE = new goog.math.Size(100, 100);
 	/**
 	  * @extends {imageApp.model.Object}
 	  * @param {!goog.math.Rect} frame
@@ -49,6 +49,15 @@ goog.scope(function(){
 		 */
 		getPath: function () {
 			return this._path;
+		},
+
+
+		/**
+		 * @inheritDoc
+		 */
+		_calculateMinSize: function(frame) {
+			frame.height = MIN_SIZE.height > frame.height ?  MIN_SIZE.height : frame.height;
+			frame.width = MIN_SIZE.width > frame.width ?  MIN_SIZE.width : frame.width;
 		}
 	});
 });

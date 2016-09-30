@@ -7,7 +7,7 @@ goog.require("goog.events.EventTarget");
 
 
 goog.scope(function(){
-
+	
 	/**
 	 * @implements {imageApp.observer.IObservable}
 	 * @param {!goog.math.Rect} frame
@@ -90,6 +90,7 @@ goog.scope(function(){
 		 */
 		setFrame: function(frame) {
 			if (!goog.math.Rect.equals(this._frame, frame)) {
+				this._calculateMinSize(frame);
 				this._frame = frame;
 				this.notifyObservers();
 				this.dispatchEvent(new Event(imageApp.events.EventType.OBJECT_CHANGED));
@@ -118,7 +119,14 @@ goog.scope(function(){
 		 */
 		getFrame: function() {
 			return this._frame;
-		}
+		},
 
+		/**
+		 * @param {!goog.math.Rect} frame
+		 * @protected
+		 */
+		_calculateMinSize: function(frame) {
+			
+		}
 	});
 });

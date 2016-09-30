@@ -3,7 +3,7 @@ goog.provide("imageApp.model.TextArea");
 goog.require("imageApp.model.Object");
 
 goog.scope(function(){
-
+	const MIN_WIDTH = 100;
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @param {string=} text
@@ -36,8 +36,8 @@ goog.scope(function(){
 		setText: function(text) {
 			this._text = text;
 			this.dispatchEvent(new CustomEvent(imageApp.events.EventType.TEXT_CHANGED, {
-				detail: this._text }));
-			
+				detail: this._text
+			}));
 		},
 
 		/**
@@ -52,6 +52,13 @@ goog.scope(function(){
 		 */
 		getType: function () {
 			return "textarea";
+		},
+
+		/**
+		 * @inheritDoc
+		 */
+		_calculateMinSize: function(frame) {
+			frame.width = MIN_WIDTH > frame.width ?  MIN_WIDTH : frame.width;
 		}
 	});
 });
