@@ -133,7 +133,15 @@ goog.scope(function() {
 		 */
 		_appendHandlers: function(event) {
 			this._border.addResizeListeners(event);
-			this._border.addMoveListeners(event);
+			this._border.addMoveListeners(event, this);
+
+			var keyBlur = goog.events.listen(document, goog.events.EventType.MOUSEUP, goog.bind(function () {
+				if (!this.isSelected())
+				{
+					this._textArea.blur();
+				}
+
+			}, this));
 		}
 	});
 });

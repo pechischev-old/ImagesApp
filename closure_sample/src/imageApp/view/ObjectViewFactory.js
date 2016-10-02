@@ -29,7 +29,7 @@ goog.scope(function() {
 		}
 		else
 		{
-			throw new Error("unknown type");
+			console.log("unknown type");
 		}
 		return view;
 	};

@@ -3,12 +3,14 @@ goog.provide("imageApp.view.ObjectView");
 goog.require("imageApp.view.Frame");
 goog.require("imageApp.observer.IObserver");
 goog.require("imageApp.view.Node");
+goog.require("imageApp.view.IObject");
 
 goog.scope(function () {
 
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @implements {imageApp.observer.IObserver}
+	 * @implements {imageApp.view.IObject}
 	 * @extends {imageApp.view.Node}
 	 * @constructor
 	 */

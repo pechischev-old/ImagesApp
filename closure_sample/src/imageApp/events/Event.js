@@ -8,13 +8,13 @@ goog.scope(function () {
 	 * @constructor
 	 * @extends {goog.events.Event}
 	 */
-	imageApp.events.Event = goog.defineClass(null, {
+	imageApp.events.Event = goog.defineClass(goog.events.Event, {
 	/**
 	 * @param {!string} type
 	 * @param {Object=} object
 	 */
 		constructor: function(type, object) {
-			goog.events.Event.call(this, type);
+			goog.base(this, type, object);
 			this.object = object;
 		}
 	});

@@ -53,13 +53,19 @@ goog.scope(function() {
 		/** 
 		 * @private 
 		 */
-		_openFile: function() { 
+		_openFile: function() {
+			var file    = document.querySelector('input[type=file]').files[0];
 			var input = window.event.target;
 			var reader = new FileReader();
-			reader.onload = goog.bind(function() {
-				this._addImage(reader.result.toString());
+			reader.onload = goog.bind(function(event) {
+				var url = event.target.result;
+				this._addImage(url);
 			},  this);
-			reader.readAsDataURL(input.files[0]);
+
+			reader.onerror = function(event) {
+				console.error("Файл не может быть прочитан! код " + event.target.error.code);
+			};
+			reader.readAsDataURL(file);
 		},
 
 		/** 

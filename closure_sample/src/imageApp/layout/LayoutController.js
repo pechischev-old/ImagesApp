@@ -2,6 +2,7 @@ goog.provide("imageApp.layout.LayoutController");
 
 
 goog.require("imageApp.layout.Layout");
+goog.require("imageApp.layout.MediaLayout");
 goog.require("goog.events.EventTarget");
 goog.require("imageApp.command.SelectTypeLayout");
 goog.require("imageApp.command.ResetLayout");
@@ -44,7 +45,7 @@ goog.scope(function () {
 			this._header = this._initLayout("Заголовок");
 			/** @private {!imageApp.layout.Layout} */
 			this._description = this._initLayout("Описание");
-			/** @private {?imageApp.layout.Layout} */
+			/** @private {?imageApp.layout.MediaLayout} */
 			this._media = null;
 
 			goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(this._updateLayout, this));
@@ -96,7 +97,7 @@ goog.scope(function () {
 		 * @param {imageApp.model.Object} object
 		 */
 		initMediaLayout: function (object) {
-			this._media = new imageApp.layout.Layout(object);
+			this._media = new imageApp.layout.MediaLayout(object);
 			this._media.setParentEventTarget(this);
 			this._updateLayout();
 		},
@@ -178,7 +179,7 @@ goog.scope(function () {
 			if (this._media)
 			{
 
-				var mFrame = this._media.getFrame().clone();
+				var mFrame = this._media.getFirstFrame().clone();
 				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
 				this._media.setFrame(this._getChangedFrame(mFrame, CANVAS_SIZE.width - BORDER - size.width , BORDER, size.width , size.height));
@@ -201,7 +202,7 @@ goog.scope(function () {
 			this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null));
 			if (this._media)
 			{
-				var mFrame = this._media.getFrame().clone();
+				var mFrame = this._media.getFirstFrame().clone();
 				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
 				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left + CANVAS_SIZE.width / 2 - size.width / 2, dFrame.height + dFrame.top + INDENT, size.width, size.height));

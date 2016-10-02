@@ -18,7 +18,7 @@ goog.scope(function () {
 		 */
 		constructor: function(object) {
 			goog.base(this);
-			/** @private {imageApp.model.Object} */
+			/** @protected {imageApp.model.Object} */
 			this._object = object;
 			this._object.canRemove(false);
 			goog.events.listen(this._object, imageApp.events.EventType.OBJECT_CHANGED, goog.bind(function(event) {
