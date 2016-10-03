@@ -53,19 +53,25 @@ goog.scope(function() {
 		/** 
 		 * @private 
 		 */
-		_openFile: function() {
-			var file    = document.querySelector('input[type=file]').files[0];
-			var input = window.event.target;
-			var reader = new FileReader();
-			reader.onload = goog.bind(function(event) {
-				var url = event.target.result;
-				this._addImage(url);
-			},  this);
+		_openFile: function(event) {
+			var files = event.target.files;
+			for (var i = 0, file; file = files[i]; i++)
+			{
+				// Only process image files.
+				if (!file.type.match('image.*')) {
+					continue;
+				}
+				var reader = new FileReader();
+				// Closure to capture the file information.
+				reader.onload = goog.bind(function(event) {
+					var url = event.target.result;
+					this._addImage(url);
+				},  this);
 
-			reader.onerror = function(event) {
-				console.error("Файл не может быть прочитан! код " + event.target.error.code);
-			};
-			reader.readAsDataURL(file);
+				// Read in the image file as a data URL.
+				reader.readAsDataURL(file);
+			}
+			event.target.value = "";
 		},
 
 		/** 
