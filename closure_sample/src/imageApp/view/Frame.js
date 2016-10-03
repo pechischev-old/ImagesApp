@@ -6,6 +6,7 @@ goog.require("goog.math.Rect");
 goog.require("imageApp.view.Node");
 goog.require("imageApp.view.IObject");
 goog.require("imageApp.handlers.Listener");
+goog.require("imageApp.events.Event");
 
 goog.scope(function() {
 	const MIN_SIZE_FRAME = new goog.math.Size(25, 18);
@@ -117,8 +118,7 @@ goog.scope(function() {
 				var newFrame = ptr.getFrame();
 				if (!goog.math.Rect.equals(newFrame, oldFrame))
 				{
-					this.dispatchEvent(new CustomEvent(imageApp.events.EventType.RESIZE_OBJECT, {detail : newFrame }));
-
+					this.dispatchEvent(new imageApp.events.Event(imageApp.events.EventType.RESIZE_OBJECT, newFrame));
 				}
 			}, this);
 

@@ -5,11 +5,12 @@ goog.require("imageApp.model.Object");
 goog.require("goog.structs.Map");
 
 goog.require("imageApp.events.EventType");
+goog.require("imageApp.events.ObjectEvent");
 goog.require("goog.events.EventTarget");
 
 
 goog.scope(function () {
-
+	var ObjectEvent = imageApp.events.ObjectEvent;
 	/**
 	 * @extends {goog.events.EventTarget}
 	 * @constructor
@@ -26,9 +27,7 @@ goog.scope(function () {
 		 * @param {imageApp.model.Object} object
 		 */
 		removeObject: function(object) {
-			var removeEvent = new CustomEvent(imageApp.events.EventType.REMOVE_OBJECT, {
-				detail: object
-			});
+			var removeEvent = new ObjectEvent(imageApp.events.EventType.REMOVE_OBJECT, object);
 			object.setRemoved(true);
 			this._objectsModel.remove(goog.getUid(object));
 			this.dispatchEvent(removeEvent);
@@ -39,9 +38,7 @@ goog.scope(function () {
 		 * @param {imageApp.model.Object} object
 		 */
 		appendObject: function(object) {
-			var appendEvent = new CustomEvent(imageApp.events.EventType.APPEND_OBJECT, {
-				detail: object
-			});
+			var appendEvent = new ObjectEvent(imageApp.events.EventType.APPEND_OBJECT, object);
 			object.setRemoved(false);
 			this._objectsModel.set(goog.getUid(object), object);
 			this.dispatchEvent(appendEvent);

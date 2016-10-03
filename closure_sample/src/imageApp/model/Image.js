@@ -1,6 +1,7 @@
 goog.provide("imageApp.model.Image");
 
 goog.require("imageApp.model.Object");
+goog.require("imageApp.Constants");
 
 goog.scope(function(){
 	/** @const {!goog.math.Size} */
@@ -27,7 +28,7 @@ goog.scope(function(){
 		 * @inheritDoc
 		 */
 		getType: function () {
-			return "image";
+			return imageApp.Constants.IMAGE;
 		},
 		
 		/**

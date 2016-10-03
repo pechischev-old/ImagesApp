@@ -163,7 +163,7 @@ goog.scope(function() {
 		_initListener: function () {
 			goog.events.listen(this, imageApp.events.EventType.APPEND_OBJECT, goog.bind(function (event){
 				/** @type {!imageApp.model.Object} */
-				var model = event.detail;
+				var model = event.object;
 				var view = imageApp.view.ObjectViewFactory.createObject(model);
 				model.registerObserver(view);
 				view.setParentEventTarget(this);
@@ -185,7 +185,7 @@ goog.scope(function() {
 
 			goog.events.listen(this, imageApp.events.EventType.REMOVE_OBJECT, goog.bind(function (event){
 				/** @type {imageApp.model.Object} */
-				var model = event.detail;
+				var model = event.object;
 				var view = this._objectsView.get(goog.getUid(model));
 				model.removeObserver(view);
 				this._canvas.removeChild(view.getDOMElement());

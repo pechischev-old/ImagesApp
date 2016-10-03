@@ -1,6 +1,8 @@
 goog.provide("imageApp.model.TextArea");
 
 goog.require("imageApp.model.Object");
+goog.require("imageApp.events.Event");
+goog.require("imageApp.Constants");
 
 goog.scope(function(){
 	const MIN_WIDTH = 100;
@@ -22,7 +24,7 @@ goog.scope(function(){
 			
 			goog.events.listen(this, imageApp.events.EventType.AUTOSIZE_TEXTAREA, function (event) {
 				var newFrame = this._frame.clone();
-				newFrame.height = event.detail;
+				newFrame.height = event.param;
 				if (!goog.math.Rect.equals(this._frame, newFrame))
 				{
 					this.setFrame(newFrame);
@@ -35,9 +37,7 @@ goog.scope(function(){
 		 */
 		setText: function(text) {
 			this._text = text;
-			this.dispatchEvent(new CustomEvent(imageApp.events.EventType.TEXT_CHANGED, {
-				detail: this._text
-			}));
+			this.dispatchEvent(new imageApp.events.Event(imageApp.events.EventType.TEXT_CHANGED, this._text));
 		},
 
 		/**
@@ -51,7 +51,7 @@ goog.scope(function(){
 		 * @inheritDoc
 		 */
 		getType: function () {
-			return "textarea";
+			return imageApp.Constants.TEXTAREA;
 		},
 
 		/**

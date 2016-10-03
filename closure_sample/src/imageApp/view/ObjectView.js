@@ -4,9 +4,9 @@ goog.require("imageApp.view.Frame");
 goog.require("imageApp.observer.IObserver");
 goog.require("imageApp.view.Node");
 goog.require("imageApp.view.IObject");
+goog.require("imageApp.events.ObjectEvent");
 
 goog.scope(function () {
-
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @implements {imageApp.observer.IObserver}
@@ -29,10 +29,7 @@ goog.scope(function () {
 
 		addListener: function () {
 			goog.events.listen(this._border, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function (event) {
-				this.dispatchEvent(new CustomEvent(imageApp.events.EventType.RESIZE_OBJECT, { detail : {
-					frame: event.detail,
-					model: this._model
-				}}));
+				this.dispatchEvent(new imageApp.events.ObjectEvent(imageApp.events.EventType.RESIZE_OBJECT, this._model, event.param));
 			}, this));
 			
 			goog.events.listen(this.getDOMElement(), goog.events.EventType.MOUSEDOWN, goog.bind(function(event) {

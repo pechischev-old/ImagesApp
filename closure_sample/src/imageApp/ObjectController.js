@@ -9,6 +9,7 @@ goog.require("imageApp.command.MoveCommand");
 goog.require("imageApp.command.AppendTextCommand");
 
 goog.require("imageApp.events.EventType");
+goog.require("imageApp.events.ObjectEvent");
 
 goog.scope(function() {
 	var ResizeCommand = imageApp.command.ResizeCommand;
@@ -16,6 +17,7 @@ goog.scope(function() {
 	var DeleteCommand = imageApp.command.DeleteCommand;
 	var AppendTextCommand = imageApp.command.AppendTextCommand;
 	var MoveCommand = imageApp.command.MoveCommand;
+	var ObjectEvent = imageApp.events.ObjectEvent;
 
 	/**
 	 * @param {imageApp.AppModel} model
@@ -67,7 +69,7 @@ goog.scope(function() {
 		 */
 		_addAppendListener: function () {
 			goog.events.listen(this._objectCollection, imageApp.events.EventType.APPEND_OBJECT, goog.bind(function (event) {
-				var appendEvent = new CustomEvent(imageApp.events.EventType.APPEND_OBJECT, { detail : event.detail});
+				var appendEvent = new ObjectEvent(imageApp.events.EventType.APPEND_OBJECT, event.object);
 				this._view.dispatchEvent(appendEvent);
 			}, this));
 		},
@@ -77,7 +79,7 @@ goog.scope(function() {
 		 */
 		_addDeleteListener: function () {
 			goog.events.listen(this._objectCollection, imageApp.events.EventType.REMOVE_OBJECT, goog.bind(function (event) {
-				var appendEvent = new CustomEvent(imageApp.events.EventType.REMOVE_OBJECT, { detail : event.detail});
+				var appendEvent = new ObjectEvent(imageApp.events.EventType.REMOVE_OBJECT, event.object);
 				this._view.dispatchEvent(appendEvent);
 			}, this));
 		},
@@ -87,9 +89,9 @@ goog.scope(function() {
 		 */
 		_addResizeListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
-				var object = /** @type {imageApp.model.Object}*/(event.detail.model);
+				var object = /** @type {imageApp.model.Object}*/(event.object);
 				object.dispatchEvent(new Event(imageApp.events.EventType.WAS_RESIZE));
-				var command = new ResizeCommand(object, event.detail.frame);
+				var command = new ResizeCommand(object, event.param);
 				this._history.recordAction(command);
 			}, this));
 		},
@@ -99,17 +101,16 @@ goog.scope(function() {
 		 */
 		_addMoveListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.MOVE_OBJECT, goog.bind(function(event) {
-				var object = /** @type {imageApp.model.Object}*/(event.detail.model);
+				var object = /** @type {imageApp.model.Object}*/(event.object);
 				object.dispatchEvent(new Event(imageApp.events.EventType.WAS_RESIZE));
-				var command = new MoveCommand(object, event.detail.pos);
+				var command = new MoveCommand(object, event.param);
 				this._history.recordAction(command);
 			}, this));
 		},
 
 		_addTextListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.APPEND_TEXT, goog.bind(function (event) {
-				var text = event.detail.text;
-				var command = new AppendTextCommand(event.detail.model, text);
+				var command = new AppendTextCommand(event.object, event.param);
 				this._history.recordAction(command);
 			}, this));
 		},

@@ -2,9 +2,10 @@ goog.provide("imageApp.view.ImageView");
 
 
 goog.require("imageApp.view.ObjectView");
+goog.require("imageApp.events.ObjectEvent");
 
 goog.scope(function() {
-	
+	var ObjectEvent = imageApp.events.ObjectEvent;
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @param {!imageApp.model.Object} object
@@ -79,12 +80,7 @@ goog.scope(function() {
 				var newPos = this.getFrame().getTopLeft();
 				if (!goog.math.Coordinate.equals(newPos, oldFrame.getTopLeft()))
 				{
-					this.dispatchEvent(new CustomEvent(imageApp.events.EventType.MOVE_OBJECT, {
-						detail : {
-							pos: newPos,
-							model: this._model
-						}
-					}));
+					this.dispatchEvent(new imageApp.events.ObjectEvent(imageApp.events.EventType.MOVE_OBJECT, this._model, newPos));
 				}
 			}, this);
 
