@@ -8,11 +8,11 @@ goog.require("imageApp.command.SelectTypeLayout");
 goog.require("imageApp.command.ResetLayout");
 goog.require("imageApp.command.AddMediaCommand");
 goog.require("imageApp.command.RemoveMediaCommand");
+goog.require("imageApp.Constants");
 
 goog.scope(function () {
 	var SelectTypeLayout = imageApp.command.SelectTypeLayout;
-	var AddMediaCommand = imageApp.command.AddMediaCommand;
-	var RemoveMediaCommand = imageApp.command.RemoveMediaCommand;
+	var Constants = imageApp.Constants;
 
 	const BORDER = 50;
 	const INDENT = 20;
@@ -42,16 +42,16 @@ goog.scope(function () {
 			this._collection = collection;
 
 			/** @private {!imageApp.layout.Layout} */
-			this._header = this._initLayout("Заголовок");
+			this._header = this._initLayout(Constants.HEADER);
 			/** @private {!imageApp.layout.Layout} */
-			this._description = this._initLayout("Описание");
+			this._description = this._initLayout(Constants.DESCRIPTION);
 			/** @private {?imageApp.layout.MediaLayout} */
 			this._media = null;
 
 			goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(this._updateLayout, this));
 
 			/** @private {string} */
-			this._typeLayout = "default";
+			this._typeLayout = Constants.DEFAULT_LAYOUT;
 			/** @private {boolean} */
 			this._isAutoAlignment = true;
 			this._updateLayout();
@@ -162,11 +162,11 @@ goog.scope(function () {
 			{
 				return;
 			}
-			if (this._typeLayout == "default")
+			if (this._typeLayout ==  Constants.DEFAULT_LAYOUT)
 			{
 				this._setDefaultLayout();
 			}
-			else if ( this._typeLayout == "horizontal")
+			else if ( this._typeLayout ==  Constants.HORIZONTAL_LAYOUT)
 			{
 				this._setHorizontalLayout();
 			}
