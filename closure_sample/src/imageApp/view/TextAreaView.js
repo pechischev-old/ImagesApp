@@ -7,10 +7,9 @@ goog.require("imageApp.events.Event");
 goog.require("imageApp.events.ObjectEvent");
 
 goog.scope(function() {
-	const MIN_WIDTH = 50;
+	const MIN_HEIGHT = 30;
 	var Event = imageApp.events.Event;
 	var ObjectEvent = imageApp.events.ObjectEvent;
-	//var ObjectEvent = imageApp.events.ObjectEvent;
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @param {!imageApp.model.Object} object
@@ -115,7 +114,7 @@ goog.scope(function() {
 			this._object.appendChild(this._initBorder());
 
 
-			goog.events.listen(this._textArea, goog.events.EventType.INPUT, goog.bind(this._initResizeArea, this, 30));
+			goog.events.listen(this._textArea, goog.events.EventType.INPUT, goog.bind(this._initResizeArea, this, MIN_HEIGHT));
 
 			goog.events.listen(this._textArea, goog.events.EventType.CHANGE, goog.bind(function() {
 				var object = /** @type {!imageApp.model.TextArea} */ (this._model);

@@ -63,11 +63,10 @@ goog.scope(function () {
 			goog.events.listen(this, imageApp.events.EventType.OFF_AUTOALIGN, goog.bind(function(event) {
 				this._resetLayout(false, event.action);
 			}, this));
-			/*goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(function () {
-				var command = new imageApp.command.MetaCommand();
-				this._updateLayout(command);
-				this._history.recordAction(command);
-			}, this));*/
+
+			goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(function () {
+				this._updateLayout(new imageApp.command.MetaCommand());
+			}, this));
 		},
 
 		/**
@@ -79,9 +78,7 @@ goog.scope(function () {
 			command.execute();
 			if (type != this._typeLayout)
 			{
-				var action = new SelectTypeLayout(this, type);
-				action.execute();
-				command.appendAction(action);
+				this._runAndRecordCommand(new SelectTypeLayout(this, type), command);
 			}
 			this._updateLayout(command);
 			if (!this._isBegin && !command.isEmpty())
@@ -123,9 +120,7 @@ goog.scope(function () {
 			if (!this._media)
 			{
 				var command = new imageApp.command.MetaCommand();
-				var action = new imageApp.command.AddMediaCommand(this, this._collection, object);
-				action.execute();
-				command.appendAction(action);
+				this._runAndRecordCommand(new imageApp.command.AddMediaCommand(this, this._collection, object), command);
 				this._updateLayout(command);
 				this._history.recordExecuteAction(command);
 			}
@@ -135,9 +130,7 @@ goog.scope(function () {
 			if (this._media)
 			{
 				var command = new imageApp.command.MetaCommand();
-				var action =new imageApp.command.RemoveMediaCommand(this, this._collection, this._media.getObject());
-				action.execute();
-				command.appendAction(action);
+				this._runAndRecordCommand(new imageApp.command.RemoveMediaCommand(this, this._collection, this._media.getObject()), command);
 				this._updateLayout(command);
 				this._history.recordExecuteAction(command);
 			}
@@ -181,7 +174,6 @@ goog.scope(function () {
 		 * @param {boolean} canAutoAlignment
 		 */
 		setAutoAlignment: function (canAutoAlignment) {
-			console.log("auto align " + canAutoAlignment);
 			this._isAutoAlignment = canAutoAlignment;
 		},
 
@@ -208,7 +200,6 @@ goog.scope(function () {
 			var dFrame = this._description.getFrame().clone();
 			if (this._media)
 			{
-
 				var mFrame = this._media.getFirstFrame().clone();
 				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
@@ -253,9 +244,7 @@ goog.scope(function () {
 		_writeFrameInCommand: function (frame, object, command) {
 			if (!goog.math.Rect.equals(frame, object.getFrame()))
 			{
-				var action = new ResizeAction(object, frame);
-				action.execute();
-				command.appendAction(action);
+				this._runAndRecordCommand(new ResizeAction(object, frame), command);
 			}
 		},
 
@@ -302,6 +291,17 @@ goog.scope(function () {
 			var layout = new imageApp.layout.Layout(textarea);
 			layout.setParentEventTarget(this);
 			return layout;
+		},
+
+		/**
+		 * @param {imageApp.command.AbstractAction} action
+		 * @param {imageApp.command.MetaCommand} command
+		 * @private
+		 */
+		_runAndRecordCommand: function (action, command) {
+			action.execute();
+			command.appendAction(action);
 		}
+
 	});
 });
