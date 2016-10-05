@@ -59,18 +59,14 @@ goog.scope(function() {
 			var files = event.target.files;
 			for (var i = 0, file; file = files[i]; i++)
 			{
-				// Only process image files.
 				if (!file.type.match('image.*')) {
 					continue;
 				}
 				var reader = new FileReader();
-				// Closure to capture the file information.
 				reader.onload = goog.bind(function(event) {
 					var url = event.target.result;
 					this._addImage(url);
 				},  this);
-
-				// Read in the image file as a data URL.
 				reader.readAsDataURL(file);
 			}
 			event.target.value = "";
@@ -133,8 +129,8 @@ goog.scope(function() {
 			toolbar.appendElement(this._createButtonWithAction(Constants.DELETE, goog.bind(this._deleteSelectingObject, this)));
 
 			var comboBox = new imageApp.view.ComboBox();
-			comboBox.appendElement(this._createButtonWithAction(Constants.DEFAULT_LAYOUT, goog.bind(this._layout.selectTypeLayout, this._layout, Constants.DEFAULT_LAYOUT)));
-			comboBox.appendElement(this._createButtonWithAction(Constants.HORIZONTAL_LAYOUT, goog.bind(this._layout.selectTypeLayout, this._layout, Constants.HORIZONTAL_LAYOUT)));
+			comboBox.appendElement(this._createButtonWithAction(Constants.DEFAULT_LAYOUT, goog.bind(this._layout.setLayout, this._layout, Constants.DEFAULT_LAYOUT)));
+			comboBox.appendElement(this._createButtonWithAction(Constants.HORIZONTAL_LAYOUT, goog.bind(this._layout.setLayout, this._layout, Constants.HORIZONTAL_LAYOUT)));
 			toolbar.appendElement(comboBox);
 			toolbar.appendElement(this._createButtonWithAction(Constants.ADD_MEDIA, goog.bind(function () {
 				if (!this._layout.hasAddedMedia())
@@ -144,7 +140,7 @@ goog.scope(function() {
 				}
 			}, this)));
 			toolbar.appendElement(this._createButtonWithAction(Constants.REMOVE_MEDIA, goog.bind(this._layout.removeMedia, this._layout)));
-			toolbar.appendElement(this._createButtonWithAction(Constants.RESET_LAYOUT, goog.bind(this._layout.resetLayout, this._layout, true)));
+			toolbar.appendElement(this._createButtonWithAction(Constants.RESET_LAYOUT, goog.bind(this._layout.resetLayout, this._layout)));
 
 			this._view.setActionFileReader(goog.bind(this._openFile, this));
 

@@ -7,9 +7,11 @@ goog.require("imageApp.command.DeleteCommand");
 goog.require("imageApp.command.ResizeCommand");
 goog.require("imageApp.command.MoveCommand");
 goog.require("imageApp.command.AppendTextCommand");
+goog.require("imageApp.command.MetaCommand");
 
 goog.require("imageApp.events.EventType");
 goog.require("imageApp.events.ObjectEvent");
+goog.require("imageApp.events.ActionEvent");
 
 goog.scope(function() {
 	var ResizeCommand = imageApp.command.ResizeCommand;
@@ -17,7 +19,9 @@ goog.scope(function() {
 	var DeleteCommand = imageApp.command.DeleteCommand;
 	var AppendTextCommand = imageApp.command.AppendTextCommand;
 	var MoveCommand = imageApp.command.MoveCommand;
+	var MetaCommand = imageApp.command.MetaCommand;
 	var ObjectEvent = imageApp.events.ObjectEvent;
+
 
 	/**
 	 * @param {imageApp.AppModel} model
@@ -90,9 +94,11 @@ goog.scope(function() {
 		_addResizeListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
 				var object = /** @type {imageApp.model.Object}*/(event.object);
-				object.dispatchEvent(new Event(imageApp.events.EventType.WAS_RESIZE));
 				var command = new ResizeCommand(object, event.param);
-				this._history.recordAction(command);
+				var meta = new MetaCommand();
+				object.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.WAS_RESIZE, meta));
+				meta.appendAction(command);
+				this._history.recordAction(meta);
 			}, this));
 		},
 
@@ -102,9 +108,11 @@ goog.scope(function() {
 		_addMoveListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.MOVE_OBJECT, goog.bind(function(event) {
 				var object = /** @type {imageApp.model.Object}*/(event.object);
-				object.dispatchEvent(new Event(imageApp.events.EventType.WAS_RESIZE));
 				var command = new MoveCommand(object, event.param);
-				this._history.recordAction(command);
+				var meta = new MetaCommand();
+				object.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.WAS_RESIZE, meta));
+				meta.appendAction(command);
+				this._history.recordAction(meta);
 			}, this));
 		},
 

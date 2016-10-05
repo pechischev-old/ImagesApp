@@ -3,6 +3,7 @@ goog.provide("imageApp.layout.Layout");
 goog.require("imageApp.layout.ILayout");
 goog.require("imageApp.model.Object");
 goog.require("imageApp.events.EventType");
+goog.require("imageApp.events.ActionEvent");
 
 goog.scope(function () {
 
@@ -25,7 +26,7 @@ goog.scope(function () {
 				this.dispatchEvent(new Event(imageApp.events.EventType.LAYOUT_CHANGED));
 			}, this));
 			goog.events.listen(this._object, imageApp.events.EventType.WAS_RESIZE, goog.bind(function(event) {
-				this.dispatchEvent(new Event(imageApp.events.EventType.OFF_AUTOALIGN));
+				this.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.OFF_AUTOALIGN, event.action));
 			}, this));
 		},
 

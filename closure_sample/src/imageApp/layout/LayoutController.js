@@ -8,11 +8,14 @@ goog.require("imageApp.command.SelectTypeLayout");
 goog.require("imageApp.command.ResetLayout");
 goog.require("imageApp.command.AddMediaCommand");
 goog.require("imageApp.command.RemoveMediaCommand");
+goog.require("imageApp.command.MetaCommand");
+goog.require("imageApp.command.ResizeCommand");
 goog.require("imageApp.Constants");
 
 goog.scope(function () {
 	var SelectTypeLayout = imageApp.command.SelectTypeLayout;
 	var Constants = imageApp.Constants;
+	var ResizeAction = imageApp.command.ResizeCommand;
 
 	const BORDER = 50;
 	const INDENT = 20;
@@ -48,18 +51,62 @@ goog.scope(function () {
 			/** @private {?imageApp.layout.MediaLayout} */
 			this._media = null;
 
-			goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(this._updateLayout, this));
-
 			/** @private {string} */
 			this._typeLayout = Constants.DEFAULT_LAYOUT;
 			/** @private {boolean} */
 			this._isAutoAlignment = true;
-			this._updateLayout();
+			/** @private {boolean} */
+			this._isBegin = true;
+			this.setLayout(Constants.DEFAULT_LAYOUT);
+			this._isBegin = false;
 
-			goog.events.listen(this, imageApp.events.EventType.OFF_AUTOALIGN,  goog.bind(function () {
-				//this.selectTypeLayout("custom");
-				this.resetLayout(false);
+			goog.events.listen(this, imageApp.events.EventType.OFF_AUTOALIGN, goog.bind(function(event) {
+				this._resetLayout(false, event.action);
 			}, this));
+			/*goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(function () {
+				var command = new imageApp.command.MetaCommand();
+				this._updateLayout(command);
+				this._history.recordAction(command);
+			}, this));*/
+		},
+
+		/**
+		 * @param {string} type
+		 */
+		setLayout: function (type) {
+			var command = new imageApp.command.MetaCommand();
+			this._resetLayout(true, command);
+			command.execute();
+			if (type != this._typeLayout)
+			{
+				var action = new SelectTypeLayout(this, type);
+				action.execute();
+				command.appendAction(action);
+			}
+			this._updateLayout(command);
+			if (!this._isBegin && !command.isEmpty())
+			{
+				this._history.recordExecuteAction(command);
+			}
+		},
+
+		/**
+		 * @param {imageApp.command.MetaCommand} command
+		 * @private
+		 */
+		_updateLayout: function (command) {
+			if (!this._isAutoAlignment)
+			{
+				return;
+			}
+			if (this._typeLayout == Constants.DEFAULT_LAYOUT)
+			{
+				this._setDefaultLayout(command);
+			}
+			else if ( this._typeLayout == Constants.HORIZONTAL_LAYOUT)
+			{
+				this._setHorizontalLayout(command);
+			}
 		},
 
 		/**
@@ -75,22 +122,29 @@ goog.scope(function () {
 		appendMedia: function (object) {
 			if (!this._media)
 			{
+				var command = new imageApp.command.MetaCommand();
 				var action = new imageApp.command.AddMediaCommand(this, this._collection, object);
-				this._history.recordAction(action);
+				action.execute();
+				command.appendAction(action);
+				this._updateLayout(command);
+				this._history.recordExecuteAction(command);
 			}
 		},
 		
 		removeMedia: function () {
 			if (this._media)
 			{
-				var action = new imageApp.command.RemoveMediaCommand(this, this._collection, this._media.getObject());
-				this._history.recordAction(action);
+				var command = new imageApp.command.MetaCommand();
+				var action =new imageApp.command.RemoveMediaCommand(this, this._collection, this._media.getObject());
+				action.execute();
+				command.appendAction(action);
+				this._updateLayout(command);
+				this._history.recordExecuteAction(command);
 			}
 		},
 
 		removeMediaLayout: function () {
 			this._media = null;
-			this._updateLayout();
 		},
 
 		/**
@@ -99,43 +153,36 @@ goog.scope(function () {
 		initMediaLayout: function (object) {
 			this._media = new imageApp.layout.MediaLayout(object);
 			this._media.setParentEventTarget(this);
-			this._updateLayout();
 		},
 
 		/**
 		 * @param {boolean} isAlign
+		 * @param {imageApp.command.MetaCommand} command
+		 * @private
 		 */
-		resetLayout: function (isAlign) {
-			//console.log(this._isAutoAlignment);
+		_resetLayout: function (isAlign, command) {
 			if (isAlign == this._isAutoAlignment)
 			{
 				return;
 			}
-			var action = new imageApp.command.ResetLayout(this, isAlign);
-			this._history.recordAction(action);
+			command.appendAction(new imageApp.command.ResetLayout(this, isAlign));
+		},
+
+
+		resetLayout: function () {
+			var command = new imageApp.command.MetaCommand();
+			this._resetLayout(true, command);
+			command.execute();
+			this._updateLayout(command);
+			this._history.recordExecuteAction(command);
 		},
 
 		/**
 		 * @param {boolean} canAutoAlignment
 		 */
 		setAutoAlignment: function (canAutoAlignment) {
-			console.log("auto align " +  canAutoAlignment);
+			console.log("auto align " + canAutoAlignment);
 			this._isAutoAlignment = canAutoAlignment;
-			this._updateLayout();
-		},
-
-		/**
-		 * @param {string} type
-		 */
-		selectTypeLayout: function (type) {
-			this._isAutoAlignment = true;
-			this._updateLayout();
-			if (type != this._typeLayout)
-			{
-				console.log("current type layout: " + type );
-				var action = new SelectTypeLayout(this, type);
-				this._history.recordAction(action);
-			}
 		},
 
 		/**
@@ -143,7 +190,6 @@ goog.scope(function () {
 		 */
 		setTypeLayout: function (type) {
 			this._typeLayout = type;
-			this._updateLayout();
 		},
 
 		/**
@@ -153,27 +199,11 @@ goog.scope(function () {
 			return this._typeLayout;
 		},
 
-
 		/**
+		 * @param {imageApp.command.MetaCommand} command
 		 * @private
 		 */
-		_updateLayout: function () {
-			if (!this._isAutoAlignment)
-			{
-				return;
-			}
-			if (this._typeLayout ==  Constants.DEFAULT_LAYOUT)
-			{
-				this._setDefaultLayout();
-			}
-			else if ( this._typeLayout ==  Constants.HORIZONTAL_LAYOUT)
-			{
-				this._setHorizontalLayout();
-			}
-
-		},
-
-		_setDefaultLayout: function () {
+		_setDefaultLayout: function (command) {
 			var hFrame = this._header.getFrame().clone();
 			var dFrame = this._description.getFrame().clone();
 			if (this._media)
@@ -182,30 +212,50 @@ goog.scope(function () {
 				var mFrame = this._media.getFirstFrame().clone();
 				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
-				this._media.setFrame(this._getChangedFrame(mFrame, CANVAS_SIZE.width - BORDER - size.width , BORDER, size.width , size.height));
+				this._writeFrameInCommand(this._getChangedFrame(mFrame, CANVAS_SIZE.width - BORDER - size.width , BORDER, size.width , size.height), this._media.getObject(), command);
 
-				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER,  mFrame.left - BORDER - INDENT, null));
-				this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, mFrame.left - BORDER - INDENT, null));
+				this._writeFrameInCommand(this._getChangedFrame(hFrame, BORDER, BORDER,  mFrame.left - BORDER - INDENT, null), this._header.getObject(), command);
+				this._writeFrameInCommand(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, mFrame.left - BORDER - INDENT, null), this._description.getObject(), command);
 			}
 			else
 			{
-				this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null));
-				this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null));
+				this._writeFrameInCommand(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null), this._header.getObject(), command);
+				this._writeFrameInCommand(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null), this._description.getObject(), command);
 			}
 		},
 
-		_setHorizontalLayout: function () {
+		/**
+		 * @param {imageApp.command.MetaCommand} command
+		 * @private
+		 */
+		_setHorizontalLayout: function (command) {
 			var hFrame = this._header.getFrame().clone();
 			var dFrame = this._description.getFrame().clone();
 
-			this._header.setFrame(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null));
-			this._description.setFrame(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null));
+			this._writeFrameInCommand(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null), this._header.getObject(), command);
+			this._writeFrameInCommand(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null), this._description.getObject(), command);
 			if (this._media)
 			{
 				var mFrame = this._media.getFirstFrame().clone();
 				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
-				this._media.setFrame(this._getChangedFrame(mFrame, hFrame.left + CANVAS_SIZE.width / 2 - size.width / 2, dFrame.height + dFrame.top + INDENT, size.width, size.height));
+				this._writeFrameInCommand(this._getChangedFrame(mFrame, hFrame.left + CANVAS_SIZE.width / 2 - size.width / 2, dFrame.height + dFrame.top + INDENT, size.width, size.height),
+										this._media.getObject(), command);
+			}
+		},
+
+		/**
+		 * @param {!goog.math.Rect} frame
+		 * @param {imageApp.model.Object} object
+		 * @param {imageApp.command.MetaCommand} command
+		 * @private
+		 */
+		_writeFrameInCommand: function (frame, object, command) {
+			if (!goog.math.Rect.equals(frame, object.getFrame()))
+			{
+				var action = new ResizeAction(object, frame);
+				action.execute();
+				command.appendAction(action);
 			}
 		},
 
