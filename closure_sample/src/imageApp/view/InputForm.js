@@ -4,7 +4,7 @@ goog.require("imageApp.view.Node");
 goog.require("goog.dom");
 
 goog.scope(function() {
-
+	const PLACEHOLDER_TEXT = "Enter the Url or local address pictures";
 	/** 
 	 * @extends {imageApp.view.Node}
 	 * @constructor
@@ -16,7 +16,7 @@ goog.scope(function() {
 			this._inputForm = document.createElement(goog.dom.TagName.INPUT);
 			this._inputForm.id = "imageInput";
 			this._inputForm.type = "text";
-			this._inputForm.setAttribute("placeholder", "Введите Url или локальный адрес картинки");
+			this._inputForm.setAttribute("placeholder", PLACEHOLDER_TEXT);
 			this._inputForm.onfocus = goog.bind(this.clearBox, this);
 		},
 		

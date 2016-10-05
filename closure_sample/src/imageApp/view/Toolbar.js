@@ -1,6 +1,6 @@
 goog.provide("imageApp.view.Toolbar");
 
-goog.require("imageApp.view.Button");
+
 goog.require("imageApp.view.Node");
 
 goog.scope(function() {
@@ -15,24 +15,16 @@ goog.scope(function() {
 			/** @private {!Element} */
 			this._toolbar = document.createElement(goog.dom.TagName.DIV);
 			this._toolbar.setAttribute("id", "toolbar");
-			/** @private {Array<imageApp.view.Button>} */
+			/** @private {Array<imageApp.view.Node>} */
 			this._buttons = [];
 		},
 
 		/** 
-		 * @param {!number} index 
-		 * @return {imageApp.view.Button} 
+		 * @param {imageApp.view.Node} elem
 		 */
-		getButtonOnIndex: function(index) {
-			return this._buttons[index];
-		},
-
-		/** 
-		 * @param {imageApp.view.Button} btn 
-		 */
-		appendButton: function(btn) {
-			this._buttons.push(btn);
-			this._toolbar.appendChild(btn.getDOMElement());
+		appendElement: function(elem) {
+			this._buttons.push(elem);
+			this._toolbar.appendChild(elem.getDOMElement());
 		},
 
 		/**
@@ -41,13 +33,6 @@ goog.scope(function() {
 		 */
 		getDOMElement: function() {
 			return this._toolbar;
-		},
-
-		/** 
-		 * @return {number} 
-		 */
-		getButtonsCount: function () {
-			return this._buttons.length;
 		}
 	});
 });

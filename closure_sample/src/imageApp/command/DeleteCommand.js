@@ -6,30 +6,23 @@ goog.require("imageApp.command.AbstractAction");
 goog.scope(function () {
 
 	/**
-	 * @param {imageApp.model.ImagesModel} model
-	 * @param {!number} index
+	 * @param {imageApp.ObjectCollection} model
+	 * @param {imageApp.model.Object} object
 	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
 	imageApp.command.DeleteCommand = goog.defineClass(imageApp.command.AbstractAction, {
 		/**
-		 * @param {imageApp.model.ImagesModel} model
-		 * @param {!number} index
+		 * @param {imageApp.ObjectCollection} model
+		 * @param {imageApp.model.Object} object
 		 */
-		constructor: function(model, index) {
+		constructor: function(model, object) {
 			goog.base(this);
-			/**
-			 * @private {imageApp.model.ImagesModel}
-			 */
-			this._model = model;
+			/** @private {imageApp.ObjectCollection} */
+			this._objectCollection = model;
 
-			/**
-			 * @private {!number}
-			 */
-			this._index = index;
-
-			/** @private {?imageApp.model.Image} */
-			this._imageModel = null;
+			/** @private {imageApp.model.Object} */
+			this._object = object;
 
 		},
 
@@ -37,28 +30,14 @@ goog.scope(function () {
 		 * @inheritDoc
 		 */
 		_doExecute: function() {
-
-			this._imageModel = this._model.removeImageOnIndex(this._index);
-			var event = new CustomEvent("delete", {
-				detail: {
-					index: this._index
-				}
-			});
-			document.dispatchEvent(event);
+			this._objectCollection.removeObject(this._object);
 		},
 
 		/**
 		 * @inheritDoc
 		 */
 		_doUnexecute: function () {
-			this._model.insertImageOnIndex(this._imageModel, this._index);
-			var event = new CustomEvent("append", {
-				detail: {
-					model: this._imageModel,
-					index: this._index
-				}
-			});
-			document.dispatchEvent(event);
+			this._objectCollection.appendObject(this._object);
 		}
 	});
 });

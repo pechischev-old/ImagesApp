@@ -1,29 +1,34 @@
 goog.provide("imageApp.AppModel");
 
-goog.require("imageApp.model.ImagesModel");
+
+goog.require("imageApp.model.Image");
+goog.require("imageApp.model.TextArea");
 
 goog.scope(function () {
+	
 
 	/**
 	 * @constructor
 	 */
 	imageApp.AppModel = goog.defineClass(null, {
 		constructor: function () {
-			/**
-			 * @private {imageApp.model.ImagesModel}
-			 */
-			this._imagesModel = new imageApp.model.ImagesModel();
 		},
 
 		/**
-		 * @returns {imageApp.model.ImagesModel}
+		 * @param {!goog.math.Size} naturalSize
+		 * @param {string} path
+		 * @return {!imageApp.model.Image}
 		 */
-		getImagesModel: function () {
-			return this._imagesModel;
+		createImage: function (naturalSize, path) {
+			return new imageApp.model.Image(new goog.math.Rect(50, 50, naturalSize.width, naturalSize.height), path);
 		},
 
-		outputLog: function () {
-			this._imagesModel.outputLog();
+		/**
+		 * @param {string} text
+		 * @returns {!imageApp.model.TextArea}]
+		 */
+		createTextArea: function(text) {
+			return new imageApp.model.TextArea(new goog.math.Rect(50, 50, 200, 30), text);
 		}
 
 	});

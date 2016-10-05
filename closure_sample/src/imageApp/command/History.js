@@ -22,24 +22,37 @@ goog.scope(function() {
 		/**
 		 * @param {imageApp.command.AbstractAction} action
 		 */
+		recordExecuteAction: function (action) {
+			this._appendAction(action);
+		},
+
+		/**
+		 * @param {imageApp.command.AbstractAction} action
+		 */
 		recordAction: function(action) {
+			this._appendAction(action);
+			action.execute();
+		},
+
+		/**
+		 * @param {imageApp.command.AbstractAction} action
+		 */
+		_appendAction: function (action) {
 			if (this._currentActionIndex < this._actions.length)
 			{
 				this._cleaningActionsfromCurrentIndex();
 			}
 			this._actions.push(action);
 			++this._currentActionIndex;
-			action.execute();
-
 		},
 
 
 		undo: function() {
 			if (this._actions.length == 0)
 			{
-				throw new Error("Command stack is empty");
+				console.log("Command stack is empty");
 			}
-			if (this._currentActionIndex > 0)
+			else if (this._currentActionIndex > 0)
 			{
 				--this._currentActionIndex;
 				this._actions[this._currentActionIndex].unexecute();
@@ -50,13 +63,13 @@ goog.scope(function() {
 		redo: function() {
 			if (this._actions.length == 0)
 			{
-				throw new Error("Command stack is empty");
+				 console.log("Command stack is empty");
 			}
-			if (this._currentActionIndex == this._actions.length)
+			else if (this._currentActionIndex == this._actions.length)
 			{
-				throw new Error("Command stack is full");
+				 console.log("Command stack is full");
 			}
-			if (this._currentActionIndex <= this._actions.length)
+			else if (this._currentActionIndex <= this._actions.length)
 			{
 				this._actions[this._currentActionIndex].execute();
 				++this._currentActionIndex;
