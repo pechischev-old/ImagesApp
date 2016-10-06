@@ -13,6 +13,7 @@ goog.scope(function() {
 	/**
 	 * @param {!goog.math.Rect} frame
 	 * @param {!imageApp.model.Object} object
+	 * @param {string} text
 	 * @extends {imageApp.view.ObjectView}
 	 * @constructor
 	 */
@@ -20,8 +21,9 @@ goog.scope(function() {
 		/**
 		 * @param {!goog.math.Rect} frame
 		 * @param {!imageApp.model.Object} object
+		 * @param {string} text
 		 */
-		constructor: function(frame, object) {
+		constructor: function(frame, object, text) {
 			goog.base(this, frame, object);
 			this._init();
 
@@ -29,6 +31,8 @@ goog.scope(function() {
 				this.setText(event.param);
 			}, false, this);
 			this.addListener();
+			this.setText(text);
+			this._oldText = text;
 		},
 
 		/**
@@ -43,7 +47,7 @@ goog.scope(function() {
 		 */
 		setText: function(text) {
 			this._textArea.value = text;
-			this._initResizeArea(30);
+			this._initResizeArea(MIN_HEIGHT);
 		},
 
 		/**
@@ -116,7 +120,7 @@ goog.scope(function() {
 
 			goog.events.listen(this._textArea, goog.events.EventType.INPUT, goog.bind(this._initResizeArea, this, MIN_HEIGHT));
 
-			goog.events.listen(this._textArea, goog.events.EventType.CHANGE, goog.bind(function() {
+			goog.events.listen(this._textArea, goog.events.EventType.INPUT, goog.bind(function() {
 				var object = /** @type {!imageApp.model.TextArea} */ (this._model);
 				if (this.getText() != object.getText())
 				{

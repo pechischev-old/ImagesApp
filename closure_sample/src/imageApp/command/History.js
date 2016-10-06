@@ -29,9 +29,9 @@ goog.scope(function() {
 		/**
 		 * @param {imageApp.command.AbstractAction} action
 		 */
-		recordAction: function(action) {
-			this._appendAction(action);
+		executeAndRecordAction: function(action) {
 			action.execute();
+			this._appendAction(action);
 		},
 
 		/**

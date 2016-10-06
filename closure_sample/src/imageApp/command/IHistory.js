@@ -9,7 +9,7 @@ imageApp.command.IHistory = function() {};
 /**
  * @param action
  */
-imageApp.command.IHistory.prototype.recordAction =  goog.abstractMethod;
+imageApp.command.IHistory.prototype.executeAndRecordAction =  goog.abstractMethod;
 
 
 /**

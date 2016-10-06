@@ -64,8 +64,9 @@ goog.scope(function () {
 				this._resetLayout(false, event.action);
 			}, this));
 
-			goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(function () {
-				this._updateLayout(new imageApp.command.MetaCommand());
+			goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(function(event) {
+				this._updateLayout(event.action);
+				//console.log(this);
 			}, this));
 		},
 

@@ -23,7 +23,7 @@ goog.scope(function () {
 			this._object = object;
 			this._object.canRemove(false);
 			goog.events.listen(this._object, imageApp.events.EventType.OBJECT_CHANGED, goog.bind(function(event) {
-				this.dispatchEvent(new Event(imageApp.events.EventType.LAYOUT_CHANGED));
+				this.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.LAYOUT_CHANGED, event.action));
 			}, this));
 			goog.events.listen(this._object, imageApp.events.EventType.WAS_RESIZE, goog.bind(function(event) {
 				this.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.OFF_AUTOALIGN, event.action));

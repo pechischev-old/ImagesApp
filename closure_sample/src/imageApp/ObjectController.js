@@ -57,7 +57,7 @@ goog.scope(function() {
 		addTextArea: function () {
 			var textAreaModel = this._model.createTextArea("");
 			var command = new AddObjectCommand(this._objectCollection, textAreaModel);
-			this._history.recordAction(command);
+			this._history.executeAndRecordAction(command);
 		},
 
 		/**
@@ -65,7 +65,7 @@ goog.scope(function() {
 		 */
 		addImage: function(object) {
 			var command = new AddObjectCommand(this._objectCollection, object);
-			this._history.recordAction(command);
+			this._history.executeAndRecordAction(command);
 		},
 
 		/**
@@ -98,7 +98,7 @@ goog.scope(function() {
 				var meta = new MetaCommand();
 				object.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.WAS_RESIZE, meta));
 				meta.appendAction(command);
-				this._history.recordAction(meta);
+				this._history.executeAndRecordAction(meta);
 			}, this));
 		},
 
@@ -112,14 +112,19 @@ goog.scope(function() {
 				var meta = new MetaCommand();
 				object.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.WAS_RESIZE, meta));
 				meta.appendAction(command);
-				this._history.recordAction(meta);
+				this._history.executeAndRecordAction(meta);
 			}, this));
 		},
 
 		_addTextListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.APPEND_TEXT, goog.bind(function (event) {
-				var command = new AppendTextCommand(event.object, event.param);
-				this._history.recordAction(command);
+				var object = /** @type {imageApp.model.TextArea}*/(event.object);
+				var meta = new MetaCommand();
+				var action = new AppendTextCommand(event.object, event.param);
+				action.execute();
+				meta.appendAction(action);
+				object.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.OBJECT_CHANGED, meta));
+				this._history.recordExecuteAction(meta);
 			}, this));
 		},
 
@@ -133,7 +138,7 @@ goog.scope(function() {
 					return;
 				}
 				var command = new DeleteCommand(this._objectCollection, object);
-				this._history.recordAction(command);
+				this._history.executeAndRecordAction(command);
 			}
 		}
 	});

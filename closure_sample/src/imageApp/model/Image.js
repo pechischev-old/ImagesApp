@@ -22,6 +22,8 @@ goog.scope(function(){
 			var newSize = this._getCalculatingAppropriateSize(frame.getSize());
 			goog.base(this, new goog.math.Rect(frame.left, frame.top, newSize.width, newSize.height));
 			this._path = path;
+			/** @private {!goog.math.Size} */
+			this._minSize = (MIN_SIZE.width > frame.width || MIN_SIZE.height > frame.height) ? frame.getSize() : MIN_SIZE;
 		},
 
 		/**
@@ -57,8 +59,8 @@ goog.scope(function(){
 		 * @inheritDoc
 		 */
 		_calculateMinSize: function(frame) {
-			frame.height = MIN_SIZE.height > frame.height ?  MIN_SIZE.height : frame.height;
-			frame.width = MIN_SIZE.width > frame.width ?  MIN_SIZE.width : frame.width;
+			frame.height = this._minSize.height > frame.height ?  this._minSize.height : frame.height;
+			frame.width = this._minSize.width > frame.width ?  this._minSize.width : frame.width;
 		}
 	});
 });

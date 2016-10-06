@@ -93,7 +93,7 @@ goog.scope(function(){
 				this._calculateMinSize(frame);
 				this._frame = frame;
 				this.notifyObservers();
-				this.dispatchEvent(new Event(imageApp.events.EventType.OBJECT_CHANGED));
+				//this.dispatchEvent(new Event(imageApp.events.EventType.OBJECT_CHANGED));
 			}
 		},
 
