@@ -129,7 +129,6 @@ goog.scope(function() {
 			/** @private {!Element} */
 			this._fileReader = document.createElement(goog.dom.TagName.INPUT);
 			this._fileReader.type = "file";
-			this._fileReader.setAttribute("multiple", "true");
 			goog.style.setStyle(this._fileReader, "display", "none");
 			return this._fileReader;
 		},

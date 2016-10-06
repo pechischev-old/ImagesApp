@@ -200,7 +200,9 @@ goog.scope(function () {
 			var dFrame = this._description.getFrame();
 			if (this._media)
 			{
-				var mFrame = this._media.getFirstFrame();
+				var firstSize = this._media.getFirstSize();
+				var pos = this._media.getFrame().getTopLeft();
+				var mFrame = new goog.math.Rect(pos.left, pos.top, firstSize.width, firstSize.height);
 				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
 				this._writeFrameInCommand(this._getChangedFrame(mFrame, CANVAS_SIZE.width - BORDER - size.width , BORDER, size.width , size.height), this._media.getObject(), command);
@@ -227,7 +229,9 @@ goog.scope(function () {
 			this._writeFrameInCommand(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null), this._description.getObject(), command);
 			if (this._media)
 			{
-				var mFrame = this._media.getFirstFrame().clone();
+				var firstSize = this._media.getFirstSize();
+				var pos = this._media.getFrame().getTopLeft();
+				var mFrame = new goog.math.Rect(pos.left, pos.top, firstSize.width, firstSize.height);
 				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
 				this._writeFrameInCommand(this._getChangedFrame(mFrame, hFrame.left + CANVAS_SIZE.width / 2 - size.width / 2, dFrame.height + dFrame.top + INDENT, size.width, size.height),

@@ -16,15 +16,15 @@ goog.scope(function () {
 		 */
 		constructor: function (object) {
 			goog.base(this, object);
-			/** @private {!goog.math.Rect} */
-			this._firstFrame = object.getFrame();
+			/** @private {!goog.math.Size} */
+			this._firstSize = object.getFrame().getSize();
 		},
 
 		/**
-		 * @return {!goog.math.Rect}
+		 * @return {!goog.math.Size}
 		 */
-		getFirstFrame: function () {
-			return this._firstFrame;
+		getFirstSize: function () {
+			return this._firstSize;
 		}
 	});
 });

@@ -118,7 +118,7 @@ goog.scope(function() {
 			goog.events.listen(this._view, imageApp.events.EventType.APPEND_TEXT, goog.bind(function (event) {
 				var object = /** @type {imageApp.model.TextArea}*/(event.object);
 				var meta = new MetaCommand();
-				var action = new AppendTextCommand(event.object, event.param);
+				var action = new AppendTextCommand(event.object, event.param, object.getText());
 				action.execute();
 				meta.appendAction(action);
 				object.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.OBJECT_CHANGED, meta));
