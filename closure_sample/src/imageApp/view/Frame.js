@@ -9,7 +9,7 @@ goog.require("imageApp.handlers.Listener");
 goog.require("imageApp.events.Event");
 
 goog.scope(function() {
-	const MIN_SIZE_FRAME = new goog.math.Size(25, 18);
+	const MIN_SIZE_FRAME = new goog.math.Size(30, 30);
 
 	/**
 	 * @param {!goog.math.Rect} frame

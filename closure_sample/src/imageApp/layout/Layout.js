@@ -1,6 +1,5 @@
 goog.provide("imageApp.layout.Layout");
 
-goog.require("imageApp.layout.ILayout");
 goog.require("imageApp.model.Object");
 goog.require("imageApp.events.EventType");
 goog.require("imageApp.events.ActionEvent");
@@ -9,7 +8,6 @@ goog.scope(function () {
 
 	/**
 	 * @param {imageApp.model.Object} object
-	 * @implements {imageApp.layout.ILayout}
 	 * @extends {goog.events.EventTarget}
 	 * @constructor
 	 */
@@ -38,14 +36,7 @@ goog.scope(function () {
 		},
 
 		/**
-		 * @inheritDoc
-		 */
-		setFrame: function(frame) {
-			this._object.setFrame(frame);
-		},
-
-		/**
-		 * @inheritDoc
+		 * @return {!goog.math.Rect}
 		 */
 		getFrame: function () {
 			return this._object.getFrame();

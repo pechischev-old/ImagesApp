@@ -2,7 +2,6 @@ goog.provide("imageApp.model.Object");
 
 goog.require("goog.math.Rect");
 goog.require("imageApp.observer.IObserver");
-goog.require("imageApp.events.EventType");
 goog.require("goog.events.EventTarget");
 
 
@@ -93,7 +92,6 @@ goog.scope(function(){
 				this._calculateMinSize(frame);
 				this._frame = frame;
 				this.notifyObservers();
-				//this.dispatchEvent(new Event(imageApp.events.EventType.OBJECT_CHANGED));
 			}
 		},
 
@@ -101,7 +99,6 @@ goog.scope(function(){
 		 * @param {!goog.math.Coordinate} pos
 		 */
 		setPosition: function(pos) {
-
 			this._frame.left = pos.x;
 			this._frame.top = pos.y;
 			this.notifyObservers();
@@ -118,7 +115,7 @@ goog.scope(function(){
 		 * @return {!goog.math.Rect}
 		 */
 		getFrame: function() {
-			return this._frame;
+			return this._frame.clone();
 		},
 
 		/**

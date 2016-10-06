@@ -94,10 +94,9 @@ goog.scope(function() {
 		_addResizeListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.RESIZE_OBJECT, goog.bind(function(event) {
 				var object = /** @type {imageApp.model.Object}*/(event.object);
-				var command = new ResizeCommand(object, event.param);
 				var meta = new MetaCommand();
 				object.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.WAS_RESIZE, meta));
-				meta.appendAction(command);
+				meta.appendAction(new ResizeCommand(object, event.param));
 				this._history.executeAndRecordAction(meta);
 			}, this));
 		},
@@ -108,10 +107,9 @@ goog.scope(function() {
 		_addMoveListener: function () {
 			goog.events.listen(this._view, imageApp.events.EventType.MOVE_OBJECT, goog.bind(function(event) {
 				var object = /** @type {imageApp.model.Object}*/(event.object);
-				var command = new MoveCommand(object, event.param);
 				var meta = new MetaCommand();
 				object.dispatchEvent(new imageApp.events.ActionEvent(imageApp.events.EventType.WAS_RESIZE, meta));
-				meta.appendAction(command);
+				meta.appendAction(new MoveCommand(object, event.param));
 				this._history.executeAndRecordAction(meta);
 			}, this));
 		},

@@ -26,7 +26,6 @@ goog.scope(function() {
 			this._init();
 			this.addListener();
 		},
-		
 
 		/**
 		 * @inheritDoc 

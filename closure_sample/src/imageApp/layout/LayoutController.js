@@ -66,7 +66,6 @@ goog.scope(function () {
 
 			goog.events.listen(this, imageApp.events.EventType.LAYOUT_CHANGED, goog.bind(function(event) {
 				this._updateLayout(event.action);
-				//console.log(this);
 			}, this));
 		},
 
@@ -197,11 +196,11 @@ goog.scope(function () {
 		 * @private
 		 */
 		_setDefaultLayout: function (command) {
-			var hFrame = this._header.getFrame().clone();
-			var dFrame = this._description.getFrame().clone();
+			var hFrame = this._header.getFrame();
+			var dFrame = this._description.getFrame();
 			if (this._media)
 			{
-				var mFrame = this._media.getFirstFrame().clone();
+				var mFrame = this._media.getFirstFrame();
 				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
 				this._writeFrameInCommand(this._getChangedFrame(mFrame, CANVAS_SIZE.width - BORDER - size.width , BORDER, size.width , size.height), this._media.getObject(), command);
@@ -221,8 +220,8 @@ goog.scope(function () {
 		 * @private
 		 */
 		_setHorizontalLayout: function (command) {
-			var hFrame = this._header.getFrame().clone();
-			var dFrame = this._description.getFrame().clone();
+			var hFrame = this._header.getFrame();
+			var dFrame = this._description.getFrame();
 
 			this._writeFrameInCommand(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null), this._header.getObject(), command);
 			this._writeFrameInCommand(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null), this._description.getObject(), command);

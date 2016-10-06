@@ -26,8 +26,6 @@ goog.scope(function() {
 
 			/** @private {string} */
 			this._oldType = this._layoutController.getTypeLayout();
-			//console.log("new type: " + this._newType );
-			//console.log("old type: " + this._oldType );
 		},
 
 		/**

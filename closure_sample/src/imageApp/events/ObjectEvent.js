@@ -7,7 +7,7 @@ goog.scope(function () {
 	/**
 	 * @param {!string} type
 	 * @param {imageApp.view.IObject|imageApp.model.Object} object
-	 * @param {goog.math.Coordinate|goog.math.Rect|string=} param
+	 * @param {?goog.math.Coordinate|goog.math.Rect|string=} param
 	 * @constructor
 	 * @extends {goog.events.Event}
 	 */
@@ -15,7 +15,7 @@ goog.scope(function () {
 		/**
 		 * @param {!string} type
 		 * @param {imageApp.view.IObject|imageApp.model.Object} object
-		 * @param {goog.math.Coordinate|goog.math.Rect|string=}  param
+		 * @param {?goog.math.Coordinate|goog.math.Rect|string=}  param
 		 */
 		constructor: function(type, object, param) {
 			goog.base(this, type);

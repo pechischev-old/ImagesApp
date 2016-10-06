@@ -32,7 +32,6 @@ goog.scope(function() {
 			}, false, this);
 			this.addListener();
 			this.setText(text);
-			this._oldText = text;
 		},
 
 		/**
@@ -136,7 +135,7 @@ goog.scope(function() {
 			this._border.addResizeListeners(event);
 			this._border.addMoveListeners(event, this);
 
-			var keyBlur = goog.events.listen(document, goog.events.EventType.MOUSEUP, goog.bind(function () {
+			goog.events.listen(document, goog.events.EventType.MOUSEUP, goog.bind(function () {
 				if (!this.isSelected())
 				{
 					this._textArea.blur();
