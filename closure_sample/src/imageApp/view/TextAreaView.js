@@ -32,6 +32,7 @@ goog.scope(function() {
 			}, false, this);
 			this.addListener();
 			this.setText(text);
+
 		},
 
 		/**
@@ -126,6 +127,8 @@ goog.scope(function() {
 					this.dispatchEvent(new ObjectEvent(imageApp.events.EventType.APPEND_TEXT, this._model, this.getText()));
 				}
 			}, this));
+			
+
 		},
 
 		/**

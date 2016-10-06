@@ -8,6 +8,7 @@ goog.scope(function () {
 	/**
 	 * @param {imageApp.model.TextArea} object
 	 * @param {string} newText
+	 * @param {string} oldText
 	 * @extends {imageApp.command.AbstractAction}
 	 * @constructor
 	 */
@@ -15,14 +16,15 @@ goog.scope(function () {
 		/**
 		 * @param {imageApp.model.TextArea} object
 		 * @param {string} newText
+		 * @param {string} oldText
 		 */
-		constructor: function(object, newText) {
+		constructor: function(object, newText, oldText) {
 			goog.base(this);
 			/** @private {imageApp.model.TextArea} */
 			this._object = object;
 
 			/** @private {string} */
-			this._oldText = object.getText();
+			this._oldText = oldText;
 
 			/** @private {string} */
 			this._newText = newText;
