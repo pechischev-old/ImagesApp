@@ -19,6 +19,7 @@ goog.scope(function () {
 
 	const BORDER = 50;
 	const INDENT = 20;
+	const PERSENT_OF_WIDTH_CANVAS = 0.4;
 	const CANVAS_SIZE = new goog.math.Size(1000, 800);
 	/** @const {!goog.math.Size} */
 	const MAX_SIZE = new goog.math.Size(512, 256);
@@ -202,17 +203,18 @@ goog.scope(function () {
 			{
 				var firstSize = this._media.getFirstSize();
 				var pos = this._media.getFrame().getTopLeft();
-				var mFrame = new goog.math.Rect(pos.left, pos.top, firstSize.width, firstSize.height);
-				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
+				var mFrame = new goog.math.Rect(pos.x, pos.y, firstSize.width, firstSize.height);
+				var width = CANVAS_SIZE.width * PERSENT_OF_WIDTH_CANVAS - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * PERSENT_OF_WIDTH_CANVAS - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
 				this._writeFrameInCommand(this._getChangedFrame(mFrame, CANVAS_SIZE.width - BORDER - size.width , BORDER, size.width , size.height), this._media.getObject(), command);
-
 				this._writeFrameInCommand(this._getChangedFrame(hFrame, BORDER, BORDER,  mFrame.left - BORDER - INDENT, null), this._header.getObject(), command);
+				hFrame = this._header.getFrame();
 				this._writeFrameInCommand(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, mFrame.left - BORDER - INDENT, null), this._description.getObject(), command);
 			}
 			else
 			{
 				this._writeFrameInCommand(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null), this._header.getObject(), command);
+				hFrame = this._header.getFrame();
 				this._writeFrameInCommand(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null), this._description.getObject(), command);
 			}
 		},
@@ -226,13 +228,15 @@ goog.scope(function () {
 			var dFrame = this._description.getFrame();
 
 			this._writeFrameInCommand(this._getChangedFrame(hFrame, BORDER, BORDER, CANVAS_SIZE.width - 2 * BORDER, null), this._header.getObject(), command);
+			hFrame = this._header.getFrame();
 			this._writeFrameInCommand(this._getChangedFrame(dFrame, hFrame.left, hFrame.height + hFrame.top + INDENT, CANVAS_SIZE.width - 2 * BORDER, null), this._description.getObject(), command);
+			dFrame = this._description.getFrame();
 			if (this._media)
 			{
 				var firstSize = this._media.getFirstSize();
 				var pos = this._media.getFrame().getTopLeft();
-				var mFrame = new goog.math.Rect(pos.left, pos.top, firstSize.width, firstSize.height);
-				var width = CANVAS_SIZE.width * 0.4 - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * 0.4 - BORDER;
+				var mFrame = new goog.math.Rect(pos.x, pos.y, firstSize.width, firstSize.height);
+				var width = CANVAS_SIZE.width * PERSENT_OF_WIDTH_CANVAS - BORDER > mFrame.width ? mFrame.width : CANVAS_SIZE.width * PERSENT_OF_WIDTH_CANVAS - BORDER;
 				var size = this._getCalculatingAppropriateSize(new goog.math.Size(width, mFrame.height));
 				this._writeFrameInCommand(this._getChangedFrame(mFrame, hFrame.left + CANVAS_SIZE.width / 2 - size.width / 2, dFrame.height + dFrame.top + INDENT, size.width, size.height),
 										this._media.getObject(), command);
